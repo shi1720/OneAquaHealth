@@ -87,7 +87,7 @@ export default function Overview({
   data: WorkspaceData;
   onOpen: (id: string) => void;
   onPage: (page: string) => void;
-  onObserve: () => void;
+  onObserve: (siteId?: string) => void;
 }) {
   const [site, setSite] = useState<string>();
   const open = data.observations.filter((o) => o.status !== 'resolved');
@@ -139,13 +139,7 @@ export default function Overview({
             className="metric"
             onClick={() =>
               onPage(
-                i === 0
-                  ? 'observations'
-                  : i === 2
-                    ? 'planner'
-                    : i === 3
-                      ? 'evidence'
-                      : 'observations',
+                i === 0 ? 'settings' : i === 2 ? 'planner' : i === 3 ? 'evidence' : 'observations',
               )
             }
           >
@@ -174,10 +168,12 @@ export default function Overview({
                 className="text-link"
                 onClick={() => {
                   const o = data.observations.find((o) => o.siteId === selected.id);
-                  o ? onOpen(o.id) : onObserve();
+                  o ? onOpen(o.id) : onObserve(selected.id);
                 }}
               >
-                View site activity
+                {data.observations.some((o) => o.siteId === selected.id)
+                  ? 'View site activity'
+                  : 'Observe this site'}
                 <ArrowUpRight size={15} />
               </button>
             </div>
@@ -237,7 +233,7 @@ export default function Overview({
                 <h3>Start with one observation.</h3>
                 <p>Small, consistent visits help your team see what changes.</p>
               </div>
-              <button className="button dark full" onClick={onObserve}>
+              <button className="button dark full" onClick={() => onObserve()}>
                 Add an observation
                 <ArrowRight size={16} />
               </button>
@@ -267,7 +263,7 @@ export default function Overview({
           <Empty
             title="Your first observation starts the story."
             action={
-              <button className="button secondary" onClick={onObserve}>
+              <button className="button secondary" onClick={() => onObserve()}>
                 Add an observation
                 <ArrowRight size={15} />
               </button>
@@ -300,7 +296,7 @@ export function Observations({
 }: {
   data: WorkspaceData;
   onOpen: (id: string) => void;
-  onObserve: () => void;
+  onObserve: (siteId?: string) => void;
 }) {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('all');
@@ -364,7 +360,12 @@ export function Observations({
           ['actioned', 'In action'],
           ['resolved', 'Rechecked'],
         ].map(([v, l]) => (
-          <button className={status === v ? 'active' : ''} key={v} onClick={() => setStatus(v)}>
+          <button
+            aria-pressed={status === v}
+            className={status === v ? 'active' : ''}
+            key={v}
+            onClick={() => setStatus(v)}
+          >
             {l}
             <span>{data.observations.filter((o) => v === 'all' || o.status === v).length}</span>
           </button>
@@ -388,7 +389,7 @@ export function Observations({
                 Clear filters
               </button>
             ) : (
-              <button className="button primary" onClick={onObserve}>
+              <button className="button primary" onClick={() => onObserve()}>
                 Add your first observation
               </button>
             )

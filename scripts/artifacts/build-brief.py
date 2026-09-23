@@ -28,7 +28,7 @@ pdfmetrics.registerFontFamily('Serif', normal='Serif', bold='SerifBold', italic=
 
 P = argparse.ArgumentParser()
 P.add_argument('--require-screenshots', action='store_true')
-P.add_argument('--output', default='output/pdf/rill-product-brief.pdf')
+P.add_argument('--output', default='output/pdf/rill-product-brief-v1.1.0.pdf')
 args = P.parse_args()
 OUTPUT = ROOT / args.output
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -104,6 +104,7 @@ text('120',M,455,80,'Serif','lime')
 text('minutes available',228,494,20,'Sans','cream')
 para('The signature interaction: a reviewable fieldwork plan with reasons for each choice and explicit deferrals.',M,570,470,15,22,'cream')
 para('Primary track: Data-to-Insight<br/>For river groups, citizen-science coordinators and research programmes.',M,665,470,11,17,'pale')
+link('Try the hosted app: rill-streams.web.app','https://rill-streams.web.app',729,ink='lime',size=11)
 cv.showPage()
 
 # Page 2: app evidence plus loop.
@@ -130,7 +131,7 @@ para('Concern, evidence strength and work priority answer different questions. R
 sections=[
     ('A transparent two-hour plan', 'Versioned deterministic rules choose eligible checks within available minutes and expose the reasons. Restricted sites or serious signs need expert handling. Priority describes work to verify, never contamination probability. Time allowances are estimates. The core needs no trained model or paid AI key.'),
     ('One Health with defined limits', 'Habitat change, animal contact and human use provide context. Appearance cannot establish pathogens or toxins. Citizen tasks stay on accessible public banks. Local advice and qualified judgment determine appropriate follow-up. [1]'),
-    ('A usable, inspectable system', 'Authenticated workspaces separate coordinator and volunteer roles. Historical decision snapshots retain the score, factors and rule version used at review. Resolution requires a completed recheck after action. Results and authors stay in the retained audit trail.'),
+    ('A usable, inspectable system', 'Firebase Hosting serves the interface; Cloud Run uses PostgreSQL on Cloud SQL. Authenticated workspaces separate coordinator and volunteer roles. Decisions retain the factors and rule version used at review. Resolution requires a completed recheck after action.'),
     ('Environmental data that can leave the app', 'The live OneAquaHealth directory provides names and coordinates only. CSV/JSON imports require explicit site matching. Export JSON, CSV, GeoJSON or experimental FHIR R4 with environmental locations and observations. No patient records or profile-certification claim. [2]'),
 ]
 y=238
@@ -154,7 +155,7 @@ text('The value and cost hypotheses',M,374,19,'SerifBold')
 para('Buyer value: four hours saved at an assumed €40 per hour would free €160 of monthly capacity. Delivery budget: €15 infrastructure + €30 support (45 minutes at €40/hour) + €5 operations = €50 per month. At €149 revenue, €99 remains before development, sales, taxes and fixed overhead. These are assumptions, not measured savings or margins.',M,412,CW,10.5,15)
 text('Eight weeks, alongside an existing programme',M,532,19,'SerifBold')
 para('Agree local protocols and reviewer responsibilities. Measure coordinator time, assignment delay, documented rechecks and safe coverage against the existing process. Redesign if the extra tool creates more work than it removes.',M,570,CW,10.5,15)
-para('<b>Current evidence:</b> a working software demonstration with synthetic observations. No customer, pilot agreement, measured ecological benefit or field-validated prediction is claimed.',M,650,CW,10.5,15)
+para('<b>Current evidence:</b> a hosted application with a tested workflow and synthetic demonstration observations. No customer, pilot agreement, measured ecological benefit or field-validated prediction is claimed.',M,650,CW,10.5,15)
 rule(716)
 link('Category context: Cartographer sells environmental monitoring subscriptions.','https://cartographer.io/pricing',733)
 link('Complementary ecosystem: OneAquaHealth project solutions.','https://www.oneaquahealth.eu/project-solutions/',751)

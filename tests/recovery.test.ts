@@ -5,6 +5,8 @@ import { join } from 'node:path';
 import { createApp } from '../server/app';
 import { SQLiteStorage } from '../server/sqlite';
 import { LibSQLStorage } from '../server/libsql';
+import { PostgresStorage } from '../server/postgres';
+import { Pool } from 'pg';
 import { newRecoveryKey, recoveryKeyHash } from '../server/security';
 import type { RecoveryAuthResult } from '../shared/types';
 const origin = 'http://recovery.test',
@@ -12,18 +14,42 @@ const origin = 'http://recovery.test',
   nextPassword = 'A different recovered passphrase 2026!';
 const cookie = (response: Response) => response.headers.get('set-cookie')!.split(';')[0];
 
-describe.each(['sqlite', 'libsql'] as const)('%s offline recovery', (storageKind) => {
-  let db: SQLiteStorage | LibSQLStorage, app: ReturnType<typeof createApp>, directory: string;
+const storageKinds: Array<'sqlite' | 'libsql' | 'postgres'> =
+  process.env.RILL_TEST_STORAGE === 'postgres' ? ['postgres'] : ['sqlite', 'libsql'];
+describe.each(storageKinds)('%s offline recovery', (storageKind) => {
+  let db: SQLiteStorage | LibSQLStorage | PostgresStorage,
+    app: ReturnType<typeof createApp>,
+    directory: string;
+  let postgresSchema: string | undefined, postgresAdmin: Pool | undefined;
   beforeEach(async () => {
     directory = mkdtempSync(join(tmpdir(), 'rill-recovery-'));
-    db =
-      storageKind === 'sqlite'
-        ? new SQLiteStorage(join(directory, 'db.sqlite'))
-        : await LibSQLStorage.connect(`file:${join(directory, 'db.sqlite')}`);
+    if (storageKind === 'postgres') {
+      if (!process.env.RILL_TEST_POSTGRES_URL)
+        throw new Error('RILL_TEST_POSTGRES_URL is required');
+      postgresSchema = `rill_test_${crypto.randomUUID().replaceAll('-', '')}`;
+      postgresAdmin = new Pool({
+        connectionString: process.env.RILL_TEST_POSTGRES_URL,
+        options: `-c search_path=${postgresSchema}`,
+      });
+      await postgresAdmin.query(`CREATE SCHEMA "${postgresSchema}"`);
+      db = await PostgresStorage.connect(process.env.RILL_TEST_POSTGRES_URL, {
+        schema: postgresSchema,
+      });
+    } else
+      db =
+        storageKind === 'sqlite'
+          ? new SQLiteStorage(join(directory, 'db.sqlite'))
+          : await LibSQLStorage.connect(`file:${join(directory, 'db.sqlite')}`);
     app = createApp(db, { origin, passwordIterations: 100_000 });
   });
-  afterEach(() => {
-    db.close();
+  afterEach(async () => {
+    await db?.close();
+    if (postgresSchema && postgresAdmin) {
+      await postgresAdmin.query(`DROP SCHEMA "${postgresSchema}" CASCADE`);
+      await postgresAdmin.end();
+      postgresSchema = undefined;
+      postgresAdmin = undefined;
+    }
     rmSync(directory, { recursive: true, force: true });
     vi.restoreAllMocks();
   });
@@ -250,9 +276,16 @@ describe.each(['sqlite', 'libsql'] as const)('%s offline recovery', (storageKind
   });
   it('rolls back key consumption, password updates and session revocation together if the transaction fails', async () => {
     const account = await register();
-    await db.run(
-      "CREATE TRIGGER fail_recovery_audit BEFORE INSERT ON security_events WHEN json_extract(NEW.payload,'$.action')='Account recovered' BEGIN SELECT RAISE(ABORT,'test_recovery_rollback'); END",
-    );
+    if (postgresAdmin)
+      await postgresAdmin.query(`
+      CREATE FUNCTION fail_recovery_audit() RETURNS TRIGGER LANGUAGE plpgsql AS $$
+      BEGIN IF json_extract(NEW.payload,'$.action')='Account recovered' THEN RAISE EXCEPTION 'test_recovery_rollback'; END IF; RETURN NEW; END $$;
+      CREATE TRIGGER fail_recovery_audit BEFORE INSERT ON security_events FOR EACH ROW EXECUTE FUNCTION fail_recovery_audit();
+    `);
+    else
+      await db.run(
+        "CREATE TRIGGER fail_recovery_audit BEFORE INSERT ON security_events WHEN json_extract(NEW.payload,'$.action')='Account recovered' BEGIN SELECT RAISE(ABORT,'test_recovery_rollback'); END",
+      );
     vi.spyOn(console, 'error').mockImplementation(() => {});
     expect((await reset(account.user.email, account.recoveryKey)).status).toBe(500);
     expect((await request('/api/auth/me', undefined, account.session)).status).toBe(200);
@@ -263,7 +296,11 @@ describe.each(['sqlite', 'libsql'] as const)('%s offline recovery', (storageKind
         ])
       )?.key_hash,
     ).toBe(await recoveryKeyHash(account.recoveryKey));
-    await db.run('DROP TRIGGER fail_recovery_audit');
+    await db.run(
+      postgresAdmin
+        ? 'DROP TRIGGER fail_recovery_audit ON security_events'
+        : 'DROP TRIGGER fail_recovery_audit',
+    );
     expect((await reset(account.user.email, account.recoveryKey)).status).toBe(200);
   });
   it('keeps recovery, key regeneration and password changes available at the business audit quota with bounded declared security retention', async () => {

@@ -201,6 +201,7 @@ export default function CatchmentMap({
       <div className="map-site-buttons" aria-label="Monitoring sites">
         {sites.slice(0, 6).map((s, i) => (
           <button
+            aria-pressed={selected === s.id}
             aria-label={`Select ${s.name}`}
             className={selected === s.id ? 'active' : ''}
             key={s.id}
@@ -298,6 +299,7 @@ function SiteCoordinates({
             key={s.id}
             className={selected === s.id ? 'active' : ''}
             onClick={() => onSelect(s.id)}
+            aria-pressed={selected === s.id}
             aria-label={`Select ${s.name}`}
           >
             {i + 1}

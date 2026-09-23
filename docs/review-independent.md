@@ -25,13 +25,13 @@ The official rules use these five weights. [Official rules](https://oneaquahealt
 
 ## Findings requiring correction before the final demo
 
-### P1 — Real workspaces are rendered as fictional Coimbra geography
+### P1: Real workspaces are rendered as fictional Coimbra geography
 
 `src/Map.tsx:5` defines six fixed point positions. `src/Map.tsx:18–27` labels the drawing as Coimbra, positions any supplied sites on those same six points, and slices the list to six. Stored latitude/longitude never affect placement. A new site in India is shown in Coimbra; a seventh site disappears despite the displayed site count increasing. The illustrative disclaimer reduces but does not fix the contradictory context.
 
 **Fix:** reserve the illustration for the synthetic workspace. Render real coordinates in an explicitly coordinate-derived view, or use an honest site directory until geographic mapping exists. Display every supported site and an intentional empty state. Do not imply a real habitat layer from decorative polygons.
 
-### P1 — Complete evidence export loses audit events and actor attribution
+### P1: Complete evidence export loses audit events and actor attribution
 
 `server/app.ts:72` reads only 100 audit events for a workspace. `/api/export` at `server/app.ts:333–341` uses this same object. `src/Evidence.tsx:9` calls JSON “Complete workspace evidence,” but the exported history silently truncates after the first 100 recent events. Separately, `server/export.ts:14` removes `actorName`; `AuditEvent` in `shared/types.ts` has no stable actor identifier to retain. Exported review decisions therefore have no actor identity even when their entries survive truncation.
 
@@ -39,25 +39,25 @@ The official rules use these five weights. [Official rules](https://oneaquahealt
 
 **Fix:** export the complete history independently of the dashboard's latest-events window. Preserve a stable pseudonymous actor reference, or accurately disclose the retained actor names. Label previews as partial. Test more than 100 events and verify attribution across submission, review, task, and closure events.
 
-### P1 — Unresolved urgent incidents can disappear from the overview
+### P1: Unresolved urgent incidents can disappear from the overview
 
 `src/Overview.tsx:10` excludes every urgent assessment from the featured card. The only overview observation table is limited to four newest reports at `src/Overview.tsx:15`. After four later ordinary reports, an unresolved fish-distress incident is no longer visible on the landing dashboard. Avoiding an ordinary volunteer suggestion is correct; hiding the urgency is not.
 
 **Fix:** a separate persistent urgent-referral lane, with the authority-contact instruction, a count, and direct access to unresolved urgent evidence. Keep it distinct from field-plan selection. Test an older urgent incident plus several newer baseline reports.
 
-### P2 — Evidence copy implies verified independence
+### P2: Evidence copy implies verified independence
 
 `src/Detail.tsx:11` says “supporting independent reports.” The engine only counts distinct accounts and explicitly says their real-world independence is not verified. This contradicts a valuable limitation in `shared/engine.ts`.
 
 **Fix:** “other accounts with matching reports,” retaining the existing 48-hour and identity caveats. Do not equate multiple accounts with independently verified observers.
 
-### P2 — Recheck labels incorrectly imply physical return visits
+### P2: Recheck labels incorrectly imply physical return visits
 
 `server/app.ts:289–291` correctly permits hazardous-site rechecks only as coordinator administrative records of authority advice. `src/Evidence.tsx:8` describes every completed recheck as “A return visit after action,” while `src/Detail.tsx:12` asks for a follow-up visit. A valid administrative confirmation would inflate that physical-visit metric.
 
 **Fix:** label the metric “Documented follow-up” or model physical verification and administrative authority confirmation separately. The dangerous-site workflow should never encourage a visit through its headings or default task title.
 
-### P2 — The planned recording does not demonstrate constrained choice
+### P2: The planned recording does not demonstrate constrained choice
 
 The inspected seed contains six sites, two excluded as sensitive, with eligible visit costs of 25, 30, 24, and 20 minutes. The 120-minute plan uses 99 minutes and selects all four eligible sites. The video's signature moment therefore demonstrates a list fitting the budget, not a scarce-capacity tradeoff.
 
@@ -151,12 +151,12 @@ Machine-readable accessibility results and the cancellation check are in `docs/q
 
 ### Remaining actionable limitations
 
-1. **P2 — Supervised-pilot launch boundary.** Forgotten-password recovery, verified invitations/email ownership, MFA/SSO, multi-coordinator administration, and a site archival policy remain absent. Passphrase change is useful but does not recover a forgotten credential. Define the operator support procedure before accepting a real programme.
-2. **P2 — Scientific and commercial validation.** The optimizer maximizes its own uncalibrated heuristic using coordinator-supplied access costs. There is no established information-gain benefit, productivity gain, ecological improvement, willingness to pay, or existing moat. Run the proposed protocol-reviewed pilot and compare against the current workflow before making those claims.
-3. **P2 — Coverage bias.** Sites without visible-concern reports do not enter the planner. A quiet site can mean missing participation rather than healthy water. A routine-coverage budget or separate under-observed-site workflow remains a meaningful next product increment.
-4. **P3 — Historical on-screen view is bounded.** The complete JSON audit is available, but the application still shows the latest 100 workspace events. A long-running observation can outlive that window. Label the on-screen trail window clearly or load history per observation before larger pilots.
-5. **P3 — Resolution affordance can be premature.** `Detail` enables the resolution control for any completed recheck, while the API correctly requires that recheck to have completed after action. An earlier recheck can therefore produce an avoidable server error. Mirror the chronological eligibility in the UI; retain server enforcement.
-6. **P3 — Geographic limits remain deliberate.** Real sites are a relative coordinate plot, without routing, terrain, permissions, or map-service context. Demo additions beyond the original illustrated six sites require the site directory/other views; the decorative map is not an extensible geographic product. Keep these boundaries visible.
+1. **P2: Supervised-pilot launch boundary.** Forgotten-password recovery, verified invitations/email ownership, MFA/SSO, multi-coordinator administration, and a site archival policy remain absent. Passphrase change is useful but does not recover a forgotten credential. Define the operator support procedure before accepting a real programme.
+2. **P2: Scientific and commercial validation.** The optimizer maximizes its own uncalibrated heuristic using coordinator-supplied access costs. There is no established information-gain benefit, productivity gain, ecological improvement, willingness to pay, or existing moat. Run the proposed protocol-reviewed pilot and compare against the current workflow before making those claims.
+3. **P2: Coverage bias.** Sites without visible-concern reports do not enter the planner. A quiet site can mean missing participation rather than healthy water. A routine-coverage budget or separate under-observed-site workflow remains a meaningful next product increment.
+4. **P3: Historical on-screen view is bounded.** The complete JSON audit is available, but the application still shows the latest 100 workspace events. A long-running observation can outlive that window. Label the on-screen trail window clearly or load history per observation before larger pilots.
+5. **P3: Resolution affordance can be premature.** `Detail` enables the resolution control for any completed recheck, while the API correctly requires that recheck to have completed after action. An earlier recheck can therefore produce an avoidable server error. Mirror the chronological eligibility in the UI; retain server enforcement.
+6. **P3: Geographic limits remain deliberate.** Real sites are a relative coordinate plot, without routing, terrain, permissions, or map-service context. Demo additions beyond the original illustrated six sites require the site directory/other views; the decorative map is not an extensible geographic product. Keep these boundaries visible.
 
 No unresolved P1 defect was established in this bounded final pass. That statement is limited to the checked code and flows, not a guarantee that none exists. The strongest submission remains a truthful demonstration of the integrated decision loop and a precise supervised-pilot proposal, rather than a claim to have already solved environmental monitoring or proven a startup.
 

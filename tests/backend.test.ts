@@ -5,12 +5,18 @@ import { join } from 'node:path';
 import { createApp, pruneExpiredData } from '../server/app';
 import { SQLiteStorage } from '../server/sqlite';
 import { LibSQLStorage } from '../server/libsql';
+import { PostgresStorage } from '../server/postgres';
+import { Pool } from 'pg';
 import { csvCell, exportFHIR } from '../server/export';
 import { createCatalogLoader, ONEAQUAHEALTH_CATALOG_SOURCE } from '../server/catalog';
 import { validPhoto } from '../server/security';
+import { aggregateRateLimitsFromEnv } from '../server/rate-config';
 import type { FieldTask, Observation, User, WorkspaceData } from '../shared/types';
 
-let db: SQLiteStorage | LibSQLStorage, app: ReturnType<typeof createApp>, directory: string;
+let db: SQLiteStorage | LibSQLStorage | PostgresStorage,
+  app: ReturnType<typeof createApp>,
+  directory: string;
+let postgresSchema: string | undefined;
 let currentTime = new Date('2026-09-23T10:00:00Z');
 const origin = 'http://localhost';
 const password = 'a carefully chosen passphrase';
@@ -78,15 +84,32 @@ const siteInput = {
 
 beforeEach(async () => {
   directory = mkdtempSync(join(tmpdir(), 'rill-test-'));
-  db =
-    process.env.RILL_TEST_STORAGE === 'libsql'
-      ? await LibSQLStorage.connect(`file:${join(directory, 'test.sqlite')}`)
-      : new SQLiteStorage(join(directory, 'test.sqlite'));
+  if (process.env.RILL_TEST_STORAGE === 'postgres') {
+    if (!process.env.RILL_TEST_POSTGRES_URL)
+      throw new Error('RILL_TEST_POSTGRES_URL is required for PostgreSQL tests');
+    postgresSchema = `rill_test_${crypto.randomUUID().replaceAll('-', '')}`;
+    const admin = new Pool({ connectionString: process.env.RILL_TEST_POSTGRES_URL });
+    await admin.query(`CREATE SCHEMA "${postgresSchema}"`);
+    await admin.end();
+    db = await PostgresStorage.connect(process.env.RILL_TEST_POSTGRES_URL, {
+      schema: postgresSchema,
+    });
+  } else
+    db =
+      process.env.RILL_TEST_STORAGE === 'libsql'
+        ? await LibSQLStorage.connect(`file:${join(directory, 'test.sqlite')}`)
+        : new SQLiteStorage(join(directory, 'test.sqlite'));
   currentTime = new Date('2026-09-23T10:00:00Z');
   app = createApp(db, { now: () => currentTime, passwordIterations: 100_000 });
 });
-afterEach(() => {
-  db.close();
+afterEach(async () => {
+  await db?.close();
+  if (postgresSchema) {
+    const admin = new Pool({ connectionString: process.env.RILL_TEST_POSTGRES_URL });
+    await admin.query(`DROP SCHEMA "${postgresSchema}" CASCADE`);
+    await admin.end();
+    postgresSchema = undefined;
+  }
   rmSync(directory, { recursive: true, force: true });
 });
 
@@ -95,8 +118,8 @@ describe('authentication and tenant boundaries', () => {
     expect((await request('/api/workspace')).status).toBe(401);
     expect(await (await request('/api/health')).json()).toEqual({
       status: 'ok',
-      version: '1.0.0',
-      storage: process.env.RILL_TEST_STORAGE === 'libsql' ? 'libsql' : 'sqlite',
+      version: '1.1.0',
+      storage: process.env.RILL_TEST_STORAGE || 'sqlite',
     });
   });
   it('creates independent synthetic demo workspaces, HttpOnly sessions, and prevents cross-tenant record updates', async () => {
@@ -240,6 +263,66 @@ describe('authentication and tenant boundaries', () => {
         .status,
     ).toBe(403);
   });
+  it('uses the configured Firebase session cookie for login, authentication and logout', async () => {
+    app = createApp(db, {
+      production: true,
+      origin,
+      sessionCookieName: '__session',
+      passwordIterations: 100_000,
+    });
+    const response = await request('/api/auth/demo', 'POST', {});
+    expect(response.status).toBe(201);
+    const cookie = cookieOf(response);
+    expect(cookie).toMatch(/^__session=/);
+    expect(response.headers.get('set-cookie')).toContain('Secure');
+    expect(response.headers.get('set-cookie')).toContain('HttpOnly');
+    expect((await request('/api/workspace', 'GET', undefined, cookie)).status).toBe(200);
+    expect(
+      (
+        await request(
+          '/api/workspace',
+          'GET',
+          undefined,
+          cookie.replace('__session=', 'rill_session='),
+        )
+      ).status,
+    ).toBe(401);
+    const logout = await request('/api/auth/logout', 'POST', {}, cookie);
+    expect(logout.headers.get('set-cookie')).toMatch(/^__session=/);
+    expect((await request('/api/workspace', 'GET', undefined, cookie)).status).toBe(401);
+  });
+  it('allows only explicitly configured public origins and returns JSON for unknown API paths', async () => {
+    const canonical = 'https://rill-streams.web.app',
+      alternate = 'https://rill-streams.firebaseapp.com';
+    app = createApp(db, {
+      origin: canonical,
+      allowedOrigins: [alternate],
+      sessionCookieName: '__session',
+    });
+    for (const trusted of [canonical, alternate]) {
+      const response = await request('/api/auth/demo', 'POST', {}, undefined, { origin: trusted });
+      expect(response.status).toBe(201);
+      const missing = await request('/api/does-not-exist', 'GET', undefined, cookieOf(response));
+      expect(missing.status).toBe(404);
+      expect(missing.headers.get('content-type')).toContain('application/json');
+    }
+    for (const untrusted of [
+      'https://rill-streams.web.app.attacker.test',
+      'https://other.web.app',
+      'null',
+    ])
+      expect(
+        (await request('/api/auth/demo', 'POST', {}, undefined, { origin: untrusted })).status,
+      ).toBe(403);
+    expect(
+      (
+        await request('/api/auth/demo', 'POST', {}, undefined, {
+          origin: alternate,
+          'sec-fetch-site': 'cross-site',
+        })
+      ).status,
+    ).toBe(403);
+  });
   it('validates schema, blocks escalation fields, and persists rate limits', async () => {
     expect(
       (
@@ -256,6 +339,108 @@ describe('authentication and tenant boundaries', () => {
       expect((await request('/api/auth/demo', 'POST', {})).status).toBe(201);
     app = createApp(db, { now: () => currentTime, passwordIterations: 100_000 });
     expect((await request('/api/auth/demo', 'POST', {})).status).toBe(429);
+  });
+  it('shares hosted demo budgets across app instances and ignores spoofed client headers', async () => {
+    const options = {
+      now: () => currentTime,
+      passwordIterations: 100_000,
+      aggregateRateLimits: { ...aggregateRateLimitsFromEnv({}), demosPerHour: 2 },
+      clientIP: () => {
+        throw new Error('Aggregate mode must never request a client IP');
+      },
+    };
+    app = createApp(db, options);
+    await demo();
+    app = createApp(db, options);
+    await demo();
+    const blocked = await request('/api/auth/demo', 'POST', {}, undefined, {
+      'x-forwarded-for': '192.0.2.1, 198.51.100.1',
+      'fastly-client-ip': '203.0.113.1',
+    });
+    expect(blocked.status).toBe(429);
+    expect(
+      await db.get('SELECT key FROM rate_limits WHERE key=?', ['aggregate:demo']),
+    ).toBeDefined();
+    expect(await db.all("SELECT key FROM rate_limits WHERE key LIKE 'demo:%'")).toEqual([]);
+    currentTime = new Date(currentTime.getTime() + 3_600_000);
+    await demo();
+  });
+  it('enforces the aggregate auth and registration budgets independently', async () => {
+    app = createApp(db, {
+      now: () => currentTime,
+      passwordIterations: 100_000,
+      aggregateRateLimits: { ...aggregateRateLimitsFromEnv({}), registrationsPerHour: 1 },
+    });
+    await register();
+    const blocked = await request('/api/auth/register', 'POST', {
+      name: 'Another coordinator',
+      email: 'another@example.test',
+      password,
+      workspaceName: 'Another team',
+    });
+    expect(blocked.status).toBe(429);
+    expect(
+      await db.get('SELECT id FROM users WHERE email=?', ['another@example.test']),
+    ).toBeUndefined();
+    await demo();
+    app = createApp(db, {
+      now: () => currentTime,
+      aggregateRateLimits: { ...aggregateRateLimitsFromEnv({}), authPer15Minutes: 3 },
+    });
+    expect((await request('/api/auth/demo', 'POST', {})).status).toBe(429);
+  });
+  it('retains per-account login and recovery limits with aggregate protection enabled', async () => {
+    app = createApp(db, {
+      now: () => currentTime,
+      passwordIterations: 100_000,
+      aggregateRateLimits: aggregateRateLimitsFromEnv({}),
+    });
+    for (let attempt = 0; attempt < 12; attempt++)
+      expect(
+        (await request('/api/auth/login', 'POST', { email: 'missing@example.test', password }))
+          .status,
+      ).toBe(401);
+    expect(
+      (await request('/api/auth/login', 'POST', { email: 'missing@example.test', password }))
+        .status,
+    ).toBe(429);
+    expect(
+      (await request('/api/auth/login', 'POST', { email: 'different@example.test', password }))
+        .status,
+    ).toBe(401);
+    for (let attempt = 0; attempt < 6; attempt++)
+      expect(
+        (
+          await request('/api/auth/recover', 'POST', {
+            email: 'missing@example.test',
+            recoveryKey: 'incorrect',
+            newPassword: password,
+          })
+        ).status,
+      ).toBe(401);
+    expect(
+      (
+        await request('/api/auth/recover', 'POST', {
+          email: 'missing@example.test',
+          recoveryKey: 'incorrect',
+          newPassword: password,
+        })
+      ).status,
+    ).toBe(429);
+  });
+  it('bounds recovery attempts across different accounts in aggregate mode', async () => {
+    app = createApp(db, {
+      now: () => currentTime,
+      aggregateRateLimits: { ...aggregateRateLimitsFromEnv({}), recoveryPer15Minutes: 2 },
+    });
+    for (let index = 0; index < 3; index++) {
+      const response = await request('/api/auth/recover', 'POST', {
+        email: `missing-${index}@example.test`,
+        recoveryKey: 'incorrect',
+        newPassword: password,
+      });
+      expect(response.status).toBe(index < 2 ? 401 : 429);
+    }
   });
   it('limits volunteer permissions and allows assigned volunteer completion using stable IDs', async () => {
     const account = await demo();

@@ -122,7 +122,7 @@ The complete retained audit trail can be exported.
 00:03:19,000 --> 00:03:33,000
 EVIDENCE THAT CAN TRAVEL
 JSON, CSV, GeoJSON, and an experimental FHIR R4 mapping.
-Environmental Locations, Observations, Tasks, and Provenance — no Patients.
+Environmental Locations, Observations, Tasks, and Provenance: no Patients.
 
 22
 00:03:33,000 --> 00:03:42,000

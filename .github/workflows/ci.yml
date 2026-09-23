@@ -6,6 +6,35 @@ on:
 permissions:
   contents: read
 jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: rill_ci
+          POSTGRES_PASSWORD: isolated_ci_password
+          POSTGRES_DB: rill_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U rill_ci -d rill_ci"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Verify PostgreSQL API, recovery, and transaction invariants
+        env:
+          RILL_TEST_STORAGE: postgres
+          RILL_TEST_POSTGRES_URL: postgresql://rill_ci:isolated_ci_password@127.0.0.1:5432/rill_ci
+        run: npx vitest run tests/backend.test.ts tests/recovery.test.ts tests/postgres.test.ts tests/rate-config.test.ts
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 15

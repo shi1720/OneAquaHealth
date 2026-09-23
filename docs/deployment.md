@@ -1,12 +1,12 @@
 # Deployment and operations
 
-The repository ships three tested storage/runtime paths. A remote deployment is successful only after an actual HTTPS smoke test, not merely a build or configuration upload.
+The repository supports PostgreSQL, SQLite, libSQL and D1 storage paths. A remote deployment is successful only after an actual HTTPS smoke test, not merely a build or configuration upload.
 
 ## Current handoff status
 
-The full application runs locally at http://localhost:5173. Node SQLite, local libSQL, and local Cloudflare workerd/D1 have been exercised. Public hosting is prepared but pending the user's database account authorization; no permanent live URL is claimed here until verified.
+The application is live at **https://rill-streams.web.app**, using Firebase Hosting, a Cloud Run API and PostgreSQL on Cloud SQL. The hosted API lifecycle has passed smoke testing. See [the current deployment runbook](deployment-firebase.md) for configuration, verification and operational boundaries. A [logical database restore drill](qa/cloudsql-restore.md) passed; platform backup restoration and point-in-time recovery were not exercised. The [hosted browser and privacy checks](qa/hosted-verification.md) passed within their stated scope. Longer-term reliability and broader operational exercises remain unproven.
 
-Remote hosting requires operator account credentials and the database connection. No paid subscription has been purchased. The application source contains no hosting credentials.
+SQLite, local libSQL and local Cloudflare workerd/D1 remain useful development and alternative deployment paths. No hosting secrets belong in the source repository.
 
 ## Node with persistent SQLite
 

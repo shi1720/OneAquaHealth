@@ -7,7 +7,7 @@ export interface SQLResult {
   changes: number;
 }
 export interface Storage {
-  kind: 'sqlite' | 'd1' | 'libsql';
+  kind: 'sqlite' | 'd1' | 'libsql' | 'postgres';
   all<T>(sql: string, params?: SQLValue[]): Promise<T[]>;
   get<T>(sql: string, params?: SQLValue[]): Promise<T | undefined>;
   run(sql: string, params?: SQLValue[]): Promise<SQLResult>;

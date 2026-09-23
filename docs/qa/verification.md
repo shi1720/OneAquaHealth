@@ -2,7 +2,25 @@
 
 Verified 23 September 2026. This records software checks, not ecological validation, an external security audit, or a guarantee of hackathon results. Demonstration records and test accounts are synthetic.
 
-## Executed locally
+## Release 1.1.0: current evidence
+
+The application is live at **https://rill-streams.web.app**, served by Firebase Hosting with a Cloud Run API and PostgreSQL on Cloud SQL. The hosted health response identifies PostgreSQL. A disposable hosted API lifecycle passed cookie sessions, an isolated demo, human review and the recheck gate, task completion, resolution, exact planning and commit, FHIR export, registration/password verification and deletion. This confirms the exercised API path, not every browser, load level or operational failure mode. [Deployment runbook](../deployment-firebase.md)
+
+| Check                            | Result and scope                                                                                                                                                                                                                                                                                                                             |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SQLite full suite                | 86 passed; 4 PostgreSQL-only tests skipped.                                                                                                                                                                                                                                                                                                  |
+| libSQL full suite                | 86 passed; 4 PostgreSQL-only tests skipped, using the local libSQL SDK runtime.                                                                                                                                                                                                                                                              |
+| Dedicated PostgreSQL suite       | 53 passed. See [adapter verification](postgres-storage.md) for transactional and concurrency scope.                                                                                                                                                                                                                                          |
+| Hosted API lifecycle             | Passed against the public Firebase origin with durable PostgreSQL storage.                                                                                                                                                                                                                                                                   |
+| Hosted browser evidence          | 17 existing Chromium scenarios, a separate rapid-typing regression, three focused WebKit flows and 39 privacy/role assertions passed. These ran across documented frontend revisions, not one final-build 18-test suite. [Exact scope and fixtures](hosted-verification.md).                                                                 |
+| Logical database restore         | A snapshot restored into a separate disposable database; all 12 tables and 61 schema definitions matched. Runtime cluster-level privileges were removed and startup rechecked. [Scoped restore record](cloudsql-restore.md).                                                                                                                 |
+| Public deployment proxy boundary | See [Firebase proxy trust review](firebase-proxy-trust.md).                                                                                                                                                                                                                                                                                  |
+| Final slides and brief           | All 8 slides and 4 brief pages rendered and individually reviewed; native editable PPTX and PDF structures checked. [Artifact verification](../../scripts/artifacts/VERIFICATION.md).                                                                                                                                                        |
+| Synthetic narration              | 238-second H.264/AAC film of the hosted application, with matching spoken-word captions. OpenAI cedar is a synthetic voice, not a recording of Shivam Gupta. Exact film checks are recorded in [video verification](../../output/video/VERIFICATION.md) and the [independent final-frame, caption and audio-signal review](video-review.md). |
+
+The full final-build 18-scenario CI run is pending. Hosted browser checks and the narrated-film workflow have their own scope records above. The earlier CI results below apply to their specified commits and are not evidence that a later release has passed CI. Daily backups and point-in-time recovery are configured. The logical restore drill passed; a platform backup restore, point-in-time recovery and application cutover were not exercised. Redeployment persistence is a separate check and must be evidenced before claiming it.
+
+## Release 1.0.0: executed locally
 
 | Check                           | Result and scope                                                                                                                                                                                                       |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -21,17 +39,17 @@ The suite checks role/tenant isolation, origin validation, request and record li
 
 The first repeated browser runs shared the long-lived development database and eventually hit the intended authentication/demo rate limits. The test runner now owns a fresh local database and server for each run, preserving all application rate limits. It compiles a production frontend before running. `RILL_E2E_URL` explicitly targets an existing instance if an operator needs that mode.
 
-## Final integration result
+## Release 1.0.0 integration history
 
 The integrated core passed [GitHub Actions run 35817824898](https://github.com/shi1720/OneAquaHealth/actions/runs/35817824898) at commit `4ca8312`: clean install, formatting, typecheck, SQLite/libSQL suites, build, dependency audit, all eight browser scenarios, and Docker image build plus HTTP lifecycle smoke on Linux. The local Docker daemon was unavailable, so the container was verified in CI. Subsequent recovery-key, backup and engine-indexing additions are covered by the final release integration result below.
 
-**Final release code passed [GitHub Actions run 35819234381](https://github.com/shi1720/OneAquaHealth/actions/runs/35819234381) at commit `a27e70d`.** This includes all 75 tests on SQLite, all 75 with the libSQL adapter, all ten browser scenarios, clean installation, formatting, typecheck, the production build, zero reported dependency vulnerabilities, and the actual Linux Docker build and HTTP lifecycle smoke. The following packaging commit only records this result and the release checksums; it does not change the application.
+**Release 1.0.0 code passed [GitHub Actions run 35819234381](https://github.com/shi1720/OneAquaHealth/actions/runs/35819234381) at commit `a27e70d`.** This includes all 75 tests on SQLite, all 75 with the libSQL adapter, all ten browser scenarios, clean installation, formatting, typecheck, the production build, zero reported dependency vulnerabilities, and the actual Linux Docker build and HTTP lifecycle smoke. The following packaging commit only records this result and the release checksums; it does not change the application.
 
 The local online-backup command additionally passed two focused checks: a standalone snapshot preserved committed WAL records from an open database and passed `integrity_check`; attempts to overwrite a snapshot/source or read a missing source were rejected. This validates the backup mechanism, not offsite retention or a production-host disaster-recovery exercise.
 
 ## What remains outside this evidence
 
-- A permanent HTTPS deployment, remote database backup/restore, and persistence across redeployment.
+- Long-term hosted reliability, sustained load, and any restore/redeployment checks not yet documented in the current deployment record. The HTTPS deployment and hosted API smoke are now complete.
 - Email-based recovery, verified email/invitations, multiple coordinators, SSO/MFA, and an operational incident-response service. Offline-key recovery is implemented; losing both credentials remains unrecoverable through email.
 - Load/soak testing at programme scale, expert security review, complete screen-reader review, and field usability testing.
 - Calibrated environmental predictions, laboratory analysis, water-safety determinations, FHIR implementation-guide conformance, or clinical use.
@@ -39,7 +57,7 @@ The local online-backup command additionally passed two focused checks: a standa
 
 See [the internal adversarial review](../review-independent.md), [methodology](../methodology.md), and [deployment status](../deployment.md). The review score is an internal opinion, not independent assurance or a prediction of judging results.
 
-## Recovery and artifact completion
+## Release 1.0.0 recovery and artifact history
 
 The recovery implementation passed a separate read-only security review. Two concrete findings were fixed before release: accidental dismissal of a replacement key before acknowledgement, and business-audit exhaustion preventing a valid reset. Tests now cover the saved-key gate, single-use and concurrent reset, all-session revocation, password-verification races, key rotation, explicit rolling security-event retention, and recovery at the full 10,000 ordinary-audit quota. The reviewer found no further blocking issue in that scope; this is still an internal code review, not an external security audit.
 
@@ -47,4 +65,4 @@ The final ten-scenario browser run passed locally, including signup and recovery
 
 All eight pitch slides and four product-brief pages were visually inspected after rendering. The PowerPoint contains native editable text and speaker notes and passed package/layout checks. The real-UI film is 238 seconds, 1080p H.264, with zero browser exceptions and a verified resolved observation, two completed tasks, and an actual synthetic FHIR export. The fresh-draft banner fix was included in the final capture. See [artifact verification](../../scripts/artifacts/VERIFICATION.md) and [video verification](../../output/video/VERIFICATION.md).
 
-The narration helper was exercised with disposable test audio: it preserved the 238-second video, produced AAC audio, refused to overwrite an existing output, and rejected narration over five minutes. No human narration was recorded or synthesized. [Helper check results](media-helper-results.json).
+The narration helper was exercised with disposable test audio: it preserved the 238-second video, produced AAC audio, refused to overwrite an existing output, and rejected narration over five minutes. No narration was present in that earlier helper check. Release 1.1.0 uses the explicitly disclosed synthetic narration described above. [Helper check results](media-helper-results.json).

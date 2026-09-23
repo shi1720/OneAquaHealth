@@ -83,6 +83,7 @@ export default function Detail({
       title={o.concerns.map((c) => concernLabels[c]).join(' · ')}
       subtitle={`${site.name} · ${dateLabel(o.observedAt, true)}`}
       onClose={onClose}
+      closeDisabled={busy}
       wide
     >
       <div className="detail-meta">
@@ -100,7 +101,12 @@ export default function Detail({
           ['response', 'Response & recheck'],
           ['trail', 'Decision trail'],
         ].map(([v, l]) => (
-          <button key={v} className={tab === v ? 'active' : ''} onClick={() => setTab(v)}>
+          <button
+            key={v}
+            aria-pressed={tab === v}
+            className={tab === v ? 'active' : ''}
+            onClick={() => setTab(v)}
+          >
             {l}
             {v === 'response' && <span>{tasks.length}</span>}
           </button>
@@ -544,7 +550,7 @@ export default function Detail({
             <ArrowRight size={16} />
           </button>
         ) : (
-          <button className="button secondary" onClick={onClose}>
+          <button className="button secondary" disabled={busy} onClick={onClose}>
             Done
             <Check size={16} />
           </button>

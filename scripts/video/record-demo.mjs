@@ -143,7 +143,7 @@ const scenes = [
     199,
     213,
     'EVIDENCE THAT CAN TRAVEL',
-    'JSON, CSV, GeoJSON, and an experimental FHIR R4 mapping.\nEnvironmental Locations, Observations, Tasks, and Provenance — no Patients.',
+    'JSON, CSV, GeoJSON, and an experimental FHIR R4 mapping.\nEnvironmental Locations, Observations, Tasks, and Provenance: no Patients.',
   ],
   [
     213,
@@ -171,7 +171,7 @@ await writeFile(
     )
     .join('\n'),
 );
-const endCard = `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}body{margin:0;background:#204b3c;color:#f2f3dd;font-family:Arial,sans-serif;width:1440px;height:900px;padding:84px 100px;overflow:hidden}.eyebrow{font-size:16px;letter-spacing:3px;color:#d1e596;text-transform:uppercase}.wordmark{font-size:84px;font-weight:700;letter-spacing:-7px;margin:38px 0 14px}.wordmark span{color:#d1e596}h1{font-size:64px;letter-spacing:-3px;line-height:1.13;font-weight:500;max-width:1100px;margin:24px 0}em{font-family:Georgia,serif;color:#d1e596;font-weight:400}.pilot{margin-top:34px;font-size:21px;line-height:1.65;color:#dce7d5;max-width:1040px}.tag{display:inline-block;border:1px solid #729572;padding:10px 16px;font-size:13px;letter-spacing:1.2px;color:#d1e596;margin-bottom:12px}.footer{position:absolute;bottom:70px;left:100px;right:100px;border-top:1px solid #50795d;padding-top:24px;display:flex;justify-content:space-between;font-size:16px;line-height:1.7}.credit{font-weight:700;color:#f2f3dd}.repo{color:#d1e596}</style></head><body><div class="eyebrow">OneAquaHealth IEEE Global Hackathon 2026 · Track 2</div><div class="wordmark">rill<span>.</span></div><h1>Every observation.<br/>A better <em>next step.</em></h1><div class="pilot"><span class="tag">PROPOSED PILOT · NOT YET FIELD-VALIDATED</span><br/>A coordination workspace for river groups and monitoring programmes.<br/>Volunteers contribute free. A proposed managed subscription supports the team.</div><div class="footer"><div><span class="credit">Shivam Gupta</span><br/>Citizen evidence → human decisions → documented follow-through</div><div class="repo">github.com/shi1720/OneAquaHealth<br/>Transparent rules · No paid AI key required</div></div></body></html>`;
+const endCard = `<!doctype html><html><head><meta charset="utf-8"><style>*{box-sizing:border-box}body{margin:0;background:#204b3c;color:#f2f3dd;font-family:Arial,sans-serif;width:1440px;height:900px;padding:84px 100px;overflow:hidden}.eyebrow{font-size:16px;letter-spacing:3px;color:#d1e596;text-transform:uppercase}.wordmark{font-size:84px;font-weight:700;letter-spacing:-7px;margin:38px 0 14px}.wordmark span{color:#d1e596}h1{font-size:64px;letter-spacing:-3px;line-height:1.13;font-weight:500;max-width:1100px;margin:24px 0}em{font-family:Georgia,serif;color:#d1e596;font-weight:400}.pilot{margin-top:34px;font-size:21px;line-height:1.65;color:#dce7d5;max-width:1040px}.tag{display:inline-block;border:1px solid #729572;padding:10px 16px;font-size:13px;letter-spacing:1.2px;color:#d1e596;margin-bottom:12px}.footer{position:absolute;bottom:70px;left:100px;right:100px;border-top:1px solid #50795d;padding-top:24px;display:flex;justify-content:space-between;font-size:16px;line-height:1.7}.credit{font-weight:700;color:#f2f3dd}.repo{color:#d1e596}</style></head><body><div class="eyebrow">OneAquaHealth IEEE Global Hackathon 2026 · Track 2</div><div class="wordmark">rill<span>.</span></div><h1>Every observation.<br/>A better <em>next step.</em></h1><div class="pilot"><span class="tag">PROPOSED PILOT · NOT YET FIELD-VALIDATED</span><br/>A coordination workspace for river groups and monitoring programmes.<br/>Volunteers contribute free. A proposed managed subscription supports the team.</div><div class="footer"><div><span class="credit">Shivam Gupta</span><br/>Citizen evidence → human decisions → documented follow-through</div><div class="repo">rill-streams.web.app<br/>Transparent rules · No paid AI key required</div></div></body></html>`;
 await writeFile(join(output, 'end-card.html'), endCard);
 
 const browser = await chromium.launch({ headless: true });
@@ -190,7 +190,10 @@ const createdAt = Date.now();
 const page = await context.newPage();
 page.setDefaultTimeout(12_000);
 const exceptions = [];
-page.on('pageerror', (error) => exceptions.push(error.message));
+page.on('pageerror', (error) => {
+  exceptions.push(error.message);
+  console.error(`Recording browser error at ${page.url()}: ${error.stack || error.message}`);
+});
 await page.goto(origin, { waitUntil: 'networkidle' });
 await page.evaluate(() => document.fonts.ready);
 await context.addInitScript(() => {
@@ -389,9 +392,10 @@ try {
     await click(button(/FHIR R4 Experimental environmental mapping/, false));
     await frame('15-export');
     await waitTo(206);
-    const pending = page.waitForEvent('download');
-    await click(page.getByRole('link', { name: 'Download FHIR bundle' }));
-    const download = await pending;
+    const [download] = await Promise.all([
+      page.waitForEvent('download'),
+      click(page.getByRole('button', { name: 'Download FHIR bundle' })),
+    ]);
     exportedBundle = join(output, 'demo-fhir-bundle.json');
     await download.saveAs(exportedBundle);
     const bundle = JSON.parse(await readFile(exportedBundle, 'utf8'));
@@ -480,6 +484,17 @@ try {
 } catch (error) {
   await page.screenshot({ path: join(frames, 'failure.png') }).catch(() => {});
   await writeFile(join(output, 'failure.txt'), String(error));
+  // A failed rehearsal must not leave its private synthetic workspace behind.
+  await context.request
+    .get(`${origin}/api/auth/me`)
+    .then(async (response) => {
+      if (response.ok() && (await response.json()).user?.isDemo)
+        await context.request.delete(`${origin}/api/account`, {
+          headers: { Origin: origin },
+          data: {},
+        });
+    })
+    .catch(() => {});
   await context.close();
   await browser.close();
   throw error;

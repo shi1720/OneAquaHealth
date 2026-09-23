@@ -30,9 +30,11 @@ export default function Planner({
   const [error, setError] = useState('');
   const [active, setActive] = useState<'plan' | 'tasks'>('plan');
   const [filter, setFilter] = useState('open');
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let alive = true;
     setBusy(true);
+    setPlan(null);
     setError('');
     const timer = setTimeout(
       () =>
@@ -53,7 +55,7 @@ export default function Planner({
       alive = false;
       clearTimeout(timer);
     };
-  }, [budget, data.tasks.length, data.observations]);
+  }, [budget, data.tasks.length, data.observations, attempt]);
   async function save() {
     setCommit(true);
     setError('');
@@ -64,6 +66,7 @@ export default function Planner({
       );
       setActive('tasks');
     } catch (e) {
+      setPlan(null);
       setError((e as Error).message);
     } finally {
       setCommit(false);
@@ -72,10 +75,18 @@ export default function Planner({
   return (
     <>
       <div className="page-tabs">
-        <button className={active === 'plan' ? 'active' : ''} onClick={() => setActive('plan')}>
+        <button
+          aria-pressed={active === 'plan'}
+          className={active === 'plan' ? 'active' : ''}
+          onClick={() => setActive('plan')}
+        >
           <Route size={16} /> Build a field plan
         </button>
-        <button className={active === 'tasks' ? 'active' : ''} onClick={() => setActive('tasks')}>
+        <button
+          aria-pressed={active === 'tasks'}
+          className={active === 'tasks' ? 'active' : ''}
+          onClick={() => setActive('tasks')}
+        >
           <ClipboardList size={16} /> Team tasks{' '}
           <span>{data.tasks.filter((t) => t.status !== 'completed').length}</span>
         </button>
@@ -83,7 +94,7 @@ export default function Planner({
       {active === 'plan' ? (
         <div className="planner-layout">
           <aside className="panel planner-controls">
-            <span className="eyebrow">YOUR NEXT TWO HOURS</span>
+            <span className="eyebrow">YOUR AVAILABLE FIELD TIME</span>
             <h2>
               Time is limited.
               <br />
@@ -107,6 +118,7 @@ export default function Planner({
               max="240"
               step="10"
               value={budget}
+              disabled={commit}
               onChange={(e) => setBudget(Number(e.target.value))}
             />
             <div className="range-ticks">
@@ -118,6 +130,8 @@ export default function Planner({
               {[60, 120, 180].map((v) => (
                 <button
                   key={v}
+                  disabled={commit}
+                  aria-pressed={budget === v}
                   onClick={() => setBudget(v)}
                   className={budget === v ? 'active' : ''}
                 >
@@ -164,6 +178,24 @@ export default function Planner({
                   <span className="plan-count">{plan?.items.length || 0} visits</span>
                 )}
               </SectionTitle>
+              {busy && (
+                <p className="plan-loading" role="status">
+                  Finding visits for your {budget}-minute budget…
+                </p>
+              )}
+              {!plan && !busy && error && (
+                <div className="plan-unavailable">
+                  <p role="alert">{error}</p>
+                  <p>A current plan is required before assigning visits.</p>
+                  <button
+                    className="button secondary"
+                    onClick={() => setAttempt((value) => value + 1)}
+                  >
+                    <RefreshCw size={16} />
+                    Retry field plan
+                  </button>
+                </div>
+              )}
               {plan && (
                 <>
                   <div className="plan-time">
@@ -221,7 +253,11 @@ export default function Planner({
                     <button
                       className="button primary"
                       disabled={
-                        busy || commit || !plan.items.length || data.user.role !== 'coordinator'
+                        busy ||
+                        commit ||
+                        !!error ||
+                        !plan.items.length ||
+                        data.user.role !== 'coordinator'
                       }
                       onClick={save}
                     >
@@ -296,7 +332,7 @@ export default function Planner({
           )}
         </section>
       )}
-      {error && (
+      {error && (active !== 'plan' || plan) && (
         <p role="alert" className="form-error">
           {error}
         </p>

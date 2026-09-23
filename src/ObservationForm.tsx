@@ -40,6 +40,7 @@ export default function ObservationForm({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [draftSaved, setDraftSaved] = useState(true);
+  const draftSavedRef = useRef(true);
   const photoRef = useRef<HTMLInputElement>(null);
   const [initialDraft] = useState<ObservationInput | null>(() => {
     try {
@@ -56,8 +57,18 @@ export default function ObservationForm({
           Array.isArray(candidate.concerns) &&
           candidate.concerns.every((c: unknown) => choices.includes(c as Concern)) &&
           typeof candidate.notes === 'string' &&
+          candidate.notes.length <= 2000 &&
           typeof candidate.observedAt === 'string' &&
-          typeof candidate.clientId === 'string'
+          Number.isFinite(Date.parse(candidate.observedAt)) &&
+          ['clear', 'cloudy', 'opaque', 'unsure'].includes(candidate.clarity) &&
+          ['still', 'slow', 'steady', 'fast', 'unsure'].includes(candidate.flow) &&
+          ['unsure', 'fairly_sure', 'certain'].includes(candidate.confidence) &&
+          (candidate.photo == null ||
+            (typeof candidate.photo === 'string' &&
+              candidate.photo.length <= 1400000 &&
+              /^data:image\/(jpeg|png|webp);base64,/.test(candidate.photo))) &&
+          typeof candidate.clientId === 'string' &&
+          /^[A-Za-z0-9_-]{8,100}$/.test(candidate.clientId)
         )
           return candidate;
         localStorage.removeItem(key);
@@ -86,9 +97,15 @@ export default function ObservationForm({
   useEffect(() => {
     try {
       localStorage.setItem(key, JSON.stringify({ form, savedAt: Date.now() }));
-      setDraftSaved(true);
+      if (!draftSavedRef.current) {
+        draftSavedRef.current = true;
+        setDraftSaved(true);
+      }
     } catch {
-      setDraftSaved(false);
+      if (draftSavedRef.current) {
+        draftSavedRef.current = false;
+        setDraftSaved(false);
+      }
     }
   }, [form, key]);
   function set<K extends keyof ObservationInput>(k: K, v: ObservationInput[K]) {
@@ -154,6 +171,16 @@ export default function ObservationForm({
       setError('Choose a monitoring site.');
       return;
     }
+    if (
+      step === 0 &&
+      (Date.parse(form.observedAt) > Date.now() + 5 * 60_000 ||
+        Date.parse(form.observedAt) < Date.now() - 365 * 86400000)
+    ) {
+      setError(
+        'Choose an observation time within the last year and no more than five minutes in the future.',
+      );
+      return;
+    }
     if (step === 1 && form.concerns.length === 0) {
       setError('Select what you noticed, including “No visible concern” if appropriate.');
       return;
@@ -165,11 +192,13 @@ export default function ObservationForm({
     setError('');
     setStep(step + 1);
   }
+  const selectedSite = data.sites.find((site) => site.id === form.siteId);
   return (
     <Modal
       title="Every observation helps."
       subtitle="A few careful details make the next decision better."
       onClose={onClose}
+      closeDisabled={busy}
       wide
     >
       <StepLabel items={['Place', 'Observe', 'Details', 'Review']} current={step} />
@@ -182,7 +211,10 @@ export default function ObservationForm({
         {restored && (
           <div className="inline-note">
             <CloudOff size={16} /> Your last draft was restored. Drafts stay on this device for 24
-            hours.
+            hours.{' '}
+            {initialSite &&
+              initialDraft?.siteId !== initialSite &&
+              'This is your existing draft, not a new report for the site you just selected. Change its site only if the recorded details belong there.'}
           </div>
         )}
         {step === 0 && (
@@ -193,6 +225,7 @@ export default function ObservationForm({
               {data.sites.map((s) => (
                 <button
                   key={s.id}
+                  aria-pressed={form.siteId === s.id}
                   className={`site-choice ${form.siteId === s.id ? 'selected' : ''}`}
                   onClick={() => set('siteId', s.id)}
                 >
@@ -207,6 +240,19 @@ export default function ObservationForm({
                 </button>
               ))}
             </div>
+            {selectedSite && (
+              <div className={`inline-note ${selectedSite.sensitive ? 'warning' : ''}`}>
+                <ShieldCheck size={19} />
+                <span>
+                  <b>
+                    {selectedSite.sensitive ? 'Restricted or sensitive site. ' : 'Site access. '}
+                  </b>
+                  {selectedSite.access}
+                  {selectedSite.sensitive &&
+                    ' Only report from a safe, authorised viewpoint. Do not enter restricted areas.'}
+                </span>
+              </div>
+            )}
             {!data.sites.length && (
               <p className="inline-note">
                 Add a monitoring site in Team & settings before creating an observation.
@@ -222,7 +268,10 @@ export default function ObservationForm({
                 )
                   .toISOString()
                   .slice(0, 16)}
-                max={new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+                min={new Date(Date.now() - 365 * 86400000 - new Date().getTimezoneOffset() * 60000)
+                  .toISOString()
+                  .slice(0, 16)}
+                max={new Date(Date.now() + 5 * 60_000 - new Date().getTimezoneOffset() * 60000)
                   .toISOString()
                   .slice(0, 16)}
                 onChange={(e) => {
@@ -249,6 +298,7 @@ export default function ObservationForm({
               {choices.map((c) => (
                 <button
                   key={c}
+                  aria-pressed={form.concerns.includes(c)}
                   className={form.concerns.includes(c) ? 'selected' : ''}
                   onClick={() => toggle(c)}
                 >
@@ -285,9 +335,9 @@ export default function ObservationForm({
                   onChange={(e) => set('clarity', e.target.value as ObservationInput['clarity'])}
                 >
                   <option value="unsure">Not sure</option>
-                  <option value="clear">Clear — I can see through it</option>
-                  <option value="cloudy">Cloudy — partly see through it</option>
-                  <option value="opaque">Opaque — cannot see through it</option>
+                  <option value="clear">Clear: I can see through it</option>
+                  <option value="cloudy">Cloudy: partly see through it</option>
+                  <option value="opaque">Opaque: cannot see through it</option>
                 </select>
               </label>
               <label>
@@ -330,7 +380,7 @@ export default function ObservationForm({
                   set('confidence', e.target.value as ObservationInput['confidence'])
                 }
               >
-                <option value="unsure">I’m not sure — help me check</option>
+                <option value="unsure">I’m not sure: help me check</option>
                 <option value="fairly_sure">Fairly sure</option>
                 <option value="certain">Certain about what I observed</option>
               </select>
@@ -416,7 +466,11 @@ export default function ObservationForm({
         )}
       </div>
       <div className="modal-footer">
-        <button className="button ghost" onClick={() => (step > 0 ? setStep(step - 1) : onClose())}>
+        <button
+          className="button ghost"
+          disabled={busy}
+          onClick={() => (step > 0 ? setStep(step - 1) : onClose())}
+        >
           <ArrowLeft size={16} />
           {step > 0 ? 'Back' : draftSaved ? 'Save draft & close' : 'Close form'}
         </button>

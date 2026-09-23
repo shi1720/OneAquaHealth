@@ -12,7 +12,7 @@ const SKILL =
 const BUILD = path.join(ROOT, 'tmp', 'artifacts');
 const OUTPUT = path.join(ROOT, 'output', 'presentation');
 const ASSETS = path.join(ROOT, 'output', 'assets');
-const SUFFIX = process.env.RILL_ARTIFACT_REVISION || 'final';
+const SUFFIX = process.env.RILL_ARTIFACT_REVISION || 'v1.1.0';
 const FINAL_STEM = SUFFIX === 'final' ? 'rill-pitch' : `rill-pitch-${SUFFIX}`;
 const PREVIEW = process.env.RILL_DRAFT_ONLY === '1';
 const FONTS = ['Noto Sans', 'Caladea'];
@@ -150,6 +150,7 @@ async function screenshot(s, filename, frame, alt) {
     23,
     { color: C.muted },
   );
+  text(s, 'Source: oneaquahealth.eu/project-solutions', 64, 666, 1050, 24, 14, { color: C.muted });
   notes(
     s,
     'Source: OneAquaHealth, Project Solutions, accessed 23 September 2026. https://www.oneaquahealth.eu/project-solutions/ . The site lists the Citizen Science App, City Dashboards, Resilience Map, GEOSSIP, and Decision Support System. Competitive context: Cartographer already offers monitoring, QA, and confirmation workflows, https://cartographer.io/ and https://help.cartographer.io/riverfly/recording-a-sample . No worldwide novelty claim.',
@@ -243,6 +244,9 @@ async function screenshot(s, filename, frame, alt) {
     21,
     { color: C.pale },
   );
+  text(s, 'Source: CDC · How to Recognize a Harmful Algal Bloom', 64, 674, 1050, 24, 14, {
+    color: C.pale,
+  });
   notes(
     s,
     'Source: CDC, How to Recognize a Harmful Algal Bloom, https://www.cdc.gov/harmful-algal-blooms/about/how-to-recognize-a-harmful-algal-bloom.html . Visual inspection cannot establish whether a bloom is harmful. Rill does not diagnose toxins or pathogens, declare safe swimming water, or infer disease probability. The One Health questions are investigation context rather than proof of causality.',
@@ -254,19 +258,19 @@ async function screenshot(s, filename, frame, alt) {
   const rows = [
     ['Access', 'Authenticated workspaces and coordinator / volunteer roles'],
     ['Evidence', 'Human review, historical decisions and a recheck gate'],
-    ['Decisions', 'Versioned rules, time-budget planning, tracked rechecks'],
-    ['Exchange', 'Live OAH site directory, CSV/JSON imports and exports'],
+    ['Deployment', 'Cloud Run API with PostgreSQL on Cloud SQL'],
+    ['Exchange', 'OAH directory, imports and environmental exports'],
   ];
   rows.forEach(([a, b], i) => {
     text(s, a, 64, 233 + i * 87, 245, 53, 27, { bold: true });
     text(s, b, 339, 235 + i * 87, 840, 70, 26);
   });
-  text(s, 'Experimental FHIR R4 export. No trained model or paid AI key.', 64, 621, 1090, 42, 24, {
+  text(s, 'Try rill-streams.web.app · No trained model or paid AI key.', 64, 621, 1090, 42, 24, {
     color: C.muted,
   });
   notes(
     s,
-    'Implementation reference: docs/API-CONTRACT.md and the shipped Rill repository, https://github.com/shi1720/OneAquaHealth . Live directory imports provide site names and coordinates only, not water assessments or permission to access a location. CSV/JSON batch import validates records with explicit destination-site matching and preserves synthetic-data boundaries. Full JSON exports contain all retained audit events and historical review snapshots. Claims refer to application functionality, not deployment certification. FHIR R4 Observation can reference Location: https://hl7.org/fhir/R4/observation.html . Export mapping is experimental and does not claim conformance to the evolving OAH IG. No fictional patients.',
+    'Implementation reference: docs/API-CONTRACT.md and the shipped Rill repository, https://github.com/shi1720/OneAquaHealth . Live directory imports provide site names and coordinates only, not water assessments or permission to access a location. CSV/JSON batch import validates records with explicit destination-site matching and preserves synthetic-data boundaries. Full JSON exports contain all retained audit events and historical review snapshots. The hosted origin https://rill-streams.web.app serves Firebase Hosting with a Cloud Run API and PostgreSQL on Cloud SQL. The hosted API lifecycle was verified. Version 1.1 local verification: SQLite and libSQL each passed 86 tests, with four PostgreSQL-only tests skipped in those runs; the dedicated PostgreSQL suite passed 53 tests. Current CI and browser evidence is recorded in docs/qa/verification.md. This is a pilot deployment, not production certification or a field-validated service. FHIR R4 Observation can reference Location: https://hl7.org/fhir/R4/observation.html . Export mapping is experimental and does not claim conformance to the evolving OAH IG. No fictional patients.',
   );
 }
 {
@@ -329,10 +333,12 @@ async function screenshot(s, filename, frame, alt) {
     color: C.lime,
   });
   text(s, 'Shivam Gupta · Project creator', 64, 580, 1040, 39, 23, { color: C.cream });
-  text(s, 'github.com/shi1720/OneAquaHealth', 64, 634, 1030, 37, 21, { color: C.pale });
+  text(s, 'rill-streams.web.app · github.com/shi1720/OneAquaHealth', 64, 634, 1030, 37, 21, {
+    color: C.pale,
+  });
   notes(
     s,
-    'Pilot invitation is prospective and makes no partnership claim. Repository: https://github.com/shi1720/OneAquaHealth . Track 2: Data-to-Insight. Project creator Shivam Gupta. AI-assisted research, design, implementation, and documentation are disclosed in submission material.',
+    'Pilot invitation is prospective and makes no partnership claim. Hosted app: https://rill-streams.web.app . Repository: https://github.com/shi1720/OneAquaHealth . Track 2: Data-to-Insight. Project creator Shivam Gupta. AI-assisted research, design, implementation, and documentation are disclosed in submission material.',
   );
 }
 

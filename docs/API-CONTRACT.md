@@ -1,6 +1,6 @@
 # Rill API and data contract
 
-The React client and Hono API share one origin. Routes below use the `/api` prefix. Request/response types are in [`shared/types.ts`](../shared/types.ts); authoritative validation and permissions are in [`server/app.ts`](../server/app.ts). The same implementation runs against SQLite, libSQL, or D1.
+The React client and Hono API share one origin. Routes below use the `/api` prefix. Request/response types are in [`shared/types.ts`](../shared/types.ts); authoritative validation and permissions are in [`server/app.ts`](../server/app.ts). The shared application supports PostgreSQL, SQLite, libSQL and D1. The hosted deployment uses PostgreSQL; its storage adapter preserves the transaction and permission contract.
 
 ## Session and error contract
 

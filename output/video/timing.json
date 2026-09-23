@@ -1,10 +1,10 @@
 {
-  "origin": "http://127.0.0.1:5182",
+  "origin": "https://rill-streams.web.app",
   "width": 1440,
   "height": 900,
   "durationSeconds": 238,
-  "videoLeadSeconds": 0.617,
-  "rawPath": "/Users/shivamgupta/Documents/ChatGPT/ieeeaquahealth/output/video/raw/page@24b0b6dc5e0be9405bb77ea3ca5f351d.webm",
+  "videoLeadSeconds": 0.946,
+  "rawPath": "/Users/shivamgupta/Documents/ChatGPT/ieeeaquahealth/output/video/raw/page@1174faabb3e605227aa9cc4abbb86276.webm",
   "scenes": [
     {
       "name": "Landing: a next step for each observation",
@@ -14,17 +14,17 @@
     {
       "name": "Open an isolated demonstration workspace",
       "plannedStart": 15,
-      "actualStart": 15.004
+      "actualStart": 15.003
     },
     {
       "name": "Choose a safe monitoring location",
       "plannedStart": 28,
-      "actualStart": 28.003
+      "actualStart": 28.002
     },
     {
       "name": "Describe visible litter without guessing a cause",
       "plannedStart": 36,
-      "actualStart": 36.003
+      "actualStart": 36.001
     },
     {
       "name": "Keep the note and uncertainty",
@@ -34,17 +34,17 @@
     {
       "name": "Review and submit the observation",
       "plannedStart": 57,
-      "actualStart": 57.001
+      "actualStart": 57.002
     },
     {
       "name": "Open the explained evidence",
       "plannedStart": 64,
-      "actualStart": 64.002
+      "actualStart": 64.001
     },
     {
       "name": "Read the priority factors",
       "plannedStart": 78,
-      "actualStart": 78.002
+      "actualStart": 78.001
     },
     {
       "name": "Connect environment, animals, and people",
@@ -54,7 +54,7 @@
     {
       "name": "Build a two-hour field plan",
       "plannedStart": 100,
-      "actualStart": 100.002
+      "actualStart": 100.003
     },
     {
       "name": "Compare a smaller budget",
@@ -64,12 +64,12 @@
     {
       "name": "Return to 120 minutes and three visits",
       "plannedStart": 118,
-      "actualStart": 118.002
+      "actualStart": 118.001
     },
     {
       "name": "Show the explicitly deferred work",
       "plannedStart": 126,
-      "actualStart": 126.001
+      "actualStart": 126.002
     },
     {
       "name": "Commit the plan to tracked responsibilities",
@@ -79,17 +79,17 @@
     {
       "name": "Record the human review",
       "plannedStart": 140,
-      "actualStart": 140.002
+      "actualStart": 140.001
     },
     {
       "name": "Complete the fictional verification task",
       "plannedStart": 150,
-      "actualStart": 150.002
+      "actualStart": 150.001
     },
     {
       "name": "Record the action and show the recheck gate",
       "plannedStart": 160,
-      "actualStart": 160.002
+      "actualStart": 160.001
     },
     {
       "name": "Assign and complete a follow-up recheck",
@@ -99,7 +99,7 @@
     {
       "name": "Resolve with documented follow-up evidence",
       "plannedStart": 180,
-      "actualStart": 180
+      "actualStart": 180.002
     },
     {
       "name": "Inspect the connected audit trail",
@@ -109,7 +109,7 @@
     {
       "name": "Export actual environmental evidence",
       "plannedStart": 199,
-      "actualStart": 199
+      "actualStart": 199.002
     },
     {
       "name": "Show completed follow-through in the workspace",
@@ -247,7 +247,7 @@
       "start": 199,
       "end": 213,
       "title": "EVIDENCE THAT CAN TRAVEL",
-      "caption": "JSON, CSV, GeoJSON, and an experimental FHIR R4 mapping.\nEnvironmental Locations, Observations, Tasks, and Provenance — no Patients."
+      "caption": "JSON, CSV, GeoJSON, and an experimental FHIR R4 mapping.\nEnvironmental Locations, Observations, Tasks, and Provenance: no Patients."
     },
     {
       "start": 213,

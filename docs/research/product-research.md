@@ -4,7 +4,7 @@ Research date: 23 September 2026. Prepared for Shivam Gupta's OneAquaHealth hack
 
 ## Decision
 
-Build **Rill — turn a stream concern into the next useful check.** The buyer-facing description is a fieldwork coordination workspace for urban-stream stewardship teams. Primary track: **Track 2, Data-to-Insight**. Responsible assessment, resilience planning, and standards are supporting capabilities rather than seven competing pitches.
+Build **Rill: turn a stream concern into the next useful check.** The buyer-facing description is a fieldwork coordination workspace for urban-stream stewardship teams. Primary track: **Track 2, Data-to-Insight**. Responsible assessment, resilience planning, and standards are supporting capabilities rather than seven competing pitches.
 
 The specific product wedge is the decision between a report and a response: _A coordinator has several uncertain reports and time for only two visits. Which visits would resolve the most important unanswered questions, and how will anyone know the response was completed?_
 
@@ -98,7 +98,7 @@ The system connects **ecosystem evidence**, **animal contact context**, and **hu
 
 **Why plausible:** Cartographer openly sells environmental-monitoring subscriptions and offers nonprofit pricing and invoicing. This establishes a real category of organisational spend, not Rill-specific demand. [Cartographer pricing](https://cartographer.io/pricing)
 
-### Credible pilot targets — no partnership claimed
+### Credible pilot targets: no partnership claimed
 
 1. **A OneAquaHealth research-site community**, with its researchers as scientific reviewers. Coimbra is an appropriate demonstration setting because it is a project research city; use a labelled synthetic scenario rather than inventing observations.
 2. **Oslo River Forum and a participating local stream group**, subject to their interest. The official Oslo research page describes collaboration between volunteer groups and the city's water/wastewater agency, making it a concrete example of the organisational pattern. [OneAquaHealth Oslo](https://www.oneaquahealth.eu/research-cities/oslo/)
@@ -106,7 +106,7 @@ The system connects **ecosystem evidence**, **animal contact context**, and **hu
 
 Do not put these organisations' logos under “partners,” imply they endorsed the project, or report invented interviews, pilots, customer numbers, letters of intent, or revenue.
 
-### Pricing and economics — explicitly unvalidated assumptions
+### Pricing and economics: explicitly unvalidated assumptions
 
 Test **€149 per organisation per month** for one programme with unlimited citizen contributors and a small coordinator team. Charge for workflow, audit, and support; not access to environmental facts. Offer an open-source self-hosted edition and a managed service. Integrations and onboarding may be paid later if real buyers request them.
 

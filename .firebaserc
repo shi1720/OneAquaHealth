@@ -1,0 +1,6 @@
+{
+  "projects": { "default": "gen-lang-client-0444960702" },
+  "targets": {
+    "gen-lang-client-0444960702": { "hosting": { "rill": ["rill-streams"] } }
+  }
+}

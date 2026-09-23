@@ -1,98 +1,89 @@
 # Rill
 
-**Tagline:** Turn a stream concern into the next useful check.
+**Tagline:** Two hours. A clear plan. A checked outcome.
 
 **Creator:** Shivam Gupta
 
-**Primary track:** Track 2 — Data-to-Insight
+**Primary track:** Track 2: Data-to-Insight
 
-**Supporting themes:** responsible assessment, resilience planning, environmental interoperability
+**Repository:** https://github.com/shi1720/OneAquaHealth
 
-**Repository:** [shi1720/OneAquaHealth](https://github.com/shi1720/OneAquaHealth)
+**Working demo:** https://rill-streams.web.app
 
-> Submission copy. The source repository is public. Public hosting is pending, so no live demo URL is claimed here. A recorded 3:58 walkthrough is ready for Shivam's narration. Add its final uploaded URL and a verified deployment URL to Devpost when available.
+**Demo video:** [Download the narrated demonstration](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4)
+
+> Publication status: the application and narrated film are complete. The downloadable MP4 is a GitHub release asset; YouTube publication and final Devpost submission are not complete. The Devpost draft has the story, technology list, live app and repository links saved, with video and thumbnail steps outstanding. The seven sections below are the story fields. This note is not part of the story.
 
 ## Inspiration
 
-A citizen notices something unusual in a local stream and presses Submit. What happens next?
+Imagine a Saturday morning beside an urban stream. Someone reports foam below a footbridge. Other reports arrive from nearby sites. A coordinator has one volunteer team and two hours.
 
-Observation platforms help people collect valuable evidence. A coordinator still has to decide what needs checking, what can safely wait, and who will follow through. That decision becomes difficult when reports are incomplete and the team has only two hours available.
+Which concern should they check first? Which needs expert attention? And who will find out whether the response helped?
 
-Rill makes that decision visible. It connects a citizen's concern to a specific verification task, a responsible person, and a recheck. The aim is practical: make more of the evidence communities already collect lead to a documented response.
+That is the moment Rill is built for.
+
+Citizen observations give communities more eyes on their waterways. Turning those observations into responsible follow-through takes time, judgment and coordination. Rill connects a report to the next useful check, the person responsible, and a documented recheck.
+
+This matters for One Health because the same stream is wildlife habitat, an animal contact point and part of people's everyday surroundings. Better coordination could help teams investigate concerns sooner and make their response easier to explain. That is the impact we want to test.
 
 ## What it does
 
-Rill is an urban-stream fieldwork workspace for volunteer coordinators, river groups, and research teams. It turns uncertain citizen observations into a reviewable plan for the time a team actually has.
+Rill is a shared fieldwork workspace for river groups, citizen-science coordinators and research teams. It answers one practical question: **with two hours available, what should our team check next?**
 
-The signature interaction is **“Plan my next two hours.”** Rill selects feasible verification tasks within a time budget, explains the choices, and shows why other sites were deferred. A coordinator can turn the plan into tracked tasks.
+A citizen records what they saw, where and when they saw it, and how certain they are. A coordinator sees verification priority separately from evidence strength, with the reasons behind each suggestion.
 
-The workflow connects:
+The **Field planner** selects visits within the available time. Change the budget and the selection changes. Every selected or deferred site has an explanation. Restricted locations and serious warning signs stay out of routine volunteer plans and require human handling. Estimates support allocating work; the planner does not calculate a walking route.
 
-1. **Observe:** record a site, time, visible signs, flow, clarity, notes, optional photograph, and how certain the observer is.
-2. **Understand:** inspect the reasons for a verification priority and the available evidence. Concern and evidence strength remain distinct.
-3. **Plan:** allocate a fieldwork time budget and inspect selected and deferred checks. Serious signs or unsafe conditions require coordinator or expert handling rather than ordinary volunteer dispatch.
-4. **Review and act:** a coordinator records their judgment; tasks have an owner, due date, and result. Resolution requires a completed recheck after action began. Historical snapshots preserve the rule version, score, evidence tier, and reasons used at each review.
-5. **Share:** export JSON, CSV, GeoJSON, or an experimental FHIR R4 environmental bundle. JSON includes the complete retained audit history. CSV/JSON imports validate the whole batch, require explicit site matching, and keep known synthetic records out of real workspaces.
+The plan becomes assigned tasks with owners, dates and recorded results. A coordinator reviews the case and records the response. **The case cannot be resolved until a recheck created after action began is completed with a result.** Recording an action is only one step in the workflow.
 
-An isolated demonstration workspace lets judges explore the complete flow immediately in a running instance. Registering creates an empty workspace for a real programme. Coordinators can add their own monitoring sites or select a location from the optional live OneAquaHealth directory. The directory supplies names and coordinates, not environmental assessments or access permission. Imported locations remain restricted until a coordinator reviews access. Coordinator and volunteer roles support collaborative use.
+Rill also supports private workspaces, coordinator and volunteer roles, mobile observation drafts, photographs, validated CSV/JSON imports, and JSON, CSV, GeoJSON and experimental FHIR R4 exports. Historical decision snapshots preserve the rule version and reasons used at review. An optional OneAquaHealth directory supplies real site names and coordinates; local access still needs checking.
 
-## Why One Health
+Our primary fit is **Track 2: Data-to-Insight**. The insight becomes a concrete decision about what to verify and who should follow through. Habitat, animal contact and human use remain connected to the evidence. Visual observations do not establish toxins, pathogens or whether water is safe.
 
-A stream is simultaneously habitat, an animal contact point, and part of people's daily environment. Rill puts those contexts beside the evidence so a coordinator can decide what should be investigated.
+## How we built it
 
-The product deliberately avoids turning a photograph into a health diagnosis. A report of surface growth is not proof of toxins; clear water is not proof of safety. The evidence should inform appropriate verification and expert judgment. CDC's guidance makes this distinction explicit for harmful algal blooms. [CDC guidance](https://www.cdc.gov/harmful-algal-blooms/about/how-to-recognize-a-harmful-algal-bloom.html)
+Rill uses React and TypeScript for the interface, a Hono API for the workflow, and tenant-scoped SQL storage. The tested core supports SQLite, libSQL and Cloudflare D1. The hosted deployment uses PostgreSQL on Google Cloud SQL, a Cloud Run API and Firebase Hosting. The hosted API workflow has been exercised through registration, planning, review, recheck and export. New workspaces start empty. The instant demo creates a separate workspace with six fictional sites and clearly labelled synthetic reports.
 
-## What is distinctive
+The decision engine uses published, versioned rules. An exact budget allocator chooses at most one eligible visit per site while respecting the time constraint. Tests compare its selection against exhaustive enumeration on small cases. This proves the allocation matches its stated policy, not that the policy predicts environmental harm.
 
-OneAquaHealth already provides citizen science, dashboards, resilience mapping, and decision support. Rill is designed to complement that ecosystem with an operational question: **“Given limited fieldwork time, what should we check next, and what happened after we checked?”** [OneAquaHealth tools](https://www.oneaquahealth.eu/project-solutions/)
+The core requires no paid AI key and sends no observations or photographs to an external language model. Its priorities are explainable operational suggestions, with a human reviewer responsible for conclusions.
 
-Other products already provide strong data collection and quality review. For example, Cartographer supports environmental monitoring, and its Riverfly workflow includes confirmatory samples. Rill's differentiation is the combination of transparent prioritisation, constrained fieldwork planning, and an accountable action-and-recheck workflow. We do not claim to have invented citizen monitoring or follow-up sampling. [Cartographer](https://cartographer.io/), [Riverfly workflow](https://help.cartographer.io/riverfly/recording-a-sample)
+Behind the interface are validated requests, role checks, duplicate-submission protection, conflict detection, atomic writes and attributed records. Offline recovery keys are single-use secrets stored only as hashes. Recovery replaces the password and key and revokes previous sessions.
 
-## How it is built
+Project created and led by **Shivam Gupta**, with AI-assisted research, design, implementation and testing. Third-party tools and sources are credited in the repository.
 
-The React browser application communicates with a Hono API and tenant-scoped SQL storage. The same core supports SQLite, libSQL, and D1 adapters. The API validates mutations and workflow transitions, stores observations and tasks, and records attributed activity. Observation submissions carry an idempotency key; reviews carry a revision so conflicting edits can be detected. Database quotas and uniqueness constraints cover concurrent writes.
+## Challenges we ran into
 
-The decision engine uses versioned, deterministic rules. The planner selects tasks within the requested budget and returns its explanation. The same inputs and policy version can be inspected and reproduced. No trained model or live generative AI is required, and no paid AI key is needed to use the core workflow.
+**Making uncertainty useful.** A high-priority report can still have weak evidence. We separated urgency for verification from evidence strength so uncertainty becomes a reason for the next check rather than a false claim of certainty.
 
-The priority is an **experimental operational heuristic**, not a probability of pollution or illness. Human reviewers remain responsible for environmental conclusions and response decisions.
+**Planning responsibly.** Several reports can describe the same place. Counting each as another visit wastes scarce capacity. Rill plans once per eligible site, explains deferrals, and keeps unsafe work out of routine volunteer assignments.
 
-The local verification covers both SQLite and libSQL backends and browser scenarios for the complete report-to-recheck flow, account/site setup, imports, mobile drafts, accessibility, and chronology. These software checks do not establish scientific validity, production security certification, or real-world impact. The repository contains the reproducible test commands and current validation details.
+**Proving follow-through.** A completed task can predate the response it supposedly verifies. The interface and API now enforce the order of action and recheck, and preserve the reasoning recorded at review.
 
-Exports preserve data labels and provenance. The FHIR option maps environmental observations to locations; it does not create fictional patient records. It is an experimental base-R4 mapping, not a claim of certification or conformance to the evolving OneAquaHealth implementation guide. [FHIR R4 Observation](https://hl7.org/fhir/R4/observation.html), [OneAquaHealth draft IG](https://build.fhir.org/ig/hl7-eu/oah/downloads.html)
+**Keeping real use dependable.** Repeated requests, concurrent changes and account recovery exposed edge cases beyond the main demo. Regression tests cover those cases, including recovery when ordinary audit storage is full and protection against losing a newly displayed recovery key by accidentally closing its dialog.
 
-## A viable path beyond the hackathon
+## Accomplishments that we're proud of
 
-The first customer hypothesis is a small river trust, catchment partnership, or research programme with a coordinator responsible for citizen monitoring. Volunteers would contribute for free. A managed organisational subscription would pay for coordination, audit history, hosting, and support.
+We built a complete path from a citizen report to an explained plan, a human decision, assigned work and a recorded recheck. Judges can explore the isolated demo immediately without shared credentials.
 
-A proposed starting price is **€149 per programme per month**, subject to customer interviews and a pilot. That is a hypothesis, not validated willingness to pay. We would measure coordinator time per report, time to assignment, the share of cases receiving a documented recheck, volunteer return rates, and coverage of under-observed sites.
+Version 1.1 passed 86 local tests with SQLite and 86 with libSQL, with four PostgreSQL-only checks skipped in those runs. The dedicated PostgreSQL suite passed 53 tests. The hosted deployment passed 17 browser scenarios, a separate rapid-typing regression, three focused WebKit flows and 39 privacy/role assertions. These checks ran across the documented frontend fixes, not as one final-build suite. The new complete 18-scenario CI run is pending; the earlier release passed Docker build/lifecycle checks in GitHub Actions. These are software checks, not scientific or field validation. [Verification record](https://github.com/shi1720/OneAquaHealth/blob/main/docs/qa/verification.md)
 
-An illustrative monthly delivery budget is €15 for allocated infrastructure, €30 for support (45 minutes at an assumed €40 per hour), and €5 for operations. That totals €50 and leaves €99 from the proposed subscription before development, sales, taxes, and fixed overhead. These are planning assumptions, not actual costs or achieved margins.
-
-An initial pilot would run alongside an existing monitoring programme and its established scientific protocols. No pilot agreement, customer, revenue, or measured ecological improvement is claimed. The software is intended to help people use scarce time better; it does not replace sampling, ecological expertise, remediation, or statutory authorities.
+The result is usable beyond a slide: a working application, public source, reproducible setup, documented decision rules, exportable evidence and a clear pilot proposal.
 
 ## What we learned
 
-The interesting problem is not producing another red dot on a map. It is making the next decision useful, explainable, and proportionate to the evidence.
+The scarce resource is often the coordinator's attention. Useful software must reduce the work between receiving a report and knowing what happened next.
 
-Research also changed the competitive framing. Existing tools already provide forms, maps, review, and some confirmation workflows. Rill therefore concentrates its story on the fieldwork decision and what follows it. Separating observed concern from evidence quality is central: uncertainty should shape the next question, not be hidden behind a confident-looking score.
+We also learned to be precise about novelty. OneAquaHealth already offers collection, dashboards and decision support, while tools such as Cartographer already support environmental monitoring and review. Rill's proposed niche is the combination of explained choices under a time constraint and a required action-and-recheck record. That differentiation still needs testing with real teams. [OneAquaHealth solutions](https://www.oneaquahealth.eu/project-solutions/), [Cartographer](https://cartographer.io/)
 
-## Limitations and next steps
+Finally, an honest boundary makes the product more useful. A score cannot establish water safety. A closed task cannot prove ecological improvement. A pilot should measure both coordination value and the quality of the decisions it supports.
 
-The demonstration uses six fictional sites and explicitly synthetic observations. It shows software behaviour, not an environmental finding, live alert service, or field-validated prediction. A separate optional directory supplies real OneAquaHealth research locations with source and retrieval time clearly identified.
+## What's next for Rill
 
-Next steps are a supervised pilot, review of the prioritisation policy by local environmental professionals, compatibility testing with real partner exports, and validation of the deployment's operational controls. Trained predictive models should only be considered once suitable data and an evaluation design exist.
+Start with one river or catchment monitoring programme and an eight-week supervised pilot alongside its established protocols. Have an environmental professional review the prioritisation policy and track coordinator time per case, assignment delay, completed rechecks, missed priorities and volunteer burden. Routine coverage of sites without reports also needs a deliberate place in that pilot.
 
-The long-term ambition is straightforward: every useful citizen concern should have a visible path to a checked outcome.
+The first buyer hypothesis is the organisation coordinating the work. Volunteers would contribute free. A proposed managed service at **€149 per programme per month** would fund hosting, coordination tools and support. An illustrative €50 monthly delivery budget includes €15 for allocated infrastructure, €30 for support and €5 for operations. That leaves €99 before development, sales, taxes and fixed overhead. The infrastructure allowance is a planning assumption, not a confirmed cloud bill. Pricing, costs and willingness to pay are assumptions to test, not achieved results.
 
-## Attribution
+A scoped logical database restore has passed. Further work includes platform-level recovery drills and longer-term operational testing, partner import compatibility, additional coordinator roles and expert review of interoperability. The current FHIR R4 mapping is experimental and has no certification claim. No customers, pilot agreement or environmental improvements are claimed today.
 
-Project created and led by **Shivam Gupta**, with AI-assisted research, design, implementation, and documentation. Any additional personal contributions should be described accurately after they occur. Third-party sources and libraries remain credited in the repository.
-
-## Submission checks outside the project story
-
-- Confirm eligibility directly with the organisers: the homepage's student/team restrictions conflict with the written rules and recent updates. No assumption about the creator's eligibility has been made.
-- Submit before **1 October 2026, 09:30 IST** / **30 September 2026, 21:00 PDT**, with time for upload failures.
-- Add the public working-demo URL, public repository, 3–5 minute video, and Track 2 selection.
-- Verify that the demo, README, test report, and narration all describe the same final behaviour.
-
-Sources for submission details: [overview](https://oneaquahealth-ieee-hackathon.devpost.com/), [rules](https://oneaquahealth-ieee-hackathon.devpost.com/rules), [updates](https://oneaquahealth-ieee-hackathon.devpost.com/updates).
+The ambition is simple: **every useful stream concern should lead to a visible, checked outcome.**

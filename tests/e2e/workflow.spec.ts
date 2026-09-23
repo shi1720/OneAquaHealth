@@ -12,11 +12,11 @@ test('demonstration workspace, plan, report, review, action and recheck', async 
   const exceptions: string[] = [];
   page.on('pageerror', (e) => exceptions.push(e.message));
   await demo(page);
-  await page.screenshot({ path: 'output/assets/overview.png', fullPage: true });
+  await page.screenshot({ path: 'tmp/qa/overview.png', fullPage: true });
   await page.getByRole('button', { name: 'Field planner', exact: true }).click();
   await expect(page.getByText('120 minutes')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Assign this plan' })).toBeEnabled();
-  await page.screenshot({ path: 'output/assets/planner.png', fullPage: true });
+  await page.screenshot({ path: 'tmp/qa/planner.png', fullPage: true });
   await page.getByRole('slider', { name: 'Available field time' }).fill('60');
   await expect(page.getByText('60 minutes')).toBeVisible();
   await page.getByRole('button', { name: '2 hours', exact: true }).click();
@@ -24,7 +24,7 @@ test('demonstration workspace, plan, report, review, action and recheck', async 
   await page.getByPlaceholder('Search observations, places, people…').fill('foam');
   await page.locator('.observation-row').first().click();
   await expect(page.getByRole('heading', { name: 'Surface foam' })).toBeVisible();
-  await page.screenshot({ path: 'output/assets/workflow.png', fullPage: true });
+  await page.screenshot({ path: 'tmp/qa/workflow.png', fullPage: true });
   await page.getByRole('button', { name: 'Close dialog' }).click();
   await page.getByRole('button', { name: 'New observation', exact: true }).click();
   await page
@@ -125,7 +125,7 @@ test('real registration starts empty, site setup and password login persist', as
 test('mobile navigation and form fit, draft survives closing', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await demo(page);
-  await page.screenshot({ path: 'output/assets/mobile.png', fullPage: true });
+  await page.screenshot({ path: 'tmp/qa/mobile.png', fullPage: true });
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
   ).toBeTruthy();

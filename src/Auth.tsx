@@ -59,9 +59,7 @@ export default function Auth({ onLogin }: { onLogin: (u: User) => void }) {
         <div className="auth-story-main">
           <span className="eyebrow">SMALL STREAMS. SHARED FUTURES.</span>
           <h1>
-            Every observation.
-            <br />A better
-            <br />
+            Every observation. <br />A better <br />
             <em>next step.</em>
           </h1>
           <p>

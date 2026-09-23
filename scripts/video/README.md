@@ -1,32 +1,31 @@
-# Reproducible real-UI demonstration
+# Reproduce the narrated Rill demonstration
 
-The recording is an actual Chromium session against a running Rill application. Playwright clicks the real interface, submits a synthetic observation, commits a field plan, completes real database tasks, reviews/actions/rechecks/resolves the observation, and downloads an actual FHIR bundle. It does not replace the dashboard with mocked screens or call API endpoints to fake the demonstrated state. The only overlays are a small recording cursor and post-production explanatory captions. A separate designed end card presents the proposed pilot and credits.
+The final film is `output/video/rill-demo-narrated.mp4`: genuine application interactions, a disclosed synthetic narrator, and subtitles matching the spoken words. It runs 3 minutes 58 seconds. `rill-demo-narrated.srt` is the separate caption track. The voice is OpenAI cedar, not a recording or imitation of Shivam Gupta.
 
-From the repository root, run `node scripts/video/capture-isolated.mjs`. This is the preferred complete workflow: it starts a separate non-watching API and Vite instance, creates a temporary SQLite database, rehearses all actions, records the paced **3 minute 58 second** session, and renders both final videos. The servers stop and the temporary database is removed when the workflow finishes. It leaves your normal development database and accounts untouched. Ports default to 8793 and 5182; set `RILL_VIDEO_API_PORT` and `RILL_VIDEO_WEB_PORT` to change them. Use `--rehearse-only` for a quick workflow check.
+## Record the actual application
 
-To record against an already running application instead:
+Install Node.js dependencies and Playwright Chromium, then run:
 
-1. Run Rill at `http://localhost:5173` (`npm run dev`). Set `RILL_VIDEO_URL` if different.
-2. `node scripts/video/record-demo.mjs --rehearse` validates the full workflow quickly.
-3. `node scripts/video/record-demo.mjs` records a paced **3 minute 58 second** session at 1440×900.
-4. `node scripts/video/render-demo.mjs` uses FFmpeg to produce 1920×1080 H.264 files. Set `RILL_FFMPEG` / `RILL_FFPROBE` if the binaries are not on PATH or in the standard Homebrew location.
+```sh
+RILL_VIDEO_URL=https://rill-streams.web.app node scripts/video/record-demo.mjs --rehearse
+RILL_VIDEO_URL=https://rill-streams.web.app node scripts/video/record-demo.mjs
+```
 
-The source app must remain running and structurally stable during capture. Each run uses one independent synthetic demo workspace and deletes that workspace after it has verified the completed workflow. The rehearsal also asserts that a fresh observation does not display a restored-draft message. It does not clear rate limits or change real accounts. If the demo creation limit is reached, use the isolated runner or wait; do not weaken deployment limits.
+Use a local URL for private development. The script creates its own isolated synthetic workspace, uses the real interface, verifies the report is resolved with two completed tasks, validates the actual FHIR download, records JavaScript errors, and deletes its disposable workspace. No shared account or recovery key appears in the film. Rehearsal timings are compressed; the final capture follows the authored timeline. Examine every scene's actual timestamp in `timing.json` before rendering.
 
-## Files
+## Generate narration and captions
 
-- `output/video/rill-demo-clean.mp4`: silent footage with the complete interface visible and optional, disabled-by-default soft subtitles. Best for adding Shivam's narration.
-- `output/video/rill-demo-captioned.mp4`: silent footage with explanatory captions burned into a separate band below the interface. Useful for immediate review without audio.
-- `output/video/rill-demo-captions.srt`: matching timed captions.
-- `output/video/timing.json`: planned/actual scene starts and source-video trim information.
-- `output/video/recording-proof.json`: confirms the demonstrated observation reached `resolved`, with completed verification and recheck tasks and no browser exceptions.
-- `output/video/demo-fhir-bundle.json`: actual synthetic export downloaded during recording.
-- `output/video/media-inspection.json`: FFprobe codec, duration, and dimensions.
-- `output/video/frames/`: representative captured and final encoded frames for visual QA.
-- `output/video/end-card.html`: editable end-card source.
+Requires Python 3, FFprobe, and FFmpeg built with libass and drawtext. On macOS, the script detects Homebrew `ffmpeg-full`; elsewhere set `RILL_FFMPEG` to the appropriate executable. Store `OPENAI_API_KEY` in your environment or an owner-only ignored `.env.narration.local`. Never put it into source or a browser field.
 
-Every report, task finding, and outcome in the recording is synthetic and labelled accordingly. The video does not claim real fieldwork, customers, ecological improvement, formal FHIR certification, or external authority notifications. It contains no real passwords or private account data. The proposed managed subscription is a commercial hypothesis, not a launched paid service.
+```sh
+python3 scripts/video/narrate-demo.py --audio-only
+python3 scripts/video/narrate-demo.py
+```
 
-Use the timed narration in `output/video/voiceover-timed.md` for the closest match to this footage. Speak naturally, leaving pauses for actions. The broader project script remains in `docs/demo-script.md`. Add your own voice to the clean MP4 in an editor, check the captions and final duration, and export H.264/AAC for submission. Do not present the silent version as if it already contains a recorded voiceover.
+The first command generates and caches 21 narrated segments. The script uses `gpt-4o-mini-tts`, aligns each segment to its scene without cutting speech, transcribes the audio for word timestamps, restores punctuation from the authored script, and checks that the recording matches the script. The second command reuses that audio and renders the final H.264/AAC MP4, with burned-in spoken captions and an on-screen AI narration disclosure. Audio generation incurs API usage; the running application does not need this key.
 
-After recording your narration, run `node scripts/video/add-voiceover.mjs /absolute/path/to/your-narration.wav`. This normalizes speech loudness and adds AAC audio to the clean video. Add `--captioned` to use the captioned footage. It preserves the video without another encode when the narration fits; a slightly longer recording holds the end card, up to the hackathon's five-minute maximum. It never synthesizes a voice and refuses to overwrite an existing narrated final. Review the finished timing before submission.
+Review the actual film for pacing, pronunciation, visual legibility, caption timing and the truth of every claim. Word matching and media probes are checks, not a substitute for listening. The presentation uses no music, external stock footage or impersonated voice. The older `render-demo.mjs` produces historical silent variants and is not used for the narrated 1.1.0 release.
+
+## Publish
+
+Use `docs/youtube.md` for the public title and description. Publish only the final reviewed MP4, upload the SRT when the platform permits it, use `output/assets/youtube-thumbnail.png`, and confirm public playback. Keep the description's synthetic-data and synthetic-voice disclosures. Add the verified public watch URL to `docs/submission.md` and the Devpost video field. The repository release also hosts the downloadable film and captions.

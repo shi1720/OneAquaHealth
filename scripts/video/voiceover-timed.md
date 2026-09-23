@@ -1,59 +1,91 @@
-# Rill — narration matched to the recorded 3:58 walkthrough
+# Rill narration matched to the 3:58 walkthrough
 
-Read the words below; do not read the timestamps. Use a calm conversational pace. Start each section close to its time, leaving short pauses while the interface changes. The MP4 is currently silent: this is the script for Shivam to record, not a claim that narration has been recorded.
+## Production instructions, not spoken
+
+This script is for a clearly disclosed synthetic narrator, not an impersonation of Shivam Gupta. Use the planned OpenAI voice and put **AI-generated narration** on screen or in the video's opening presentation, with the full disclosure in the published description. Do not read these instructions, section labels or timestamps aloud. The 1.1.0 narration has been generated with OpenAI cedar and is disclosed as synthetic.
+
+Keep all 21 sections within their timestamp windows. They cover 238 seconds in total. Use a calm, conversational delivery and leave space for the interface to change. The two short closing sections divide the original final shot without changing its timing. The words below describe actual software interactions in a fictional demonstration.
 
 **0:00–0:15 · The problem**
 
-Hello, I'm Shivam Gupta, the creator of Rill. Citizen science gives us more eyes on our streams. But a coordinator still has to answer: with just two hours available, what should our team check next?
+This is Rill, created by Shivam Gupta. A citizen notices a stream concern. A coordinator has several places to check and just two hours. How should that team decide what happens next?
 
 **0:15–0:28 · The demonstration**
 
-This is an isolated demonstration workspace. These six sites and their observations are fictional. We're showing how a team can move from a report to an explained decision and a documented follow-up.
+This isolated demo contains six fictional sites and synthetic observations. It shows the complete path from a citizen report to an explained decision, assigned work and a documented follow-up.
 
 **0:28–0:45 · Place and observation**
 
-I'll start with a citizen report. I choose the monitored site, record the time, and describe what I noticed: litter beside the stream. The guidance keeps me on a safe public path. I don't need to guess what caused the problem.
+The observer chooses a monitored site, records the time and describes what they noticed: litter beside the stream. The guidance keeps the visit on a safe public path. Recording the visible evidence does not require guessing what caused it.
 
 **0:45–1:04 · Uncertainty and submission**
 
-I add a short field note and keep my uncertainty visible. A photograph is optional support for a human reviewer; Rill does not diagnose pollution from an image. I review the details and submit. Because this is a demo, the report stays labelled as synthetic.
+A short field note adds context, while uncertainty remains visible. A photograph can support a human reviewer, but Rill does not diagnose pollution from an image. After a final review, the report is submitted and retains its synthetic label throughout this demonstration.
 
 **1:04–1:30 · Explained priorities**
 
-Now the coordinator can inspect the evidence. Verification priority and evidence strength are separate. The score shows its ingredients: the reported signal, other accounts with matching reports, public access, recency, and the information gap. This is a transparent rule for allocating attention, not a contamination probability. Rill also suggests the question a follow-up should answer.
+Now the coordinator can inspect the evidence. Verification priority and evidence strength answer different questions. The explanation shows the reported signal, matching reports from other accounts, public access, recency and the information gap. Rill shows its reasoning and explains the next useful check. This priority guides attention; it is not a contamination probability.
 
 **1:30–1:40 · One Health**
 
-The environmental, animal, and human context stays connected. These are reasons for careful review, not a diagnosis or a declaration that the water is safe.
+Habitat, animal contact and human use stay connected to the concern. These contexts help the coordinator decide what to investigate while keeping uncertainty visible.
 
-**1:40–2:06 · The two-hour decision**
+**1:40–1:50 · The two-hour decision**
 
-Here's the signature interaction: plan our next two hours. Each proposed visit includes an access allowance and observation time. If I reduce the budget, the selection changes. Back at one hundred and twenty minutes, three visits fit and another concern must wait. The engine optimizes its stated priority policy across distinct sites. It is not calculating a walking route.
+Here is Rill's signature interaction: plan the next two hours. Each visit includes an access allowance and observation time.
+
+**1:50–1:58 · The smaller budget**
+
+Reduce the budget to sixty minutes, and the selection changes. Limited time means choosing one visit.
+
+**1:58–2:06 · Three visits fit**
+
+Back at one hundred and twenty minutes, three visits fit. Another concern must wait.
 
 **2:06–2:20 · Deferrals and responsibility**
 
-Deferred work has a reason. Restricted sites and serious signs stay out of volunteer plans. I confirm safe access and commit the plan. Each task has an owner and a due date.
+Every deferral has a reason. Restricted sites and serious signs stay out of routine volunteer plans. The coordinator confirms safe access and assigns the work, with owners and due dates.
 
-**2:20–2:40 · Human review and verification**
+**2:20–2:30 · Human review**
 
-I open the litter case, review the original report, and record my decision. Then I start the verification task and record a result. These findings are explicitly part of the fictional demonstration. Rill records responsibility and evidence; it doesn't pretend that a message was sent or an external action happened.
+The coordinator opens the litter case, reviews the report and records a decision. The original evidence stays connected to that judgment.
 
-**2:40–3:00 · The recheck gate**
+**2:30–2:40 · Verification**
 
-After recording the response, I still can't close the case. An action does not prove improvement. I create a recheck, record the follow-up result, and complete it. Even when the visible concern has changed, water quality and contact safety remain unknown.
+The verification task is started, then completed with a result. These findings belong to this fictional scenario, with the responsible person recorded.
 
-**3:00–3:19 · Closing the loop**
+**2:40–2:48 · The recheck gate**
 
-The coordinator can now resolve the observation. Its decision trail connects the report, review, assigned work, and recheck, with authors and times. Historical score snapshots preserve the reasoning used at the time of review. The complete retained audit trail can be exported.
+Recording a response still does not close the case. Resolution stays blocked until a later recheck.
 
-**3:19–3:33 · Interoperability**
+**2:48–3:00 · Follow-up evidence**
 
-Export JSON, CSV, GeoJSON, or an experimental FHIR R4 bundle. Here is an actual download from this demo: environmental locations, observations, tasks, and provenance. No patient records, and no certification claim.
+The coordinator creates the follow-up task, records the later finding and completes it. The visible concern may have changed; water quality and contact safety remain unknown.
+
+**3:00–3:10 · Closing the loop**
+
+The observation can now be resolved. Rill shows a documented loop: one report, a human decision, completed verification and a later recheck.
+
+**3:10–3:19 · Decision history**
+
+The decision trail preserves authors, times and the rule version used at review. The retained record can be exported.
+
+**3:19–3:26 · Export choices**
+
+Choose JSON, CSV, GeoJSON or an experimental FHIR R4 bundle.
+
+**3:26–3:33 · The actual download**
+
+This actual download contains environmental locations, observations, tasks and provenance. It creates no patient records.
 
 **3:33–3:42 · What to measure**
 
-These measures show follow-through: reviews, completed tasks, rechecks, and closed loops. They don't claim improved water quality or reduced health risk.
+These measures track reviews, completed tasks, rechecks and closed loops. They show follow-through, without claiming improved water quality or reduced health risk.
 
-**3:42–3:58 · The pilot and the promise**
+**3:42–3:51 · The pilot**
 
-Start with a supervised pilot for monitoring coordinators, with volunteers contributing free. Test time saved and documented follow-through before launching a managed subscription. Rill needs no paid AI key. Every useful observation deserves a better next step.
+The next step is a supervised pilot with monitoring coordinators. Test time saved and documented follow-through, with volunteers contributing free.
+
+**3:51–3:58 · The promise**
+
+The core needs no paid AI key. Every useful stream concern deserves a visible, checked outcome.

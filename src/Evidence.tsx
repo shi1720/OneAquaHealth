@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import type { WorkspaceData } from '../shared/types';
 import { dateLabel } from './api';
-import { SectionTitle, Empty } from './components';
+import { SectionTitle, Empty, Spinner } from './components';
 export default function Evidence({
   data,
   onOpen,
@@ -26,20 +26,72 @@ export default function Evidence({
 }) {
   const [tab, setTab] = useState('impact');
   const [format, setFormat] = useState('json');
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState('');
+  const [exported, setExported] = useState(false);
+  async function download() {
+    setExporting(true);
+    setExportError('');
+    setExported(false);
+    try {
+      const response = await fetch(`/api/export?format=${format}`, { credentials: 'same-origin' });
+      if (!response.ok) {
+        const result = await response.json().catch(() => null);
+        throw new Error(result?.error || 'The export could not be prepared. Please retry.');
+      }
+      const url = URL.createObjectURL(await response.blob());
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `rill-${data.user.isDemo ? 'synthetic-demo' : 'workspace'}-${new Date().toISOString().slice(0, 10)}.${format === 'fhir' ? 'fhir.json' : format}`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setExported(true);
+    } catch (error) {
+      setExportError(
+        error instanceof TypeError
+          ? 'The download could not start. Check your connection and retry.'
+          : (error as Error).message,
+      );
+    } finally {
+      setExporting(false);
+    }
+  }
   const resolved = data.observations.filter((o) => o.status === 'resolved');
   const reviewed = data.observations.filter((o) => o.status !== 'new');
   const completed = data.tasks.filter((t) => t.status === 'completed');
-  const rechecks = completed.filter((t) => t.kind === 'recheck');
+  const rechecks = completed.filter((task) => {
+    const observation = data.observations.find((item) => item.id === task.observationId);
+    const actionedAt =
+      observation?.actionedAt ??
+      data.activity.find(
+        (event) => event.entityId === task.observationId && event.action === 'Report actioned',
+      )?.createdAt;
+    return (
+      task.kind === 'recheck' && actionedAt && task.completedAt && task.completedAt >= actionedAt
+    );
+  });
   return (
     <>
       <div className="page-tabs">
-        <button onClick={() => setTab('impact')} className={tab === 'impact' ? 'active' : ''}>
+        <button
+          aria-pressed={tab === 'impact'}
+          onClick={() => setTab('impact')}
+          className={tab === 'impact' ? 'active' : ''}
+        >
           <Leaf size={16} /> The full picture
         </button>
-        <button onClick={() => setTab('exports')} className={tab === 'exports' ? 'active' : ''}>
+        <button
+          aria-pressed={tab === 'exports'}
+          onClick={() => setTab('exports')}
+          className={tab === 'exports' ? 'active' : ''}
+        >
           <Download size={16} /> Data & interoperability
         </button>
-        <button onClick={() => setTab('history')} className={tab === 'history' ? 'active' : ''}>
+        <button
+          aria-pressed={tab === 'history'}
+          onClick={() => setTab('history')}
+          className={tab === 'history' ? 'active' : ''}
+        >
           <History size={16} /> Decision trail
         </button>
       </div>
@@ -157,8 +209,8 @@ export default function Evidence({
                   <div>
                     <b>{data.sites.find((s) => s.id === o.siteId)?.name}</b>
                     <p>
-                      {completed.find((t) => t.observationId === o.id && t.kind === 'recheck')
-                        ?.result || 'Completed recheck recorded.'}
+                      {rechecks.find((t) => t.observationId === o.id)?.result ||
+                        'Completed recheck recorded.'}
                     </p>
                   </div>
                   <ArrowUpRight size={18} />
@@ -192,7 +244,13 @@ export default function Evidence({
                 return (
                   <button
                     key={String(v)}
-                    onClick={() => setFormat(String(v))}
+                    aria-pressed={format === v}
+                    disabled={exporting}
+                    onClick={() => {
+                      setFormat(String(v));
+                      setExportError('');
+                      setExported(false);
+                    }}
                     className={format === v ? 'selected' : ''}
                   >
                     <I size={21} />
@@ -205,18 +263,26 @@ export default function Evidence({
                 );
               })}
             </div>
-            <a
-              aria-disabled={data.user.role !== 'coordinator'}
-              onClick={(e) => {
-                if (data.user.role !== 'coordinator') e.preventDefault();
-              }}
+            <button
+              disabled={data.user.role !== 'coordinator' || exporting}
+              onClick={download}
               className="button primary full"
-              href={data.user.role === 'coordinator' ? `/api/export?format=${format}` : undefined}
-              download
             >
-              <Download size={17} />
-              Download {format === 'fhir' ? 'FHIR bundle' : format.toUpperCase()}
-            </a>
+              {exporting ? <Spinner /> : <Download size={17} />}
+              {exporting
+                ? 'Preparing download…'
+                : `Download ${format === 'fhir' ? 'FHIR bundle' : format.toUpperCase()}`}
+            </button>
+            {exportError && (
+              <p role="alert" className="form-error">
+                {exportError}
+              </p>
+            )}
+            {exported && (
+              <p role="status" className="form-hint">
+                Download started. Check your browser’s downloads.
+              </p>
+            )}
             <p className="form-hint">
               {data.user.role === 'coordinator'
                 ? 'Exports exclude passwords and image data. Share only with authorised recipients.'

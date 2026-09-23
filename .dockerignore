@@ -5,7 +5,12 @@ data
 backups
 artifacts
 .wrangler
+.firebase
+firebase-debug.log*
 tmp
 test-results
 playwright-report
 output
+
+__pycache__
+*.pyc

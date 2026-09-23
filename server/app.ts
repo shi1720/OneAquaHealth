@@ -32,6 +32,7 @@ import {
 } from './security';
 import { loadOneAquaHealthCatalog, type SiteCatalog } from './catalog';
 import { exportCSV, exportFHIR, exportGeoJSON, exportJSON } from './export';
+import { validateAggregateRateLimits, type AggregateRateLimits } from './rate-config';
 
 type UserRow = {
   id: string;
@@ -48,14 +49,19 @@ type AppEnvironment = { Variables: { user: User; userRow: UserRow } };
 export interface AppOptions {
   production?: boolean;
   origin?: string;
+  /** Additional exact public origins, for example Firebase's default secondary hostname. */
+  allowedOrigins?: string[];
   now?: () => Date;
   /** Must come from trusted runtime connection information, never arbitrary forwarding headers. */ clientIP?: (
     c: Context,
   ) => string;
   passwordIterations?: number;
   catalogLoader?: () => Promise<SiteCatalog>;
+  /** Firebase Hosting only forwards its specially named __session cookie. */
+  sessionCookieName?: 'rill_session' | '__session';
+  /** Explicit service-wide guards when the runtime cannot establish an end-user IP. */
+  aggregateRateLimits?: AggregateRateLimits;
 }
-const SESSION_COOKIE = 'rill_session';
 const SESSION_MS = 7 * 24 * 3_600_000;
 const MAX_OBSERVATIONS = 2_000;
 const MAX_SITES = 100;
@@ -296,6 +302,17 @@ function securityStatements(
 const USER_SELECT =
   'SELECT u.*, w.name AS workspace_name, w.is_demo, w.scenario_date FROM users u JOIN workspaces w ON w.id=u.workspace_id';
 export function createApp(storage: Storage, options: AppOptions = {}) {
+  const aggregate = options.aggregateRateLimits
+    ? validateAggregateRateLimits(options.aggregateRateLimits)
+    : undefined;
+  const SESSION_COOKIE = options.sessionCookieName ?? 'rill_session';
+  if (!['rill_session', '__session'].includes(SESSION_COOKIE))
+    throw new Error('Unsupported session cookie name');
+  const configuredOrigins = [options.origin, ...(options.allowedOrigins ?? [])].filter(
+    (origin): origin is string => Boolean(origin),
+  );
+  if (configuredOrigins.some((origin) => new URL(origin).origin !== origin))
+    throw new Error('Application origins must be exact origins without paths or trailing slashes.');
   const app = new Hono<AppEnvironment>();
   const now = options.now ?? (() => new Date());
   const timestamp = () => now().toISOString();
@@ -375,7 +392,7 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   const limit = async (key: string, maximum: number, durationMs: number) => {
     const time = now().getTime();
     await storage.run(
-      'INSERT INTO rate_limits(key,hits,reset_at) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET hits=CASE WHEN reset_at<=? THEN 1 ELSE hits+1 END, reset_at=CASE WHEN reset_at<=? THEN ? ELSE reset_at END',
+      'INSERT INTO rate_limits(key,hits,reset_at) VALUES(?,1,?) ON CONFLICT(key) DO UPDATE SET hits=CASE WHEN rate_limits.reset_at<=? THEN 1 ELSE rate_limits.hits+1 END, reset_at=CASE WHEN rate_limits.reset_at<=? THEN ? ELSE rate_limits.reset_at END',
       [key, time + durationMs, time, time, time + durationMs],
     );
     const row = await storage.get<{ hits: number }>('SELECT hits FROM rate_limits WHERE key=?', [
@@ -433,8 +450,8 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
     if (secure) c.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     if (!['GET', 'HEAD', 'OPTIONS'].includes(c.req.method)) {
       const origin = c.req.header('origin');
-      const expected = options.origin ?? new URL(c.req.url).origin;
-      if (!origin || origin !== expected || c.req.header('sec-fetch-site') === 'cross-site')
+      const expected = configuredOrigins.length ? configuredOrigins : [new URL(c.req.url).origin];
+      if (!origin || !expected.includes(origin) || c.req.header('sec-fetch-site') === 'cross-site')
         fail(403, 'This action must be submitted from the Rill application on the same origin.');
       // Count actual bytes even if Content-Length is absent, malformed, or deliberately understated.
       if (Number(c.req.header('content-length') || 0) > 1_450_000)
@@ -467,6 +484,11 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   });
   app.onError((error, c) => {
     if (error instanceof HTTPException) return c.json({ error: error.message }, error.status);
+    if (String(error).includes('rill_serialization_conflict'))
+      return c.json(
+        { error: 'Another request changed this workspace. Refresh and retry your action.' },
+        409,
+      );
     if (/rill_assignment_not_found|rill_member_has_open_tasks/.test(String(error)))
       return c.json(
         {
@@ -497,18 +519,24 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   });
   app.get('/api/health', async (c) => {
     await storage.get('SELECT 1 AS ok');
-    return c.json({ status: 'ok', version: '1.0.0', storage: storage.kind });
+    return c.json({ status: 'ok', version: '1.1.0', storage: storage.kind });
   });
   app.use('/api/auth/*', async (c, next) => {
     if (c.req.method === 'POST') {
-      const ip = options.clientIP?.(c) ?? 'local';
-      await limit(`auth:${await sha256(ip)}`, 40, 15 * 60_000);
+      const key = aggregate
+        ? 'aggregate:auth'
+        : `auth:${await sha256(options.clientIP?.(c) ?? 'local')}`;
+      await limit(key, aggregate?.authPer15Minutes ?? 40, 15 * 60_000);
     }
     await next();
   });
   app.post('/api/auth/demo', async (c) => {
     await body(c, z.object({}).strict());
-    await limit(`demo:${await sha256(options.clientIP?.(c) ?? 'local')}`, 20, 60 * 60_000);
+    await limit(
+      aggregate ? 'aggregate:demo' : `demo:${await sha256(options.clientIP?.(c) ?? 'local')}`,
+      aggregate?.demosPerHour ?? 20,
+      60 * 60_000,
+    );
     const userId = crypto.randomUUID(),
       workspaceId = crypto.randomUUID(),
       time = timestamp();
@@ -553,6 +581,7 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   });
   app.post('/api/auth/register', async (c) => {
     const input = await body(c, registerSchema);
+    if (aggregate) await limit('aggregate:register', aggregate.registrationsPerHour, 60 * 60_000);
     if (await storage.get('SELECT id FROM users WHERE email=?', [input.email]))
       fail(409, 'An account already uses that email. Sign in instead.');
     const userId = crypto.randomUUID(),
@@ -606,7 +635,13 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
       c,
       z.object({ email, recoveryKey: z.string().max(160), newPassword: password }).strict(),
     );
-    await limit(`recover-ip:${await sha256(options.clientIP?.(c) ?? 'local')}`, 8, 15 * 60_000);
+    await limit(
+      aggregate
+        ? 'aggregate:recover'
+        : `recover-ip:${await sha256(options.clientIP?.(c) ?? 'local')}`,
+      aggregate?.recoveryPer15Minutes ?? 8,
+      15 * 60_000,
+    );
     await limit(`recover-email:${await sha256(input.email)}`, 6, 15 * 60_000);
     const oldHash = await recoveryKeyHash(input.recoveryKey);
     const row = await storage.get<UserRow>(
@@ -1617,6 +1652,9 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
     return c.json({ ok: true });
   });
   app.notFound((c) => c.json({ error: 'API route not found.' }, 404));
+  // Keep unknown API routes out of the Node/Hosting single-page application fallback.
+  app.all('/api/*', (c) => c.json({ error: 'This API endpoint does not exist.' }, 404));
+  app.all('/api', (c) => c.json({ error: 'This API endpoint does not exist.' }, 404));
   return app;
 }
 

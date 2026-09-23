@@ -1,8 +1,8 @@
 {
   "resourceType": "Bundle",
-  "id": "c563b587-546f-4564-b5fe-b9cde1009969",
+  "id": "aec45fb9-c5f9-4596-81e4-27120e4e798a",
   "type": "collection",
-  "timestamp": "2026-09-23T04:26:16.632Z",
+  "timestamp": "2026-09-23T05:55:29.964Z",
   "meta": {
     "tag": [
       {
@@ -19,7 +19,7 @@
   },
   "entry": [
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace",
       "resource": {
         "resourceType": "Organization",
         "id": "workspace",
@@ -37,7 +37,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-footbridge",
       "resource": {
         "resourceType": "Location",
         "id": "site-footbridge",
@@ -59,120 +59,12 @@
           "latitude": 40.2056
         },
         "managingOrganization": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
         }
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-market",
-      "resource": {
-        "resourceType": "Location",
-        "id": "site-market",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "active",
-        "mode": "instance",
-        "name": "Market culvert",
-        "description": "Fictional road-drain outlet viewed from a public pavement.",
-        "position": {
-          "longitude": -8.4295,
-          "latitude": 40.2101
-        },
-        "managingOrganization": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        }
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-meadow",
-      "resource": {
-        "resourceType": "Location",
-        "id": "site-meadow",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "active",
-        "mode": "instance",
-        "name": "Meadow bend",
-        "description": "Fictional slower-water reach alongside a meadow trail.",
-        "position": {
-          "longitude": -8.4178,
-          "latitude": 40.1957
-        },
-        "managingOrganization": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        }
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-playground",
-      "resource": {
-        "resourceType": "Location",
-        "id": "site-playground",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "active",
-        "mode": "instance",
-        "name": "Riverside playground",
-        "description": "Fictional small tributary near a family recreation area.",
-        "position": {
-          "longitude": -8.4235,
-          "latitude": 40.2007
-        },
-        "managingOrganization": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        }
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-school",
-      "resource": {
-        "resourceType": "Location",
-        "id": "site-school",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "active",
-        "mode": "instance",
-        "name": "School rain garden",
-        "description": "Fictional rain-garden overflow visible from a public path.",
-        "position": {
-          "longitude": -8.4222,
-          "latitude": 40.2181
-        },
-        "managingOrganization": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        }
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-upstream",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-upstream",
       "resource": {
         "resourceType": "Location",
         "id": "site-upstream",
@@ -194,15 +86,123 @@
           "latitude": 40.2139
         },
         "managingOrganization": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
         }
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-market",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-market",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Market culvert",
+        "description": "Fictional road-drain outlet viewed from a public pavement.",
+        "position": {
+          "longitude": -8.4295,
+          "latitude": 40.2101
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-meadow",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-meadow",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Meadow bend",
+        "description": "Fictional slower-water reach alongside a meadow trail.",
+        "position": {
+          "longitude": -8.4178,
+          "latitude": 40.1957
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-school",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-school",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "School rain garden",
+        "description": "Fictional rain-garden overflow visible from a public path.",
+        "position": {
+          "longitude": -8.4222,
+          "latitude": 40.2181
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-playground",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-playground",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Riverside playground",
+        "description": "Fictional small tributary near a family recreation area.",
+        "position": {
+          "longitude": -8.4235,
+          "latitude": 40.2007
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/6b74d82c-68f2-4c6d-b45f-5043ee0cf064",
       "resource": {
         "resourceType": "Observation",
-        "id": "48f411cd-4bbc-4794-8eb8-1656124e214a",
+        "id": "6b74d82c-68f2-4c6d-b45f-5043ee0cf064",
         "meta": {
           "tag": [
             {
@@ -215,7 +215,7 @@
         "identifier": [
           {
             "system": "https://rill.example/observation",
-            "value": "48f411cd-4bbc-4794-8eb8-1656124e214a"
+            "value": "6b74d82c-68f2-4c6d-b45f-5043ee0cf064"
           }
         ],
         "status": "final",
@@ -223,10 +223,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-playground"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-playground"
         },
-        "effectiveDateTime": "2026-09-23T04:23:18.626Z",
-        "issued": "2026-09-23T04:23:51.653Z",
+        "effectiveDateTime": "2026-09-23T05:52:31.744Z",
+        "issued": "2026-09-23T05:53:04.979Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -268,10 +268,10 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-48f411cd-4bbc-4794-8eb8-1656124e214a",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-6b74d82c-68f2-4c6d-b45f-5043ee0cf064",
       "resource": {
         "resourceType": "Provenance",
-        "id": "prov-48f411cd-4bbc-4794-8eb8-1656124e214a",
+        "id": "prov-6b74d82c-68f2-4c6d-b45f-5043ee0cf064",
         "meta": {
           "tag": [
             {
@@ -283,10 +283,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/6b74d82c-68f2-4c6d-b45f-5043ee0cf064"
           }
         ],
-        "recorded": "2026-09-23T04:23:51.653Z",
+        "recorded": "2026-09-23T05:53:04.979Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -298,7 +298,7 @@
             "who": {
               "identifier": {
                 "system": "https://rill.example/observer-pseudonym",
-                "value": "b4a066c5-ef0b-4be9-9264-fea51cba23b6"
+                "value": "3e46df86-7b56-4add-add8-becc4bda6f75"
               }
             }
           }
@@ -306,7 +306,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-3",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-3",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-foam-3",
@@ -330,10 +330,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-footbridge"
         },
-        "effectiveDateTime": "2026-09-23T03:53:05.653Z",
-        "issued": "2026-09-23T03:53:05.653Z",
+        "effectiveDateTime": "2026-09-23T05:22:20.282Z",
+        "issued": "2026-09-23T05:22:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -375,7 +375,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-foam-3",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-foam-3",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-foam-3",
@@ -390,10 +390,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-3"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-3"
           }
         ],
-        "recorded": "2026-09-23T03:53:05.653Z",
+        "recorded": "2026-09-23T05:22:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -413,7 +413,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-2",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-2",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-foam-2",
@@ -437,10 +437,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-footbridge"
         },
-        "effectiveDateTime": "2026-09-23T03:23:05.653Z",
-        "issued": "2026-09-23T03:23:05.653Z",
+        "effectiveDateTime": "2026-09-23T04:52:20.282Z",
+        "issued": "2026-09-23T04:52:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -482,7 +482,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-foam-2",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-foam-2",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-foam-2",
@@ -497,10 +497,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-2"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-2"
           }
         ],
-        "recorded": "2026-09-23T03:23:05.653Z",
+        "recorded": "2026-09-23T04:52:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -520,7 +520,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-upstream",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-upstream",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-upstream",
@@ -544,10 +544,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-upstream"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-upstream"
         },
-        "effectiveDateTime": "2026-09-23T02:53:05.653Z",
-        "issued": "2026-09-23T02:53:05.653Z",
+        "effectiveDateTime": "2026-09-23T04:22:20.282Z",
+        "issued": "2026-09-23T04:22:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -589,7 +589,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-upstream",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-upstream",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-upstream",
@@ -604,10 +604,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-upstream"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-upstream"
           }
         ],
-        "recorded": "2026-09-23T02:53:05.653Z",
+        "recorded": "2026-09-23T04:22:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -627,7 +627,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-1",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-1",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-foam-1",
@@ -651,10 +651,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-footbridge"
         },
-        "effectiveDateTime": "2026-09-23T02:23:05.653Z",
-        "issued": "2026-09-23T02:23:05.653Z",
+        "effectiveDateTime": "2026-09-23T03:52:20.282Z",
+        "issued": "2026-09-23T03:52:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -696,7 +696,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-foam-1",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-foam-1",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-foam-1",
@@ -711,10 +711,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-1"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-1"
           }
         ],
-        "recorded": "2026-09-23T02:23:05.653Z",
+        "recorded": "2026-09-23T03:52:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -734,7 +734,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-cloudy",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-cloudy",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-cloudy",
@@ -758,10 +758,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-market"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-market"
         },
-        "effectiveDateTime": "2026-09-23T01:23:05.653Z",
-        "issued": "2026-09-23T01:23:05.653Z",
+        "effectiveDateTime": "2026-09-23T02:52:20.282Z",
+        "issued": "2026-09-23T02:52:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -803,7 +803,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-cloudy",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-cloudy",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-cloudy",
@@ -818,10 +818,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-cloudy"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-cloudy"
           }
         ],
-        "recorded": "2026-09-23T01:23:05.653Z",
+        "recorded": "2026-09-23T02:52:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -841,7 +841,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-litter",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-litter",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-litter",
@@ -865,10 +865,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-playground"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-playground"
         },
-        "effectiveDateTime": "2026-09-23T00:23:05.653Z",
-        "issued": "2026-09-23T00:23:05.653Z",
+        "effectiveDateTime": "2026-09-23T01:52:20.282Z",
+        "issued": "2026-09-23T01:52:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -910,7 +910,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-litter",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-litter",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-litter",
@@ -925,10 +925,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-litter"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-litter"
           }
         ],
-        "recorded": "2026-09-23T00:23:05.653Z",
+        "recorded": "2026-09-23T01:52:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -948,7 +948,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-erosion",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-erosion",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-erosion",
@@ -972,10 +972,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-school"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-school"
         },
-        "effectiveDateTime": "2026-09-22T06:23:05.653Z",
-        "issued": "2026-09-22T06:23:05.653Z",
+        "effectiveDateTime": "2026-09-22T07:52:20.282Z",
+        "issued": "2026-09-22T07:52:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -1017,7 +1017,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-erosion",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-erosion",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-erosion",
@@ -1032,10 +1032,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-erosion"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-erosion"
           }
         ],
-        "recorded": "2026-09-22T06:23:05.653Z",
+        "recorded": "2026-09-22T07:52:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -1055,7 +1055,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-meadow",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-meadow",
       "resource": {
         "resourceType": "Observation",
         "id": "obs-meadow",
@@ -1079,10 +1079,10 @@
           "text": "Citizen visual freshwater observation"
         },
         "subject": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-meadow"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Location/site-meadow"
         },
-        "effectiveDateTime": "2026-09-22T02:23:05.653Z",
-        "issued": "2026-09-22T02:23:05.653Z",
+        "effectiveDateTime": "2026-09-22T03:52:20.282Z",
+        "issued": "2026-09-22T03:52:20.282Z",
         "method": {
           "text": "Unaided citizen observation from public access; not a laboratory assay"
         },
@@ -1124,7 +1124,7 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-meadow",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Provenance/prov-obs-meadow",
       "resource": {
         "resourceType": "Provenance",
         "id": "prov-obs-meadow",
@@ -1139,10 +1139,10 @@
         },
         "target": [
           {
-            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-meadow"
+            "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-meadow"
           }
         ],
-        "recorded": "2026-09-22T02:23:05.653Z",
+        "recorded": "2026-09-22T03:52:20.282Z",
         "activity": {
           "text": "Citizen submission recorded by Rill"
         },
@@ -1162,128 +1162,10 @@
       }
     },
     {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/2d52a52a-efdf-40f2-be16-d44010a7bebc",
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Task/d7bcb3d4-f07a-49e1-9046-336db45e55b5",
       "resource": {
         "resourceType": "Task",
-        "id": "2d52a52a-efdf-40f2-be16-d44010a7bebc",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "requested",
-        "intent": "order",
-        "code": {
-          "text": "verify"
-        },
-        "description": "Verify Market culvert from the public path",
-        "focus": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-cloudy"
-        },
-        "authoredOn": "2026-09-23T04:25:04.613Z",
-        "requester": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        },
-        "restriction": {
-          "period": {
-            "end": "2026-09-24T04:25:04.613Z"
-          }
-        }
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/49bb0a79-d70b-4d10-b2b6-b0836953e957",
-      "resource": {
-        "resourceType": "Task",
-        "id": "49bb0a79-d70b-4d10-b2b6-b0836953e957",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "completed",
-        "intent": "order",
-        "code": {
-          "text": "recheck"
-        },
-        "description": "Recheck Riverside playground",
-        "focus": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a"
-        },
-        "authoredOn": "2026-09-23T04:25:38.695Z",
-        "requester": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        },
-        "restriction": {
-          "period": {
-            "end": "2026-09-24T11:00:00.000Z"
-          }
-        },
-        "output": [
-          {
-            "type": {
-              "text": "Recorded field result"
-            },
-            "valueString": "Demo recheck: visible litter is no longer present in this fictional scenario. Water quality and contact safety remain unknown."
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/7c69b99d-5751-4d56-b815-49f79a6d426e",
-      "resource": {
-        "resourceType": "Task",
-        "id": "7c69b99d-5751-4d56-b815-49f79a6d426e",
-        "meta": {
-          "tag": [
-            {
-              "system": "https://rill.example/CodeSystem/data-label",
-              "code": "synthetic-demo",
-              "display": "Synthetic demonstration data"
-            }
-          ]
-        },
-        "status": "completed",
-        "intent": "order",
-        "code": {
-          "text": "verify"
-        },
-        "description": "Verify Riverside playground from the public path",
-        "focus": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a"
-        },
-        "authoredOn": "2026-09-23T04:25:04.613Z",
-        "requester": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
-        },
-        "restriction": {
-          "period": {
-            "end": "2026-09-24T04:25:04.613Z"
-          }
-        },
-        "output": [
-          {
-            "type": {
-              "text": "Recorded field result"
-            },
-            "valueString": "Demo verification: visible litter confirmed from the public path. No entry to the water and no materials handled."
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/b8f2f7ae-8afd-482c-91e2-c4c8a78ef57f",
-      "resource": {
-        "resourceType": "Task",
-        "id": "b8f2f7ae-8afd-482c-91e2-c4c8a78ef57f",
+        "id": "d7bcb3d4-f07a-49e1-9046-336db45e55b5",
         "meta": {
           "tag": [
             {
@@ -1300,17 +1182,135 @@
         },
         "description": "Verify Willow footbridge from the public path",
         "focus": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-3"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-foam-3"
         },
-        "authoredOn": "2026-09-23T04:25:04.613Z",
+        "authoredOn": "2026-09-23T05:54:17.954Z",
         "requester": {
-          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
         },
         "restriction": {
           "period": {
-            "end": "2026-09-24T04:25:04.613Z"
+            "end": "2026-09-24T05:54:17.954Z"
           }
         }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Task/ed75d2b0-40c4-48db-af78-d1bae5a200b3",
+      "resource": {
+        "resourceType": "Task",
+        "id": "ed75d2b0-40c4-48db-af78-d1bae5a200b3",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "requested",
+        "intent": "order",
+        "code": {
+          "text": "verify"
+        },
+        "description": "Verify Market culvert from the public path",
+        "focus": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/obs-cloudy"
+        },
+        "authoredOn": "2026-09-23T05:54:17.954Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T05:54:17.954Z"
+          }
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Task/bbd234f9-dd49-4332-8394-1b1b3b3bb778",
+      "resource": {
+        "resourceType": "Task",
+        "id": "bbd234f9-dd49-4332-8394-1b1b3b3bb778",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "completed",
+        "intent": "order",
+        "code": {
+          "text": "verify"
+        },
+        "description": "Verify Riverside playground from the public path",
+        "focus": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/6b74d82c-68f2-4c6d-b45f-5043ee0cf064"
+        },
+        "authoredOn": "2026-09-23T05:54:17.954Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T05:54:17.954Z"
+          }
+        },
+        "output": [
+          {
+            "type": {
+              "text": "Recorded field result"
+            },
+            "valueString": "Demo verification: visible litter confirmed from the public path. No entry to the water and no materials handled."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Task/b58e6b16-ea0c-4a7d-b9b0-3a35de8a76f9",
+      "resource": {
+        "resourceType": "Task",
+        "id": "b58e6b16-ea0c-4a7d-b9b0-3a35de8a76f9",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "completed",
+        "intent": "order",
+        "code": {
+          "text": "recheck"
+        },
+        "description": "Recheck Riverside playground",
+        "focus": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Observation/6b74d82c-68f2-4c6d-b45f-5043ee0cf064"
+        },
+        "authoredOn": "2026-09-23T05:54:52.038Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/4d2926be-63aa-4257-bff0-d6d2732ac15a/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T11:00:00.000Z"
+          }
+        },
+        "output": [
+          {
+            "type": {
+              "text": "Recorded field result"
+            },
+            "valueString": "Demo recheck: visible litter is no longer present in this fictional scenario. Water quality and contact safety remain unknown."
+          }
+        ]
       }
     }
   ]

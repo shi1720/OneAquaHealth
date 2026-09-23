@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, Component, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, useRef, Component, type ReactNode } from 'react';
 import {
   LayoutDashboard,
   ScanLine,
@@ -89,13 +89,62 @@ function Application() {
   const [init, setInit] = useState(true);
   const [page, setPage] = useState('overview');
   const [observation, setObservation] = useState(false);
+  const [initialSite, setInitialSite] = useState<string>();
   const [detail, setDetail] = useState<string | null>(null);
   const [toast, setToast] = useState('');
   const [error, setError] = useState('');
   const [menu, setMenu] = useState(false);
+  const [mobile, setMobile] = useState(() => window.matchMedia('(max-width: 760px)').matches);
+  const sidebarRef = useRef<HTMLElement>(null);
+  const navigationTrigger = useRef<HTMLButtonElement>(null);
   const [guide, setGuide] = useState(false);
   const [online, setOnline] = useState(navigator.onLine);
   const [refreshing, setRefreshing] = useState(false);
+  useEffect(() => {
+    const viewport = window.matchMedia('(max-width: 760px)');
+    const resize = () => {
+      setMobile(viewport.matches);
+      if (!viewport.matches) setMenu(false);
+    };
+    viewport.addEventListener('change', resize);
+    return () => viewport.removeEventListener('change', resize);
+  }, []);
+  useEffect(() => {
+    if (!mobile || !menu) return;
+    const sidebar = sidebarRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    sidebar?.querySelector<HTMLButtonElement>('.mobile-close')?.focus();
+    const keyboard = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setMenu(false);
+      }
+      if (event.key !== 'Tab') return;
+      const buttons = Array.from(
+        sidebar?.querySelectorAll<HTMLElement>('button:not(:disabled),a[href]') || [],
+      ).filter((element) => element.getClientRects().length);
+      const first = buttons[0],
+        last = buttons[buttons.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
+    };
+    document.addEventListener('keydown', keyboard);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', keyboard);
+      if (
+        sidebar?.contains(document.activeElement) &&
+        navigationTrigger.current?.getClientRects().length
+      )
+        navigationTrigger.current.focus();
+    };
+  }, [mobile, menu]);
   useEffect(() => {
     client
       .me()
@@ -118,11 +167,13 @@ function Application() {
       const result = await client.workspace();
       setData(result);
       setError('');
+      return true;
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) {
         setUser(null);
         setData(null);
       } else setError((e as Error).message);
+      return false;
     }
   }, []);
   useEffect(() => {
@@ -138,13 +189,18 @@ function Application() {
     setToast(message);
   }
   async function logout() {
+    setMenu(false);
     try {
       await client.logout();
     } catch {
       setError('Unable to sign out while offline. Reconnect and try again.');
       return;
     }
-    if (user) localStorage.removeItem(`rill-draft-${user.id}`);
+    try {
+      if (user) localStorage.removeItem(`rill-draft-${user.id}`);
+    } catch {
+      /* Sign-out still completes when browser storage is unavailable. */
+    }
     setUser(null);
     setData(null);
     setPage('overview');
@@ -152,7 +208,24 @@ function Application() {
   function navigate(v: string) {
     setPage(v);
     setMenu(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'instant'
+        : 'smooth',
+    });
+    requestAnimationFrame(() =>
+      document.querySelector<HTMLElement>('.page-heading h1')?.focus({ preventScroll: true }),
+    );
+  }
+  function observe(siteId?: string) {
+    if (!data?.sites.length) {
+      navigate('settings');
+      setToast('Add your first monitoring site to start observing.');
+      return;
+    }
+    setInitialSite(siteId);
+    setObservation(true);
   }
   if (init)
     return (
@@ -206,11 +279,20 @@ function Application() {
   const reviewCount = data.observations.filter((o) => o.status === 'new').length;
   return (
     <div className="app-shell">
-      <a className="skip-link" href="#main">
+      <a className="skip-link" href="#main" inert={mobile && menu}>
         Skip to content
       </a>
       {menu && <div className="sidebar-scrim" onClick={() => setMenu(false)} />}
-      <aside className={`sidebar ${menu ? 'open' : ''}`}>
+      <aside
+        ref={sidebarRef}
+        id="workspace-navigation"
+        className={`sidebar ${menu ? 'open' : ''}`}
+        inert={mobile && !menu}
+        aria-hidden={mobile && !menu ? true : undefined}
+        role={mobile && menu ? 'dialog' : undefined}
+        aria-modal={mobile && menu ? true : undefined}
+        aria-label={mobile && menu ? 'Workspace navigation' : undefined}
+      >
         <div className="sidebar-brand">
           <Logo />
           <button
@@ -237,6 +319,7 @@ function Application() {
             <button
               key={item.id}
               aria-label={item.label}
+              aria-current={page === item.id ? 'page' : undefined}
               className={page === item.id ? 'active' : ''}
               onClick={() => navigate(item.id)}
             >
@@ -266,12 +349,23 @@ function Application() {
         <div className="sidebar-bottom">
           <button
             className={page === 'settings' ? 'active' : ''}
+            aria-current={page === 'settings' ? 'page' : undefined}
             onClick={() => navigate('settings')}
           >
             <Settings2 size={18} />
             Team & settings
           </button>
-          <button onClick={() => setGuide(true)}>
+          <button
+            onClick={() => {
+              setMenu(false);
+              requestAnimationFrame(() => {
+                // Safari does not focus pointer-clicked buttons. Give the guide
+                // a visible return target after the mobile drawer becomes inert.
+                if (mobile) navigationTrigger.current?.focus();
+                setGuide(true);
+              });
+            }}
+          >
             <HelpCircle size={18} />A quick field guide
             <ArrowUpRight size={13} />
           </button>
@@ -295,12 +389,19 @@ function Application() {
           </button>
         </div>
       </aside>
-      <div className="main-shell">
+      <div
+        className="main-shell"
+        inert={mobile && menu}
+        aria-hidden={mobile && menu ? true : undefined}
+      >
         <header className="topbar">
           <div className="breadcrumb">
             <button
               className="icon-button menu-button"
               aria-label="Open navigation"
+              ref={navigationTrigger}
+              aria-expanded={menu}
+              aria-controls="workspace-navigation"
               onClick={() => setMenu(true)}
             >
               <Menu size={20} />
@@ -329,9 +430,9 @@ function Application() {
               disabled={refreshing}
               onClick={async () => {
                 setRefreshing(true);
-                await load();
+                const succeeded = await load();
                 setRefreshing(false);
-                setToast('Workspace refreshed.');
+                if (succeeded) setToast('Workspace refreshed.');
               }}
             >
               <RefreshCw size={16} className={refreshing ? 'spin' : ''} />
@@ -359,22 +460,14 @@ function Application() {
             <button onClick={load}>Try again</button>
           </div>
         )}
-        <main id="main" className="main-content">
+        <main id="main" className="main-content" tabIndex={-1}>
           <div className="page-heading">
             <div>
               <span className="eyebrow">{meta.eyebrow}</span>
-              <h1>{meta.title}</h1>
+              <h1 tabIndex={-1}>{meta.title}</h1>
               <p>{meta.description}</p>
             </div>
-            <button
-              className="button primary add-observation"
-              onClick={() => {
-                if (!data.sites.length) {
-                  navigate('settings');
-                  setToast('Add your first monitoring site to start observing.');
-                } else setObservation(true);
-              }}
-            >
+            <button className="button primary add-observation" onClick={() => observe()}>
               <Plus size={18} />
               New observation
             </button>
@@ -418,19 +511,10 @@ function Application() {
             </div>
           )}
           {page === 'overview' && (
-            <Overview
-              data={data}
-              onOpen={setDetail}
-              onPage={navigate}
-              onObserve={() => (data.sites.length ? setObservation(true) : navigate('settings'))}
-            />
+            <Overview data={data} onOpen={setDetail} onPage={navigate} onObserve={observe} />
           )}{' '}
           {page === 'observations' && (
-            <Observations
-              data={data}
-              onOpen={setDetail}
-              onObserve={() => (data.sites.length ? setObservation(true) : navigate('settings'))}
-            />
+            <Observations data={data} onOpen={setDetail} onObserve={observe} />
           )}{' '}
           {page === 'planner' && <Planner data={data} onOpen={setDetail} onChanged={changed} />}{' '}
           {page === 'evidence' && <Evidence data={data} onOpen={setDetail} />}{' '}
@@ -449,6 +533,7 @@ function Application() {
       {observation && (
         <ObservationForm
           data={data}
+          initialSite={initialSite}
           onClose={() => setObservation(false)}
           onSaved={(m) => {
             setObservation(false);
@@ -534,8 +619,7 @@ function Application() {
               className="button primary"
               onClick={() => {
                 setGuide(false);
-                if (data.sites.length) setObservation(true);
-                else navigate('settings');
+                observe();
               }}
             >
               Make an observation

@@ -1,0 +1,201 @@
+{
+  "model": "gpt-4o-mini-tts",
+  "voice": "cedar",
+  "disclosure": "AI-generated narration, not Shivam Gupta's recorded voice",
+  "durationSeconds": 238.0,
+  "sections": [
+    {
+      "start": 0,
+      "end": 15,
+      "label": "The problem",
+      "text": "This is Rill, created by Shivam Gupta. A citizen notices a stream concern. A coordinator has several places to check and just two hours. How should that team decide what happens next?",
+      "originalSeconds": 11.55,
+      "tempo": 1.0,
+      "audio": "narration/segment-01.wav"
+    },
+    {
+      "start": 15,
+      "end": 28,
+      "label": "The demonstration",
+      "text": "This isolated demo contains six fictional sites and synthetic observations. It shows the complete path from a citizen report to an explained decision, assigned work and a documented follow-up.",
+      "originalSeconds": 12.05,
+      "tempo": 1.0,
+      "audio": "narration/segment-02.wav"
+    },
+    {
+      "start": 28,
+      "end": 45,
+      "label": "Place and observation",
+      "text": "The observer chooses a monitored site, records the time and describes what they noticed: litter beside the stream. The guidance keeps the visit on a safe public path. Recording the visible evidence does not require guessing what caused it.",
+      "originalSeconds": 12.95,
+      "tempo": 1.0,
+      "audio": "narration/segment-03.wav"
+    },
+    {
+      "start": 45,
+      "end": 64,
+      "label": "Uncertainty and submission",
+      "text": "A short field note adds context, while uncertainty remains visible. A photograph can support a human reviewer, but Rill does not diagnose pollution from an image. After a final review, the report is submitted and retains its synthetic label throughout this demonstration.",
+      "originalSeconds": 16.5,
+      "tempo": 1.0,
+      "audio": "narration/segment-04.wav"
+    },
+    {
+      "start": 64,
+      "end": 90,
+      "label": "Explained priorities",
+      "text": "Now the coordinator can inspect the evidence. Verification priority and evidence strength answer different questions. The explanation shows the reported signal, matching reports from other accounts, public access, recency and the information gap. Rill shows its reasoning and explains the next useful check. This priority guides attention; it is not a contamination probability.",
+      "originalSeconds": 22.6,
+      "tempo": 1.0,
+      "audio": "narration/segment-05.wav"
+    },
+    {
+      "start": 90,
+      "end": 100,
+      "label": "One Health",
+      "text": "Habitat, animal contact and human use stay connected to the concern. These contexts help the coordinator decide what to investigate while keeping uncertainty visible.",
+      "originalSeconds": 10.1,
+      "tempo": 1.046632,
+      "audio": "narration/segment-06.wav"
+    },
+    {
+      "start": 100,
+      "end": 110,
+      "label": "The two-hour decision",
+      "text": "Here is Rill's signature interaction: plan the next two hours. Each visit includes an access allowance and observation time.",
+      "originalSeconds": 7.35,
+      "tempo": 1.0,
+      "audio": "narration/segment-07.wav"
+    },
+    {
+      "start": 110,
+      "end": 118,
+      "label": "The smaller budget",
+      "text": "Reduce the budget to sixty minutes, and the selection changes. Limited time means choosing one visit.",
+      "originalSeconds": 6.2,
+      "tempo": 1.0,
+      "audio": "narration/segment-08.wav"
+    },
+    {
+      "start": 118,
+      "end": 126,
+      "label": "Three visits fit",
+      "text": "Back at one hundred and twenty minutes, three visits fit. Another concern must wait.",
+      "originalSeconds": 5.05,
+      "tempo": 1.0,
+      "audio": "narration/segment-09.wav"
+    },
+    {
+      "start": 126,
+      "end": 140,
+      "label": "Deferrals and responsibility",
+      "text": "Every deferral has a reason. Restricted sites and serious signs stay out of routine volunteer plans. The coordinator confirms safe access and assigns the work, with owners and due dates.",
+      "originalSeconds": 12.4,
+      "tempo": 1.0,
+      "audio": "narration/segment-10.wav"
+    },
+    {
+      "start": 140,
+      "end": 150,
+      "label": "Human review",
+      "text": "The coordinator opens the litter case, reviews the report and records a decision. The original evidence stays connected to that judgment.",
+      "originalSeconds": 8.2,
+      "tempo": 1.0,
+      "audio": "narration/segment-11.wav"
+    },
+    {
+      "start": 150,
+      "end": 160,
+      "label": "Verification",
+      "text": "The verification task is started, then completed with a result. These findings belong to this fictional scenario, with the responsible person recorded.",
+      "originalSeconds": 10.3,
+      "tempo": 1.067358,
+      "audio": "narration/segment-12.wav"
+    },
+    {
+      "start": 160,
+      "end": 168,
+      "label": "The recheck gate",
+      "text": "Recording a response still does not close the case. Resolution stays blocked until a later recheck.",
+      "originalSeconds": 5.8,
+      "tempo": 1.0,
+      "audio": "narration/segment-13.wav"
+    },
+    {
+      "start": 168,
+      "end": 180,
+      "label": "Follow-up evidence",
+      "text": "The coordinator creates the follow-up task, records the later finding and completes it. The visible concern may have changed; water quality and contact safety remain unknown.",
+      "originalSeconds": 9.9,
+      "tempo": 1.0,
+      "audio": "narration/segment-14.wav"
+    },
+    {
+      "start": 180,
+      "end": 190,
+      "label": "Closing the loop",
+      "text": "The observation can now be resolved. Rill shows a documented loop: one report, a human decision, completed verification and a later recheck.",
+      "originalSeconds": 8.65,
+      "tempo": 1.0,
+      "audio": "narration/segment-15.wav"
+    },
+    {
+      "start": 190,
+      "end": 199,
+      "label": "Decision history",
+      "text": "The decision trail preserves authors, times and the rule version used at review. The retained record can be exported.",
+      "originalSeconds": 6.8,
+      "tempo": 1.0,
+      "audio": "narration/segment-16.wav"
+    },
+    {
+      "start": 199,
+      "end": 206,
+      "label": "Export choices",
+      "text": "Choose JSON, CSV, GeoJSON or an experimental FHIR R4 bundle.",
+      "originalSeconds": 6.0,
+      "tempo": 1.0,
+      "audio": "narration/segment-17.wav"
+    },
+    {
+      "start": 206,
+      "end": 213,
+      "label": "The actual download",
+      "text": "This actual download contains environmental locations, observations, tasks and provenance. It creates no patient records.",
+      "originalSeconds": 7.95,
+      "tempo": 1.195489,
+      "audio": "narration/segment-18.wav"
+    },
+    {
+      "start": 213,
+      "end": 222,
+      "label": "What to measure",
+      "text": "These measures track reviews, completed tasks, rechecks and closed loops. They show follow-through, without claiming improved water quality or reduced health risk.",
+      "originalSeconds": 9.45,
+      "tempo": 1.092486,
+      "audio": "narration/segment-19.wav"
+    },
+    {
+      "start": 222,
+      "end": 231,
+      "label": "The pilot",
+      "text": "The next step is a supervised pilot with monitoring coordinators. Test time saved and documented follow-through, with volunteers contributing free.",
+      "originalSeconds": 10.2,
+      "tempo": 1.179191,
+      "audio": "narration/segment-20.wav"
+    },
+    {
+      "start": 231,
+      "end": 238,
+      "label": "The promise",
+      "text": "The core needs no paid AI key. Every useful stream concern deserves a visible, checked outcome.",
+      "originalSeconds": 6.7,
+      "tempo": 1.007519,
+      "audio": "narration/segment-21.wav"
+    }
+  ],
+  "transcribedWords": 510,
+  "scriptTokenMatch": 0.9765,
+  "unmatchedZeroDurationTokensRemoved": 2,
+  "captionCount": 59
+}

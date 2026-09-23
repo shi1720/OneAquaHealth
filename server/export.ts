@@ -14,8 +14,8 @@ export function exportJSON(data: WorkspaceData, now = new Date()) {
       scenarioDate: data.scenarioDate,
     },
     dataLabel: data.user.isDemo
-      ? 'SYNTHETIC DEMONSTRATION — not monitoring evidence'
-      : 'USER-REPORTED — unverified unless recorded otherwise',
+      ? 'SYNTHETIC DEMONSTRATION: not monitoring evidence'
+      : 'USER-REPORTED: unverified unless recorded otherwise',
     disclaimer:
       'Operational follow-up priorities are heuristics, not ecological health scores or health-risk probabilities. Photos, email addresses, and authentication data are excluded.',
     sites: data.sites,

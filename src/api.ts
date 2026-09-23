@@ -25,7 +25,7 @@ export async function api<T>(path: string, body?: unknown, method?: string): Pro
   const contentType = response.headers.get('content-type') || '';
   if (!contentType.includes('application/json'))
     throw new ApiError(
-      'The server is unavailable. Your work has been kept on this device.',
+      'The server is unavailable. Please retry when the connection is restored.',
       response.status,
     );
   const result = await response.json();

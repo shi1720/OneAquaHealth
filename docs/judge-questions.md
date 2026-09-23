@@ -1,4 +1,4 @@
-# Rill — answers for the judging conversation
+# Rill: answers for the judging conversation
 
 Use these answers as a concise starting point. Keep the distinction between working software, a synthetic demonstration, and an untested business hypothesis.
 

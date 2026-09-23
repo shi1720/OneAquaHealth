@@ -1,22 +1,21 @@
-# Rill — record the final narration
+# Rill narrated walkthrough
 
-The finished walkthrough is **3 minutes 58 seconds**, with real interactions in an isolated synthetic workspace. Shivam's spoken narration is the remaining recording step. The films currently contain no voiceover.
+The walkthrough is **3 minutes 58 seconds**. Its narration uses the OpenAI **cedar** synthetic voice and begins “This is Rill, created by Shivam Gupta.” It does not impersonate Shivam or claim that he recorded the narration. The final film records the hosted application and contains H.264 video plus AAC narration. [Download the finished 238-second MP4](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4).
 
-- [Clean film](../output/video/rill-demo-clean.mp4): use this for the final voiceover.
-- [Captioned film](../output/video/rill-demo-captioned.mp4): the same sequence with explanatory captions.
-- [Word-for-word timed voiceover](../scripts/video/voiceover-timed.md): read this script verbatim, without reading the timestamps.
-- [Recording and audio-mixing instructions](../scripts/video/README.md): reproducible capture, review evidence, and the voiceover helper.
+- [Canonical timed narration](../scripts/video/voiceover-timed.md): 21 sections covering 238 seconds.
+- [Narration subtitles](../output/video/rill-demo-narrated.srt): the corresponding spoken-word captions.
+- [YouTube title, description and disclosure](youtube.md).
+- [Recording and audio instructions](../scripts/video/README.md).
 
-The timed script is the canonical narration. It is also copied beside the films at `output/video/voiceover-timed.md`. Keeping one script prevents the narration from drifting away from the demonstrated actions.
+The filmed locations, reports, decisions and recheck results are explicitly synthetic. The video demonstrates software behaviour, not real fieldwork or environmental improvements.
 
-## Recording preparation
+## Final media review
 
-1. Open the clean film and the timed script side by side. Rehearse once at a calm conversational pace, approximately 138 words per minute.
-2. Record in a quiet room using a headset or microphone. Start each section near its timestamp and leave the interface transitions a little breathing room.
-3. Read “I'm Shivam Gupta, the creator of Rill” exactly as written. The script does not invent personal fieldwork, customers, or measured impact.
-4. Keep the fictional-scenario disclosure. The recorded site reports, task results, and follow-up results are synthetic demonstrations.
-5. Save the narration as WAV or another format supported by the mixing helper. Follow the video README to add it to the clean or captioned film.
-6. Watch the final combined film from start to finish. Confirm that the words match the visible action and that the exported video stays within the hackathon's three-to-five-minute requirement.
+1. Keep “AI-generated narration” visible and preserve the voice disclosure in the public description.
+2. Check the spoken words against each visible action. Do not use an old silent MP4 as the narrated submission.
+3. Preserve the synthetic-data labels and avoid recording real accounts, passwords or recovery keys.
+4. Check audio intelligibility, subtitle timing and the complete 3-to-5-minute duration on the uploaded version.
+5. Use the verified application URL, https://rill-streams.web.app. Add a YouTube watch link only after upload and playback checks; a YouTube upload is not currently claimed.
 
 ## Matching screen sequence
 
@@ -37,8 +36,8 @@ These are directions for review, not spoken words. The full recording already fo
 
 ## Short spoken pitch
 
-I'm Shivam Gupta, the creator of Rill. Citizen science gives us more eyes on our streams, but a coordinator still has to decide what to check next. Rill turns uncertain observations into an explainable fieldwork plan for the time a team actually has, then tracks the person responsible, the response, and the recheck. It uses transparent rules, keeps humans in control, and exports environmental evidence for other systems. Our goal is simple: make every useful stream concern lead to a checked outcome.
+This is Rill, created by Shivam Gupta. Citizen science gives communities more eyes on their streams. A coordinator still has to decide what to check next. Rill turns uncertain observations into an explained fieldwork plan for the time a team has, then connects each concern to human review, assigned work and a later recheck. Its goal is a visible, checked outcome for every useful stream concern.
 
 ## Claims to keep precise
 
-The planner optimizes its stated priority policy across distinct sites; it does not calculate walking routes or optimize real-world ecological outcomes. Its score is not a contamination probability. Visual observations do not establish contact safety, toxins, pathogens, or disease risk. The FHIR export is experimental, with no certification claim. A prospective pilot is an invitation, not an existing customer or partnership. Public GitHub source is available; do not add a public application URL until deployment has been verified.
+The planner optimises its stated priority policy across distinct sites, using estimated work durations. It does not calculate walking routes or prove ecological benefit. Visual observations do not establish toxins, pathogens or water safety. The FHIR mapping is experimental, and the proposed pilot and pricing remain hypotheses.

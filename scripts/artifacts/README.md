@@ -22,11 +22,11 @@ export RILL_RUNTIME='/Users/shivamgupta/.cache/codex-runtimes/codex-primary-runt
 export RILL_PRESENTATIONS_SKILL='/Users/shivamgupta/.codex/plugins/cache/openai-primary-runtime/presentations/26.904.11930/skills/presentations'
 "$RILL_RUNTIME/python/bin/python3" scripts/artifacts/prepare-screenshots.py
 "$RILL_RUNTIME/node/bin/node" scripts/artifacts/build-deck.mjs
-"$RILL_RUNTIME/python/bin/python3" scripts/artifacts/export-deck-pdf.py output/presentation/rill-pitch.pptx
+"$RILL_RUNTIME/python/bin/python3" scripts/artifacts/export-deck-pdf.py output/presentation/rill-pitch-v1.1.0.pptx
 "$RILL_RUNTIME/python/bin/python3" scripts/artifacts/build-brief.py --require-screenshots
 ```
 
-The deck finalizer refuses to overwrite an existing final deck. Use `RILL_ARTIFACT_REVISION=v2` (or a new revision) for the deck after edits; pass the corresponding PPTX to the PDF exporter. Use `--output output/pdf/rill-product-brief-v2.pdf` for a revised brief. `RILL_DRAFT_ONLY=1` allows missing-screenshot draft layouts, but never deliver those drafts. Release builds fail when either required screenshot is absent.
+The deck finalizer refuses to overwrite an existing final deck. The default revision is `v1.1.0`. Use `RILL_ARTIFACT_REVISION=v1.1.1` (or a new revision) for the deck after edits; pass the corresponding PPTX to the PDF exporter. Use `--output output/pdf/rill-product-brief-v1.1.1.pdf` for a revised brief. `RILL_DRAFT_ONLY=1` allows missing-screenshot draft layouts, but never deliver those drafts. Release builds fail when either required screenshot is absent.
 
 ## Review
 
@@ -37,8 +37,8 @@ The deck finalizer refuses to overwrite an existing final deck. Use `RILL_ARTIFA
 5. Verify that no draft screenshot placeholders remain and that synthetic-data disclosures are visible.
 
 ```sh
-"$RILL_RUNTIME/bin/override/pdftoppm" -scale-to 1600 -png output/pdf/rill-pitch.pdf tmp/artifacts/deck-review
-"$RILL_RUNTIME/bin/override/pdftoppm" -scale-to 1300 -png output/pdf/rill-product-brief.pdf tmp/artifacts/brief-review
+"$RILL_RUNTIME/bin/override/pdftoppm" -scale-to 1600 -png output/pdf/rill-pitch-v1.1.0.pdf tmp/artifacts/deck-review
+"$RILL_RUNTIME/bin/override/pdftoppm" -scale-to 1300 -png output/pdf/rill-product-brief-v1.1.0.pdf tmp/artifacts/brief-review
 ```
 
 Use only this bundled LibreOffice path for conversion:
@@ -49,8 +49,8 @@ The Artifact Tool preview renderer on this runtime substitutes the Caladea displ
 
 ## Final outputs
 
-- `output/presentation/rill-pitch.pptx`: editable eight-slide pitch.
-- `output/pdf/rill-pitch.pdf`: eight-page pitch export.
-- `output/pdf/rill-product-brief.pdf`: four-page submission brief.
+- `output/presentation/rill-pitch-v1.1.0.pptx`: editable eight-slide pitch.
+- `output/pdf/rill-pitch-v1.1.0.pdf`: eight-page pitch export.
+- `output/pdf/rill-product-brief-v1.1.0.pdf`: four-page submission brief.
 
 `tmp/artifacts` contains private drafts, layout previews and finalizer receipts. These are not submission deliverables.

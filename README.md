@@ -9,7 +9,9 @@ A volunteer notices foam below a footbridge. Two others report it too. A coordin
 
 Rill connects that report to a human decision, a budgeted verification plan, an assigned task, and a documented recheck. Visual appearance never becomes a diagnosis of pollution or a statement that water is safe.
 
-[Watch the captioned walkthrough](https://github.com/shi1720/OneAquaHealth/releases/download/v1.0.0/rill-demo-captioned.mp4) · [Submission package](output/README.md) · [Quality checks](https://github.com/shi1720/OneAquaHealth/actions/workflows/ci.yml)
+[Watch the narrated demonstration](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4) · [Submission package](output/README.md) · [Quality checks](https://github.com/shi1720/OneAquaHealth/actions/workflows/ci.yml)
+
+**Try the hosted app:** https://rill-streams.web.app. Firebase Hosting serves the interface, with a Cloud Run API and PostgreSQL on Cloud SQL. The hosted API lifecycle has been verified; see [deployment details](docs/deployment-firebase.md) for operational limits.
 
 ## Run it in two minutes
 
@@ -58,7 +60,7 @@ flowchart LR
   A[React responsive workspace] -->|Same-origin session| B[Hono API]
   B --> C[Versioned decision rules]
   C --> D[Exact field-budget allocator]
-  B --> E[(SQLite / libSQL / D1)]
+  B --> E[(PostgreSQL / SQLite / libSQL / D1)]
   B --> F[Human decisions and historical snapshots]
   B --> G[JSON / CSV / GeoJSON / FHIR]
   H[Optional live OAH site directory] -->|Bounded read-only lookup| B
@@ -67,7 +69,7 @@ flowchart LR
 
 - **Frontend:** React 19, TypeScript, Vite, local fonts, original SVG/CSS design, Lucide icons. The demo map is an explicitly illustrative schematic; real workspaces plot their actual site coordinates without inventing a river basemap.
 - **Backend:** Hono + Zod, tenant-scoped SQL, atomic writes, database quotas and uniqueness constraints, persistent rate limits, optimistic review revisions, and an attributable audit trail.
-- **Storage:** Node's built-in SQLite for a persistent single-node deployment; optional Turso **libSQL** remote storage; Cloudflare Worker + D1 as another deployable target. The same decision engine serves each.
+- **Storage:** Node's built-in SQLite for a persistent single-node deployment; PostgreSQL on Cloud SQL for the hosted application; optional Turso **libSQL** remote storage and Cloudflare Worker + D1 as additional targets. The same decision engine serves each.
 - **Security:** unique salted password hashes, single-use offline recovery keys stored only as hashes, random sessions stored as hashes, HttpOnly/SameSite cookies, Secure production cookies, origin checks, bounded requests, photo access controls, and role enforcement. See [security boundaries](SECURITY.md).
 
 No observations, images, notes, or user data are sent to an external LLM. The optional site-directory lookup sends no observation payloads. Core workflows continue if that upstream is unavailable.
@@ -94,7 +96,7 @@ The smoke script creates and deletes disposable test workspaces. A [reproducible
 
 ## Deploy
 
-See [deployment instructions](docs/deployment.md) for Docker, a persistent Node host, Render + remote libSQL, and Cloudflare D1. Never use an ephemeral host disk for real workspace data.
+See [the hosted deployment](docs/deployment-firebase.md) for Firebase Hosting, Cloud Run and PostgreSQL, and [alternative deployment instructions](docs/deployment.md) for Docker, a persistent Node host, Render + remote libSQL, and Cloudflare D1. Never use an ephemeral host disk for real workspace data.
 
 ```sh
 docker build -t rill .
@@ -128,6 +130,6 @@ This is a working, hardened pilot application, not a clinically validated or ind
 
 ## Credits and licence
 
-**Shivam Gupta — project creator and submission owner.** Built with AI-assisted research, implementation, design iteration, and testing. Source code is MIT licensed. Demo locations and observations are synthetic. Rill is independent and is not endorsed by OneAquaHealth, IEEE, or the cited organisations.
+**Shivam Gupta: project creator and submission owner.** Built with AI-assisted research, implementation, design iteration, and testing. Source code is MIT licensed. Demo locations and observations are synthetic. Rill is independent and is not endorsed by OneAquaHealth, IEEE, or the cited organisations.
 
 See [sources and attribution](docs/sources.md) for documentation, fonts, icons, and the optional site-directory source.
