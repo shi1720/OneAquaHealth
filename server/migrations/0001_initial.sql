@@ -1,0 +1,24 @@
+
+PRAGMA foreign_keys = ON;
+CREATE TABLE IF NOT EXISTS workspaces (id TEXT PRIMARY KEY, name TEXT NOT NULL, is_demo INTEGER NOT NULL DEFAULT 0, scenario_date TEXT, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE, email TEXT NOT NULL UNIQUE, name TEXT NOT NULL, role TEXT NOT NULL CHECK(role IN ('coordinator','volunteer')), password_hash TEXT, created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS users_workspace ON users(workspace_id);
+CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS sessions_expiry ON sessions(expires_at);
+CREATE TABLE IF NOT EXISTS sites (id TEXT NOT NULL, workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE, payload TEXT NOT NULL, PRIMARY KEY(workspace_id,id));
+CREATE TABLE IF NOT EXISTS observations (id TEXT NOT NULL, workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE, author_id TEXT NOT NULL, client_id TEXT NOT NULL, payload TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 1, created_at TEXT NOT NULL, PRIMARY KEY(workspace_id,id), UNIQUE(workspace_id,author_id,client_id));
+CREATE INDEX IF NOT EXISTS observations_workspace ON observations(workspace_id,created_at DESC);
+CREATE TABLE IF NOT EXISTS photos (observation_id TEXT NOT NULL, workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE, data_url TEXT NOT NULL, byte_length INTEGER NOT NULL, PRIMARY KEY(workspace_id,observation_id));
+CREATE TABLE IF NOT EXISTS tasks (id TEXT NOT NULL, workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE, observation_id TEXT NOT NULL, site_id TEXT NOT NULL, assigned_user_id TEXT, status TEXT NOT NULL, payload TEXT NOT NULL, PRIMARY KEY(workspace_id,id));
+CREATE UNIQUE INDEX IF NOT EXISTS one_open_site_task ON tasks(workspace_id,site_id) WHERE status != 'completed';
+CREATE TABLE IF NOT EXISTS audits (id TEXT PRIMARY KEY, workspace_id TEXT NOT NULL REFERENCES workspaces(id) ON DELETE CASCADE, payload TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS audits_workspace ON audits(workspace_id,created_at DESC);
+CREATE TABLE IF NOT EXISTS rate_limits (key TEXT PRIMARY KEY, hits INTEGER NOT NULL, reset_at INTEGER NOT NULL);
+CREATE TRIGGER IF NOT EXISTS require_task_assignee BEFORE INSERT ON tasks WHEN NEW.assigned_user_id IS NOT NULL AND NOT EXISTS(SELECT 1 FROM users WHERE id=NEW.assigned_user_id AND workspace_id=NEW.workspace_id) BEGIN SELECT RAISE(ABORT,'rill_assignment_not_found'); END;
+CREATE TRIGGER IF NOT EXISTS protect_active_member BEFORE DELETE ON users WHEN EXISTS(SELECT 1 FROM workspaces WHERE id=OLD.workspace_id) AND EXISTS(SELECT 1 FROM tasks WHERE workspace_id=OLD.workspace_id AND assigned_user_id=OLD.id AND status!='completed') BEGIN SELECT RAISE(ABORT,'rill_member_has_open_tasks'); END;
+CREATE TRIGGER IF NOT EXISTS limit_audits BEFORE INSERT ON audits WHEN (SELECT COUNT(*) FROM audits WHERE workspace_id=NEW.workspace_id)>=10000 BEGIN SELECT RAISE(ABORT,'rill_quota_exceeded'); END;
+CREATE TRIGGER IF NOT EXISTS limit_sites BEFORE INSERT ON sites WHEN (SELECT COUNT(*) FROM sites WHERE workspace_id=NEW.workspace_id)>=100 BEGIN SELECT RAISE(ABORT,'rill_quota_exceeded'); END;
+CREATE TRIGGER IF NOT EXISTS limit_observations BEFORE INSERT ON observations WHEN (SELECT COUNT(*) FROM observations WHERE workspace_id=NEW.workspace_id)>=2000 BEGIN SELECT RAISE(ABORT,'rill_quota_exceeded'); END;
+CREATE TRIGGER IF NOT EXISTS limit_tasks BEFORE INSERT ON tasks WHEN (SELECT COUNT(*) FROM tasks WHERE workspace_id=NEW.workspace_id)>=2000 BEGIN SELECT RAISE(ABORT,'rill_quota_exceeded'); END;
+CREATE TRIGGER IF NOT EXISTS limit_members BEFORE INSERT ON users WHEN (SELECT COUNT(*) FROM users WHERE workspace_id=NEW.workspace_id)>=50 BEGIN SELECT RAISE(ABORT,'rill_quota_exceeded'); END;
+CREATE TRIGGER IF NOT EXISTS limit_photos BEFORE INSERT ON photos WHEN (SELECT COALESCE(SUM(byte_length),0) FROM photos WHERE workspace_id=NEW.workspace_id)+NEW.byte_length>50000000 BEGIN SELECT RAISE(ABORT,'rill_quota_exceeded'); END;

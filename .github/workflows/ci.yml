@@ -1,0 +1,49 @@
+name: Quality checks
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run format:check
+      - run: npm test
+      - run: RILL_TEST_STORAGE=libsql npm test
+      - run: npm run build
+      - run: npm audit --audit-level=moderate
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - name: Build and smoke-test the container
+        run: |
+          docker build -t rill:test .
+          docker run -d --rm --name rill-ci -p 8791:8787 -v rill-ci-data:/app/data -e APP_ORIGIN=http://localhost:8791 -e NODE_ENV=development rill:test
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://localhost:8791/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          RILL_SMOKE_ORIGIN=http://localhost:8791 npx tsx server/smoke.ts
+      - name: Container logs and cleanup
+        if: always()
+        run: |
+          docker logs rill-ci || true
+          docker stop rill-ci || true
+          docker volume rm rill-ci-data || true
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-test-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

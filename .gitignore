@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.wrangler/
+data/
+*.db
+*.db-shm
+*.db-wal
+playwright-report/
+test-results/
+tmp/
+.DS_Store
+
+artifacts/qa/
+output/video/*.webm

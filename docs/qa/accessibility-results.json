@@ -1,0 +1,598 @@
+{
+  "reports": [
+    {
+      "surface": "auth",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "overview",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "observations",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "detail-evidence",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "detail-response",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "detail-trail",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-place",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-observe",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-details",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-review",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "planner",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "tasks",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "evidence-impact",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "evidence-exports",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "evidence-trail",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "settings",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "site-create",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "site-edit",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "member-create",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "delete-confirmation",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "catalog",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "catalog-site-prefill",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "import-upload",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "import-preview",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "auth",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "overview",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "observations",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "detail-evidence",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "detail-response",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "detail-trail",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-place",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-observe",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-details",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "report-review",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "planner",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "tasks",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "evidence-impact",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "evidence-exports",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "evidence-trail",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "settings",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "site-create",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "site-edit",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "member-create",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "delete-confirmation",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "catalog",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "catalog-site-prefill",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "import-upload",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "import-preview",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "password-dialog",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "member-remove-dialog",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "password-dialog",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    },
+    {
+      "surface": "member-remove-dialog",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": []
+    }
+  ],
+  "exceptions": [],
+  "firstPassFailures": [
+    {
+      "surface": "report-details",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": [
+            {
+              "target": [
+                ".visually-hidden"
+              ],
+              "html": "<input accept=\"image/jpeg,image/png,image/webp\" class=\"visually-hidden\" type=\"file\">",
+              "summary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "import-upload",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "span > small"
+              ],
+              "html": "<small>CSV or JSON · up to 100 records · 1 MB maximum</small>",
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #68775e, background color: #f5f7ef, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "import-preview",
+      "width": 1440,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".import-file-label > span > small"
+              ],
+              "html": "<small>CSV or JSON · up to 100 records · 1 MB maximum</small>",
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #68775e, background color: #f5f7ef, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "report-details",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": [
+            {
+              "target": [
+                ".visually-hidden"
+              ],
+              "html": "<input accept=\"image/jpeg,image/png,image/webp\" class=\"visually-hidden\" type=\"file\">",
+              "summary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "surface": "import-preview",
+      "width": 390,
+      "overflow": {
+        "page": false,
+        "dialog": false
+      },
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".import-file-label > span > small"
+              ],
+              "html": "<small>CSV or JSON · up to 100 records · 1 MB maximum</small>",
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #68775e, background color: #f5f7ef, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "interactionChecks": [
+    {
+      "name": "cancelled task retains assignment/start/cancellation in observation trail",
+      "passed": true,
+      "trail": "Task Cancelled\n\nQA verification to cancel cancelled. Prior state: in_progress; kind: verify; assigned to: Final cancellation QA; due: 2026-09-24T04:10:12.335Z; estimate: 20 minutes; created: 2026-09-23T04:10:12.337Z. Recorded result: None recorded.\n\nFinal cancellation QA · 23 Sept, 09:40\nTask Started\n\nQA verification to cancel\n\nFinal cancellation QA · 23 Sept, 09:40\nTask Assigned\n\nQA verification to cancel → Final cancellation QA\n\nFinal cancellation QA · 23 Sept, 09:40\nObservation Submitted\n\nlitter\n\nFinal cancellation QA · 23 Sept, 09:40"
+    }
+  ],
+  "remainingFailures": []
+}
