@@ -25,6 +25,8 @@ The first repeated browser runs shared the long-lived development database and e
 
 The integrated core passed [GitHub Actions run 35817824898](https://github.com/shi1720/OneAquaHealth/actions/runs/35817824898) at commit `4ca8312`: clean install, formatting, typecheck, SQLite/libSQL suites, build, dependency audit, all eight browser scenarios, and Docker image build plus HTTP lifecycle smoke on Linux. The local Docker daemon was unavailable, so the container was verified in CI. Subsequent recovery-key, backup and engine-indexing additions are covered by the final release integration result below.
 
+**Final release code passed [GitHub Actions run 35819234381](https://github.com/shi1720/OneAquaHealth/actions/runs/35819234381) at commit `a27e70d`.** This includes all 75 tests on SQLite, all 75 with the libSQL adapter, all ten browser scenarios, clean installation, formatting, typecheck, the production build, zero reported dependency vulnerabilities, and the actual Linux Docker build and HTTP lifecycle smoke. The following packaging commit only records this result and the release checksums; it does not change the application.
+
 The local online-backup command additionally passed two focused checks: a standalone snapshot preserved committed WAL records from an open database and passed `integrity_check`; attempts to overwrite a snapshot/source or read a missing source were rejected. This validates the backup mechanism, not offsite retention or a production-host disaster-recovery exercise.
 
 ## What remains outside this evidence
