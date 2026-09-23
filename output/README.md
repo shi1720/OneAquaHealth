@@ -15,7 +15,7 @@ Rill turns citizen stream concerns into explained verification plans, accountabl
 - [Verification record](../docs/qa/verification.md)
 - [Hosted deployment and operational boundaries](../docs/deployment-firebase.md)
 
-The current deliverables are version **1.1.0**. The application uses Firebase Hosting, Cloud Run and PostgreSQL on Cloud SQL. The hosted API lifecycle has been verified. Hosted browser/privacy checks and the narrated workflow are documented in the linked verification records. The final-build 18-scenario CI run remains pending.
+The current deliverables are version **1.1.0**. The application uses Firebase Hosting, Cloud Run and PostgreSQL on Cloud SQL. The hosted API lifecycle has been verified. Hosted browser/privacy checks and the narrated workflow are documented in the linked verification records. The [final CI run](https://github.com/shi1720/OneAquaHealth/actions/runs/35825616783) passed both jobs at commit `5ed7ee8`, including all 18 browser scenarios, 86 tests per SQLite/libSQL configuration, 53 PostgreSQL tests and container checks.
 
 ## Slides and brief
 
@@ -51,4 +51,4 @@ Rebuild the package with `python3 scripts/package-release.py`. The builder requi
 3. Resolve the event's conflicting eligibility wording and complete participant/team registration using accurate personal information.
 4. Add the verified demo URL, final video URL, public repository, Track 2 selection and final project description to Devpost before **1 October 2026, 09:30 IST**.
 
-The source and hosted application are public. The Devpost draft has the project story, technology list, live app and repository links saved; video and thumbnail steps remain unfinished. YouTube upload awaits the action-time confirmation required by its upload tool. This package does not claim final Devpost submission, eligibility verification, customer validation or scientific fieldwork. Commercial pricing and the proposed pilot remain hypotheses.
+The source and hosted application are public. The Devpost draft has the project story, technology list, live app and repository links, gallery image and thumbnail saved. Its video link and final submission remain unfinished. YouTube upload awaits the action-time confirmation required by its upload tool. This package does not claim final Devpost submission, eligibility verification, customer validation or scientific fieldwork. Commercial pricing and the proposed pilot remain hypotheses.

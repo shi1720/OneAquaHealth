@@ -12,7 +12,7 @@
 
 **Demo video:** [Download the narrated demonstration](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4)
 
-> Publication status: the application and narrated film are complete. The downloadable MP4 is a GitHub release asset; YouTube publication and final Devpost submission are not complete. The Devpost draft has the story, technology list, live app and repository links saved, with video and thumbnail steps outstanding. The seven sections below are the story fields. This note is not part of the story.
+> Publication status: the application and narrated film are complete. The downloadable MP4 is a GitHub release asset; YouTube publication and final Devpost submission are not complete. The Devpost draft has the story, technology list, live app and repository links, gallery image and thumbnail saved. The video link and final submission remain outstanding. The seven sections below are the story fields. This note is not part of the story.
 
 ## Inspiration
 
@@ -66,7 +66,7 @@ Project created and led by **Shivam Gupta**, with AI-assisted research, design, 
 
 We built a complete path from a citizen report to an explained plan, a human decision, assigned work and a recorded recheck. Judges can explore the isolated demo immediately without shared credentials.
 
-Version 1.1 passed 86 local tests with SQLite and 86 with libSQL, with four PostgreSQL-only checks skipped in those runs. The dedicated PostgreSQL suite passed 53 tests. The hosted deployment passed 17 browser scenarios, a separate rapid-typing regression, three focused WebKit flows and 39 privacy/role assertions. These checks ran across the documented frontend fixes, not as one final-build suite. The new complete 18-scenario CI run is pending; the earlier release passed Docker build/lifecycle checks in GitHub Actions. These are software checks, not scientific or field validation. [Verification record](https://github.com/shi1720/OneAquaHealth/blob/main/docs/qa/verification.md)
+Version 1.1 passed its [complete GitHub Actions run](https://github.com/shi1720/OneAquaHealth/actions/runs/35825616783): 86 tests with SQLite, 86 with libSQL, 53 PostgreSQL tests, all 18 browser scenarios and the container build/lifecycle checks. The SQLite/libSQL runs each skip four PostgreSQL-only tests. Separate hosted testing passed 17 browser scenarios, a rapid-typing regression, three focused WebKit flows and 39 privacy/role assertions across the documented frontend fixes. Those hosted checks are distinct from the final CI suite. These are software checks, not scientific or field validation. [Verification record](https://github.com/shi1720/OneAquaHealth/blob/main/docs/qa/verification.md)
 
 The result is usable beyond a slide: a working application, public source, reproducible setup, documented decision rules, exportable evidence and a clear pilot proposal.
 

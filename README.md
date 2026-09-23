@@ -85,7 +85,7 @@ npm run test:e2e       # builds and starts its own isolated server
 npm audit
 ```
 
-Backend tests cover auth and atomic recovery/session revocation, tenant/role boundaries, CSRF, quota and race conditions, safe planning, optimal allocation versus exhaustive enumeration, lifecycle chronology, imports, exports, and deletion. Ten browser scenarios exercise the report-to-recheck flow, real registration/site setup/login/recovery, administration, imports, mobile drafts, keyboard focus, and accessibility checks. Automated checks are not a substitute for field validation or a full security assessment.
+Backend tests cover auth and atomic recovery/session revocation, tenant/role boundaries, CSRF, quota and race conditions, safe planning, optimal allocation versus exhaustive enumeration, lifecycle chronology, imports, exports, and deletion. Eighteen browser scenarios exercise the report-to-recheck flow, real registration/site setup/login/recovery, administration, imports, mobile drafts, keyboard focus, and accessibility checks. Automated checks are not a substitute for field validation or a full security assessment.
 
 ```sh
 RILL_SMOKE_ORIGIN=http://localhost:8787 npx tsx server/smoke.ts
