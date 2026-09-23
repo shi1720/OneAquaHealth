@@ -484,9 +484,7 @@
           "impact": "critical",
           "nodes": [
             {
-              "target": [
-                ".visually-hidden"
-              ],
+              "target": [".visually-hidden"],
               "html": "<input accept=\"image/jpeg,image/png,image/webp\" class=\"visually-hidden\" type=\"file\">",
               "summary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -507,9 +505,7 @@
           "impact": "serious",
           "nodes": [
             {
-              "target": [
-                "span > small"
-              ],
+              "target": ["span > small"],
               "html": "<small>CSV or JSON · up to 100 records · 1 MB maximum</small>",
               "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #68775e, background color: #f5f7ef, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
             }
@@ -530,9 +526,7 @@
           "impact": "serious",
           "nodes": [
             {
-              "target": [
-                ".import-file-label > span > small"
-              ],
+              "target": [".import-file-label > span > small"],
               "html": "<small>CSV or JSON · up to 100 records · 1 MB maximum</small>",
               "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #68775e, background color: #f5f7ef, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
             }
@@ -553,9 +547,7 @@
           "impact": "critical",
           "nodes": [
             {
-              "target": [
-                ".visually-hidden"
-              ],
+              "target": [".visually-hidden"],
               "html": "<input accept=\"image/jpeg,image/png,image/webp\" class=\"visually-hidden\" type=\"file\">",
               "summary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\""
             }
@@ -576,9 +568,7 @@
           "impact": "serious",
           "nodes": [
             {
-              "target": [
-                ".import-file-label > span > small"
-              ],
+              "target": [".import-file-label > span > small"],
               "html": "<small>CSV or JSON · up to 100 records · 1 MB maximum</small>",
               "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.42 (foreground color: #68775e, background color: #f5f7ef, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
             }

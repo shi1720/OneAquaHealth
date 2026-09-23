@@ -87,14 +87,12 @@ describe('exact safe field plan', () => {
     }
   });
   it('finds the global optimum against exhaustive subset enumeration', () => {
-    const sites: Site[] = seeded.sites
-      .slice(0, 4)
-      .map((item, index) => ({
-        ...item,
-        walkMinutes: [35, 15, 10, 20][index],
-        exposure: index,
-        sensitive: false,
-      }));
+    const sites: Site[] = seeded.sites.slice(0, 4).map((item, index) => ({
+      ...item,
+      walkMinutes: [35, 15, 10, 20][index],
+      exposure: index,
+      sensitive: false,
+    }));
     const reports = sites.map((item, index) =>
       observation({
         id: `obs-${index}`,

@@ -46,13 +46,11 @@ async function settings(page: Page) {
   await page.getByRole('button', { name: 'Team & settings', exact: true }).click();
 }
 async function upload(page: Page, filename: string, content: unknown) {
-  await page
-    .getByLabel('Observation import file')
-    .setInputFiles({
-      name: filename,
-      mimeType: filename.endsWith('.csv') ? 'text/csv' : 'application/json',
-      buffer: Buffer.from(typeof content === 'string' ? content : JSON.stringify(content)),
-    });
+  await page.getByLabel('Observation import file').setInputFiles({
+    name: filename,
+    mimeType: filename.endsWith('.csv') ? 'text/csv' : 'application/json',
+    buffer: Buffer.from(typeof content === 'string' ? content : JSON.stringify(content)),
+  });
 }
 
 test('coordinator edits sites, manages volunteer access, and rotates the account passphrase', async ({

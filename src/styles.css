@@ -1154,10 +1154,9 @@ input[type='checkbox'] {
 .table-head,
 .observation-row {
   display: grid;
-  grid-template-columns: minmax(190px, 1.8fr) minmax(120px, 1fr) minmax(100px, 1fr) minmax(
-      90px,
-      0.85fr
-    ) 15px;
+  grid-template-columns:
+    minmax(190px, 1.8fr) minmax(120px, 1fr) minmax(100px, 1fr) minmax(90px, 0.85fr)
+    15px;
   gap: 15px;
   align-items: center;
   text-align: left;
@@ -3641,10 +3640,9 @@ input[type='checkbox'] {
   }
   .table-head,
   .observation-row {
-    grid-template-columns: minmax(170px, 1.7fr) minmax(100px, 1fr) minmax(90px, 1fr) minmax(
-        75px,
-        0.8fr
-      ) 12px;
+    grid-template-columns:
+      minmax(170px, 1.7fr) minmax(100px, 1fr) minmax(90px, 1fr) minmax(75px, 0.8fr)
+      12px;
     gap: 10px;
     padding-left: 18px;
     padding-right: 18px;
