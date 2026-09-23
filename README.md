@@ -9,7 +9,7 @@ A volunteer notices foam below a footbridge. Two others report it too. A coordin
 
 Rill connects that report to a human decision, a budgeted verification plan, an assigned task, and a documented recheck. Visual appearance never becomes a diagnosis of pollution or a statement that water is safe.
 
-[Watch the narrated demonstration](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4) · [Submission package](output/README.md) · [Quality checks](https://github.com/shi1720/OneAquaHealth/actions/workflows/ci.yml)
+[Watch the narrated demonstration](https://www.youtube.com/watch?v=Ezww6CqwqWA) · [Submitted Devpost project](https://devpost.com/software/rill-h8t3s5) · [Submission package](output/README.md) · [Quality checks](https://github.com/shi1720/OneAquaHealth/actions/workflows/ci.yml)
 
 **Try the hosted app:** https://rill-streams.web.app. Firebase Hosting serves the interface, with a Cloud Run API and PostgreSQL on Cloud SQL. The hosted API lifecycle has been verified; see [deployment details](docs/deployment-firebase.md) for operational limits.
 
@@ -122,7 +122,7 @@ For a verified local SQLite snapshot, run `npm run backup -- backups/rill-2026-0
 
 **Track alignment:** primary Track 2 (Data-to-Insight), with relevant elements of Tracks 3 (responsible supported assessment), 6 (resilience workflows), and 7 (experimental interoperability). No claim of trained AI or predictive outbreak detection.
 
-**Submission deadline:** 1 October 2026, 09:30 IST, as displayed on Devpost (30 September, 21:00 PDT). The event's homepage and rules disagree about students/team eligibility; the participant must resolve eligibility and registration before submission. This repository does not establish eligibility or claim the project has been submitted.
+**Submitted on 23 September 2026.** Devpost displayed “Project submitted!” for [Rill](https://devpost.com/software/rill-h8t3s5). The public [YouTube demonstration](https://www.youtube.com/watch?v=Ezww6CqwqWA) is embedded in the project. See the [publication receipt](docs/qa/publication.md) for the observed checks and scope. The displayed deadline is 1 October 2026, 09:30 IST (30 September, 21:00 PDT); the submission acknowledgment does not establish an independent eligibility ruling or judging outcome.
 
 ## Honest scope
 

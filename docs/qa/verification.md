@@ -23,6 +23,10 @@ The application is live at **https://rill-streams.web.app**, served by Firebase 
 
 The first CI attempt at `b41c129` passed its main verification job, including the 18 browser scenarios, but the PostgreSQL job exceeded the default five-second timeout while a recovery regression inserted 10,000 audit records. Commit `5ed7ee8` gives only that heavy test a 20-second timeout; its data volume and assertions are unchanged. Both jobs then passed. This was a test-time allowance change, not a weakening of the recovery checks or a runtime product change.
 
+## Publication and submission
+
+The [YouTube film](https://www.youtube.com/watch?v=Ezww6CqwqWA) is public with English captions, a custom thumbnail and the AI-usage disclosure enabled. Devpost displayed “Project submitted!” for [Rill](https://devpost.com/software/rill-h8t3s5) on 23 September 2026. The project's video iframe embeds the same YouTube ID. [Publication receipt](publication.md) records the observed playback, platform checks and limits. This documentation update does not modify the application, final media or PDFs.
+
 ## Reproducible hosted deployment
 
 The full deployment script completed successfully, including a clean container build, Cloud Run revision update, Firebase Hosting deployment, PostgreSQL health/version checks and the complete disposable hosted API smoke. The recorded Cloud Build ID is `3374f8ad-fef9-44db-8f33-6e31d2c02ee6`; the Cloud Run revision is `rill-api-00004-sps`. Its container digest is:

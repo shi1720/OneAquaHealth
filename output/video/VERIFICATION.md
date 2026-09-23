@@ -30,6 +30,8 @@ These are software, transcript, media and visual checks. They do not claim a hum
 
 ## Publication status
 
-The downloadable film is included in the public GitHub release for version 1.1.0. YouTube publication and Devpost's final submission remain separate steps until their final forms and legal acknowledgments are completed. Do not substitute an unrelated video URL or claim a draft has been submitted.
+The unchanged film is [public on YouTube](https://www.youtube.com/watch?v=Ezww6CqwqWA) and available from the GitHub 1.1.0 release. YouTube Studio confirmed “Video published,” published the English SRT and custom thumbnail, and recorded the AI-usage disclosure; the public page displays an AI-content badge. Its copyright/community checks displayed no issues. The publication browser played the video through 0:21 of 3:58 and offered English captions and 1080p HD in settings.
+
+The [Devpost project](https://devpost.com/software/rill-h8t3s5) embeds that same YouTube video and displayed “Project submitted!” on 23 September 2026 after the actual terms acknowledgment and submit action. These checks used the publication browser session; no anonymous-playback claim is made. See the [publication receipt](../../docs/qa/publication.md).
 
 Reproduce the media using `scripts/video/README.md`; the private API key and raw audio cache are excluded from source and the submission archive.

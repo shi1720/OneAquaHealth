@@ -10,9 +10,11 @@
 
 **Working demo:** https://rill-streams.web.app
 
-**Demo video:** [Download the narrated demonstration](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4)
+**Demo video:** [Watch the published demonstration](https://www.youtube.com/watch?v=Ezww6CqwqWA)
 
-> Publication status: the application and narrated film are complete. The downloadable MP4 is a GitHub release asset; YouTube publication and final Devpost submission are not complete. The Devpost draft has the story, technology list, live app and repository links, gallery image and thumbnail saved. The video link and final submission remain outstanding. The seven sections below are the story fields. This note is not part of the story.
+**Submitted project:** https://devpost.com/software/rill-h8t3s5
+
+> Publication status: the YouTube demonstration is public, and Devpost displayed “Project submitted!” on 23 September 2026. The project contains the story, testing instructions, technology list, live app and repository links, video, gallery images, thumbnail and submission ZIP. [Publication receipt](qa/publication.md). The seven sections below are the story fields. This note is not part of the story.
 
 ## Inspiration
 

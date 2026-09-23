@@ -98,6 +98,8 @@ manifest = {
     'project': 'Rill', 'creator': 'Shivam Gupta', 'version': args.version,
     'application': 'https://rill-streams.web.app',
     'source': 'https://github.com/shi1720/OneAquaHealth',
+    'videoPage': 'https://www.youtube.com/watch?v=Ezww6CqwqWA',
+    'submissionPage': 'https://devpost.com/software/rill-h8t3s5',
     'narration': 'OpenAI cedar synthetic voice; not a recording of Shivam Gupta',
     'files': {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(files)},
 }
@@ -106,6 +108,8 @@ try:
         bundle.writestr('START-HERE.txt',
             f'Rill {args.version} by Shivam Gupta\n\n'
             'Try the application: https://rill-streams.web.app\n'
+            'Watch the public film: https://www.youtube.com/watch?v=Ezww6CqwqWA\n'
+            'Submitted project: https://devpost.com/software/rill-h8t3s5\n'
             'Open output/README.md for the deliverable index and current verification.\n'
             f'The narrated demonstration is {video.relative_to(root)}.\n'
             'Narration uses an OpenAI synthetic voice, not a recording of Shivam Gupta.\n'

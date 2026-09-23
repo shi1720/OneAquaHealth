@@ -1,6 +1,6 @@
 # Rill narrated walkthrough
 
-The walkthrough is **3 minutes 58 seconds**. Its narration uses the OpenAI **cedar** synthetic voice and begins “This is Rill, created by Shivam Gupta.” It does not impersonate Shivam or claim that he recorded the narration. The final film records the hosted application and contains H.264 video plus AAC narration. [Download the finished 238-second MP4](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4).
+The walkthrough is **3 minutes 58 seconds**. Its narration uses the OpenAI **cedar** synthetic voice and begins “This is Rill, created by Shivam Gupta.” It does not impersonate Shivam or claim that he recorded the narration. The final film records the hosted application and contains H.264 video plus AAC narration. [Watch the published demonstration](https://www.youtube.com/watch?v=Ezww6CqwqWA) or [download the finished MP4](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4).
 
 - [Canonical timed narration](../scripts/video/voiceover-timed.md): 21 sections covering 238 seconds.
 - [Narration subtitles](../output/video/rill-demo-narrated.srt): the corresponding spoken-word captions.
@@ -15,7 +15,7 @@ The filmed locations, reports, decisions and recheck results are explicitly synt
 2. Check the spoken words against each visible action. Do not use an old silent MP4 as the narrated submission.
 3. Preserve the synthetic-data labels and avoid recording real accounts, passwords or recovery keys.
 4. Check audio intelligibility, subtitle timing and the complete 3-to-5-minute duration on the uploaded version.
-5. Use the verified application URL, https://rill-streams.web.app. Add a YouTube watch link only after upload and playback checks; a YouTube upload is not currently claimed.
+5. The verified application is https://rill-streams.web.app. The public video is https://www.youtube.com/watch?v=Ezww6CqwqWA, embedded in the submitted Devpost project. Preserve these links when sharing this version.
 
 ## Matching screen sequence
 

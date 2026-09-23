@@ -2,7 +2,9 @@
 
 The narrated film is complete: 238 seconds, 1920 × 1080, H.264 video and AAC audio, recorded against the hosted application at `https://rill-streams.web.app`. [Download the MP4](https://github.com/shi1720/OneAquaHealth/releases/download/v1.1.0/rill-demo-narrated.mp4). The OpenAI cedar narration contains 21 timed sections with matching captions. The voice is synthetic, not a recording of Shivam Gupta.
 
-YouTube publication remains pending. The upload tool requires action-time confirmation of its terms even though the broader project was authorised. This document provides the final public title, description and testing instructions; it does not claim that a YouTube watch URL exists.
+**Published video:** https://www.youtube.com/watch?v=Ezww6CqwqWA
+
+The video is public. YouTube Studio showed “Video published”; the English SRT and custom thumbnail were published, the AI-usage disclosure was enabled with a public AI-content badge, and copyright/community checks displayed no issues. Playback advanced to 0:21 of 3:58 in the publication browser, with English captions and 1080p HD available in settings. The [submitted Devpost project](https://devpost.com/software/rill-h8t3s5) embeds this same video. These observations do not claim an anonymous or signed-out playback check. [Publication receipt](qa/publication.md).
 
 ## YouTube title
 
@@ -98,6 +100,6 @@ npm run dev
 
 Open `http://localhost:5173` and choose **Explore the live demo**. Automated verification is available through `npm test`, `npm run typecheck`, `npm run build` and `npm run test:e2e`; the browser suite needs Chromium installed with `npx playwright install chromium`.
 
-## Publication check
+## Published version
 
-Before pasting the public description, remove this document's preparation notes and testing sections from the YouTube description if you only want the short public version. Confirm the uploaded film is 3 to 5 minutes, has the intended audible synthetic narration, keeps the synthetic-data labels visible, and contains no recovery keys, personal credentials or unverified deployment claims. After upload, add the real YouTube watch link to Devpost and test it without relying on an existing account session. The GitHub release MP4 is the downloadable copy.
+The public title and description above are retained for reproducibility and future edits. Keep the synthetic-data and synthetic-voice disclosures when updating either platform. The GitHub release MP4 remains the downloadable copy. Publication checks and their scope are recorded in [the receipt](qa/publication.md); publication is complete and no further upload is required for this version.
