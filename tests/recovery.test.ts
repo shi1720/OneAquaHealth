@@ -303,6 +303,9 @@ describe.each(storageKinds)('%s offline recovery', (storageKind) => {
     );
     expect((await reset(account.user.email, account.recoveryKey)).status).toBe(200);
   });
+  // This fixture inserts 10,000 audit rows with the real quota trigger enabled,
+  // exercises three credential operations, and exports the full audit history.
+  // Allow this one integration test extra time on shared PostgreSQL CI runners.
   it('keeps recovery, key regeneration and password changes available at the business audit quota with bounded declared security retention', async () => {
     const account = await register();
     const time = new Date().toISOString();
@@ -353,7 +356,7 @@ describe.each(storageKinds)('%s offline recovery', (storageKind) => {
         ['Account recovered', 'Recovery key replaced', 'Password changed'].includes(e.action ?? ''),
       ),
     ).toHaveLength(3);
-  });
+  }, 20_000);
   it('rate limits recovery failures and cascades key deletion with its account', async () => {
     const account = await register();
     for (let attempt = 0; attempt < 6; attempt++)
