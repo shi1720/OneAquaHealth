@@ -163,3 +163,7 @@ No unresolved P1 defect was established in this bounded final pass. That stateme
 ### Integration follow-up by the implementation lead
 
 The two remaining P3 interface issues above were subsequently corrected: the observation trail now explicitly labels the latest-100 workspace-event window, and resolution availability checks the retained action timestamp against completed recheck evidence. The API still enforces chronology. These edits do not change the reviewer’s score or establish external assurance. Final execution evidence is recorded in [verification](qa/verification.md).
+
+### Final account-recovery follow-up
+
+The implementation subsequently added offline-key account recovery, distinct from email recovery or verified identity. A separate reviewer caught and rechecked fixes for unsaved-key dismissal and recovery being blocked by ordinary-audit exhaustion. Successful security actions now use an explicitly retained latest-100-per-account history; the ordinary decision audit remains intact. Saved-key acknowledgement, rotation, concurrency and session revocation have regression coverage. The remaining identity limitation is email-based recovery/verification, MFA/SSO, additional coordinators, and loss of both password and saved key. This follow-up does not retrospectively change the 78/100 rubric opinion or claim external security assurance.

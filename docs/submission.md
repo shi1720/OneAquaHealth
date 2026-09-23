@@ -10,7 +10,7 @@
 
 **Repository:** [shi1720/OneAquaHealth](https://github.com/shi1720/OneAquaHealth)
 
-> Submission copy. Add the verified public deployment and uploaded video URLs to Devpost after final deployment and recording. Describe testing using the final test report; do not claim a deployed feature or a validation result merely because it appears in the intended API contract.
+> Submission copy. The source repository is public. Public hosting is pending, so no live demo URL is claimed here. A recorded 3:58 walkthrough is ready for Shivam's narration. Add its final uploaded URL and a verified deployment URL to Devpost when available.
 
 ## Inspiration
 
@@ -31,10 +31,10 @@ The workflow connects:
 1. **Observe:** record a site, time, visible signs, flow, clarity, notes, optional photograph, and how certain the observer is.
 2. **Understand:** inspect the reasons for a verification priority and the available evidence. Concern and evidence strength remain distinct.
 3. **Plan:** allocate a fieldwork time budget and inspect selected and deferred checks. Serious signs or unsafe conditions require coordinator or expert handling rather than ordinary volunteer dispatch.
-4. **Review and act:** a coordinator records their judgment; tasks have an owner, due date, and result. Rechecks are tracked as their own tasks.
-5. **Share:** export JSON, CSV, GeoJSON, or an experimental FHIR R4 environmental bundle for further work.
+4. **Review and act:** a coordinator records their judgment; tasks have an owner, due date, and result. Resolution requires a completed recheck after action began. Historical snapshots preserve the rule version, score, evidence tier, and reasons used at each review.
+5. **Share:** export JSON, CSV, GeoJSON, or an experimental FHIR R4 environmental bundle. JSON includes the complete retained audit history. CSV/JSON imports validate the whole batch, require explicit site matching, and keep known synthetic records out of real workspaces.
 
-An isolated demonstration workspace lets judges explore the complete flow immediately. Registering creates a separate workspace for a real programme, without seeding it with fictional observations. Coordinator and volunteer roles support collaborative use.
+An isolated demonstration workspace lets judges explore the complete flow immediately in a running instance. Registering creates an empty workspace for a real programme. Coordinators can add their own monitoring sites or select a location from the optional live OneAquaHealth directory. The directory supplies names and coordinates, not environmental assessments or access permission. Imported locations remain restricted until a coordinator reviews access. Coordinator and volunteer roles support collaborative use.
 
 ## Why One Health
 
@@ -50,11 +50,13 @@ Other products already provide strong data collection and quality review. For ex
 
 ## How it is built
 
-The browser application communicates with an authenticated server API. Workspaces scope their users and data. The API validates mutations and workflow transitions, stores observations and tasks, and records activity. Observation submissions carry an idempotency key; reviews carry a revision so conflicting edits can be detected.
+The React browser application communicates with a Hono API and tenant-scoped SQL storage. The same core supports SQLite, libSQL, and D1 adapters. The API validates mutations and workflow transitions, stores observations and tasks, and records attributed activity. Observation submissions carry an idempotency key; reviews carry a revision so conflicting edits can be detected. Database quotas and uniqueness constraints cover concurrent writes.
 
 The decision engine uses versioned, deterministic rules. The planner selects tasks within the requested budget and returns its explanation. The same inputs and policy version can be inspected and reproduced. No trained model or live generative AI is required, and no paid AI key is needed to use the core workflow.
 
 The priority is an **experimental operational heuristic**, not a probability of pollution or illness. Human reviewers remain responsible for environmental conclusions and response decisions.
+
+The local verification covers both SQLite and libSQL backends and browser scenarios for the complete report-to-recheck flow, account/site setup, imports, mobile drafts, accessibility, and chronology. These software checks do not establish scientific validity, production security certification, or real-world impact. The repository contains the reproducible test commands and current validation details.
 
 Exports preserve data labels and provenance. The FHIR option maps environmental observations to locations; it does not create fictional patient records. It is an experimental base-R4 mapping, not a claim of certification or conformance to the evolving OneAquaHealth implementation guide. [FHIR R4 Observation](https://hl7.org/fhir/R4/observation.html), [OneAquaHealth draft IG](https://build.fhir.org/ig/hl7-eu/oah/downloads.html)
 
@@ -76,7 +78,7 @@ Research also changed the competitive framing. Existing tools already provide fo
 
 ## Limitations and next steps
 
-The demonstration uses explicitly synthetic observations and illustrative context. It shows software behaviour, not an environmental finding, live alert service, or field-validated prediction.
+The demonstration uses six fictional sites and explicitly synthetic observations. It shows software behaviour, not an environmental finding, live alert service, or field-validated prediction. A separate optional directory supplies real OneAquaHealth research locations with source and retrieval time clearly identified.
 
 Next steps are a supervised pilot, review of the prioritisation policy by local environmental professionals, compatibility testing with real partner exports, and validation of the deployment's operational controls. Trained predictive models should only be considered once suitable data and an evaluation design exist.
 

@@ -4,7 +4,7 @@ Rill is a hackathon application for environmental observations. These practices 
 
 ## What the application stores
 
-- Account name, email, role, password hash, workspace and session hashes.
+- Account name, email, role, password hash, workspace, session hashes and (for enrolled real accounts) an offline recovery-key hash. The raw recovery key is not stored in the database.
 - Site coordinates, access instructions, habitat and coordinator estimates.
 - Observation time, visible concerns, uncertainty, field note and optional photo.
 - Review notes, task assignments/results and attributable audit events, including decision-rule snapshots.
@@ -18,6 +18,10 @@ Browser photo upload resizes and re-encodes a supported image, discarding the or
 
 One observation draft is stored in localStorage under the current user ID, retained for up to 24 hours and removed on successful submission or sign-out. It may include a compressed photograph. Do not use a shared device for sensitive notes. A draft may survive a browser crash. Offline draft editing during an open session is supported; full offline sign-in and synchronisation are not claimed.
 
+## Offline recovery keys
+
+A newly issued recovery key is displayed once in browser memory. Rill does not automatically put it in localStorage, sessionStorage, logs, account profiles or workspace exports. Copying or downloading it is an explicit user action: the resulting clipboard entry or file is under the user's control. Store it securely and avoid sharing it. Anyone with the key and account email can replace the passphrase. Recovery consumes the key, issues a replacement and revokes earlier sessions; a separate security-event history records this event without its secret. That history retains the latest 100 events per current account: older security events expire on the next security action, and deleting the account removes its security events. JSON exports include the retained events and this retention policy; ordinary decision audits are not pruned by account security actions. No recovery email is sent and no email ownership is verified. Losing both the passphrase and key leaves no email recovery route.
+
 ## External services
 
 Core features do not call an external AI provider. Fonts and icons are served with the application. Optional OneAquaHealth site lookup contacts only `https://api.enora-oah.eu/api/sites/all` from the server and sends no observation notes or account details. That service receives the hosting server's request metadata. A successful catalogue response is cached for ten minutes; failure is reported instead of substituted with invented data.
@@ -30,4 +34,4 @@ Demonstration workspaces contain synthetic data, expire after 48 hours, and use 
 
 Coordinators can export JSON/CSV/GeoJSON/experimental FHIR. Exports omit authentication material and photograph blobs but contain field notes and task/review names. Review a file before sharing it. The JSON export includes all retained audit events; the on-screen history shows the latest 100.
 
-Deleting a workspace requires the coordinator's current password (except a demo), deletes its members/records, and invalidates associated sessions. Removing a volunteer revokes their account and sessions while retaining the original field/audit record. Hosting backups may retain prior snapshots according to the operator's published policy.
+Deleting a workspace requires the coordinator's current password (except a demo), deletes its members/records, and invalidates associated sessions. Removing a volunteer revokes their account, sessions and recovery-key hash while retaining the original field/audit record. Hosting backups may retain prior snapshots according to the operator's published policy.

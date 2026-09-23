@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { assessObservation, buildFieldPlan, unsafeForVolunteer } from '../shared/engine';
+import {
+  assessObservation,
+  assessWorkspace,
+  buildFieldPlan,
+  unsafeForVolunteer,
+} from '../shared/engine';
 import { seedScenario } from '../shared/seed';
 import type { FieldTask, Observation, Site } from '../shared/types';
 
@@ -11,6 +16,58 @@ function observation(overrides: Partial<Observation> = {}): Observation {
 }
 
 describe('explainable follow-up priority', () => {
+  it('batch assessment preserves single-report output at time, author, signal, and site boundaries', () => {
+    const target = observation({
+      id: 'target',
+      observedAt: now.toISOString(),
+      concerns: ['foam', 'litter'],
+    });
+    const reports = [
+      target,
+      observation({ id: 'same-account', authorId: target.authorId, concerns: ['foam'] }),
+      observation({ id: target.id, authorId: 'duplicate-id', concerns: ['foam'] }),
+      observation({ id: 'matching-foam', authorId: 'matching', concerns: ['foam'] }),
+      observation({ id: 'matching-litter', authorId: 'matching', concerns: ['litter'] }),
+      observation({
+        id: 'boundary',
+        authorId: 'at-48-hours',
+        concerns: ['litter'],
+        observedAt: new Date(now.getTime() - 48 * 3_600_000).toISOString(),
+        status: 'resolved',
+      }),
+      observation({
+        id: 'outside',
+        authorId: 'outside-48-hours',
+        concerns: ['litter'],
+        observedAt: new Date(now.getTime() - 48 * 3_600_000 - 1).toISOString(),
+      }),
+      observation({ id: 'unmatched', authorId: 'unmatched', concerns: ['erosion'] }),
+      observation({
+        id: 'different-site',
+        authorId: 'elsewhere',
+        siteId: seeded.sites[1].id,
+        concerns: ['foam'],
+      }),
+      observation({ id: 'missing-site', siteId: 'not-in-workspace' }),
+    ];
+    const siteMap = new Map(seeded.sites.map((item) => [item.id, item]));
+    const expected = reports
+      .filter((report) => siteMap.has(report.siteId))
+      .map((report) => assessObservation(report, siteMap.get(report.siteId)!, reports, now));
+    expect(assessWorkspace(seeded.sites, reports, now)).toEqual(expected);
+    expect(expected[0].corroboratingCount).toBe(2);
+  });
+  it('rebuilds its batch index after reports change instead of serving cached evidence', () => {
+    const first = observation({ id: 'first', concerns: ['foam'] });
+    const second = observation({ id: 'second', authorId: 'other', concerns: ['foam'] });
+    const reports = [first, second];
+    expect(assessWorkspace([site], reports, now)[0].corroboratingCount).toBe(1);
+    second.concerns = ['clear'];
+    expect(assessWorkspace([site], reports, now)[0].corroboratingCount).toBe(0);
+    second.concerns = ['foam'];
+    second.observedAt = '2026-09-01T10:00:00.000Z';
+    expect(assessWorkspace([site], reports, now)[0].corroboratingCount).toBe(0);
+  });
   it('does not promote clear water or wildlife reports through public access, confidence, or photo', () => {
     const report = observation({
       concerns: ['clear', 'wildlife'],

@@ -9,9 +9,11 @@ A volunteer notices foam below a footbridge. Two others report it too. A coordin
 
 Rill connects that report to a human decision, a budgeted verification plan, an assigned task, and a documented recheck. Visual appearance never becomes a diagnosis of pollution or a statement that water is safe.
 
+[Watch the captioned walkthrough](https://github.com/shi1720/OneAquaHealth/releases/download/v1.0.0/rill-demo-captioned.mp4) · [Submission package](output/README.md) · [Quality checks](https://github.com/shi1720/OneAquaHealth/actions/workflows/ci.yml)
+
 ## Run it in two minutes
 
-Requires Node.js **22.13 or newer** and npm. No paid API, inference service, email service, or model key is required.
+Requires Node.js **22.16 or newer** and npm. No paid API, inference service, email service, or model key is required.
 
 ```sh
 npm ci
@@ -20,7 +22,7 @@ npm run dev
 
 Open **http://localhost:5173** and choose **Explore the live demo**. Every demonstration creates its own isolated workspace with six fictional Coimbra-area sites and eight synthetic observations. No shared demo password or configuration is needed. Demo workspaces expire after 48 hours.
 
-Choose **Create a workspace** for real use. New workspaces start empty: add your own sites or review a location from the optional live OneAquaHealth site directory. Registration uses a password with at least 12 characters. Remember it; email recovery is not connected.
+Choose **Create a workspace** for real use. New workspaces start empty: add your own sites or review a location from the optional live OneAquaHealth site directory. Registration uses a passphrase with at least 12 characters and shows an offline recovery key once. Save it before entering the workspace. **Forgot your passphrase?** accepts your email and saved key, replaces the passphrase, revokes earlier sessions, and issues a replacement key. Existing accounts can generate a key in **Team & settings** after confirming their current passphrase. No email service is needed; losing both the passphrase and key leaves no email recovery path.
 
 For a single local server:
 
@@ -66,7 +68,7 @@ flowchart LR
 - **Frontend:** React 19, TypeScript, Vite, local fonts, original SVG/CSS design, Lucide icons. The demo map is an explicitly illustrative schematic; real workspaces plot their actual site coordinates without inventing a river basemap.
 - **Backend:** Hono + Zod, tenant-scoped SQL, atomic writes, database quotas and uniqueness constraints, persistent rate limits, optimistic review revisions, and an attributable audit trail.
 - **Storage:** Node's built-in SQLite for a persistent single-node deployment; optional Turso **libSQL** remote storage; Cloudflare Worker + D1 as another deployable target. The same decision engine serves each.
-- **Security:** unique salted password hashes, random sessions stored as hashes, HttpOnly/SameSite cookies, Secure production cookies, origin checks, bounded requests, photo access controls, and role enforcement. See [security boundaries](SECURITY.md).
+- **Security:** unique salted password hashes, single-use offline recovery keys stored only as hashes, random sessions stored as hashes, HttpOnly/SameSite cookies, Secure production cookies, origin checks, bounded requests, photo access controls, and role enforcement. See [security boundaries](SECURITY.md).
 
 No observations, images, notes, or user data are sent to an external LLM. The optional site-directory lookup sends no observation payloads. Core workflows continue if that upstream is unavailable.
 
@@ -81,14 +83,14 @@ npm run test:e2e       # builds and starts its own isolated server
 npm audit
 ```
 
-Backend tests cover auth, tenant/role boundaries, CSRF, quota and race conditions, safe planning, optimal allocation versus exhaustive enumeration, lifecycle chronology, imports, exports, and deletion. Browser tests exercise the entire report-to-recheck flow, real registration/site setup/login, mobile drafts, keyboard focus, and accessibility checks. Automated checks are not a substitute for field validation or a full security assessment.
+Backend tests cover auth and atomic recovery/session revocation, tenant/role boundaries, CSRF, quota and race conditions, safe planning, optimal allocation versus exhaustive enumeration, lifecycle chronology, imports, exports, and deletion. Ten browser scenarios exercise the report-to-recheck flow, real registration/site setup/login/recovery, administration, imports, mobile drafts, keyboard focus, and accessibility checks. Automated checks are not a substitute for field validation or a full security assessment.
 
 ```sh
 RILL_SMOKE_ORIGIN=http://localhost:8787 npx tsx server/smoke.ts
 RILL_TEST_STORAGE=libsql npm test
 ```
 
-The smoke script creates and deletes disposable test workspaces. Read [the final verification record](docs/qa/verification.md) for the actual checks run and their scope.
+The smoke script creates and deletes disposable test workspaces. A [reproducible engine benchmark](docs/qa/engine-performance.md) compares unchanged outputs at the documented 2,000-report limit; it is a local computation measurement, not a cloud throughput claim. Read [the final verification record](docs/qa/verification.md) for the actual checks run and their scope.
 
 ## Deploy
 
@@ -102,10 +104,13 @@ docker run --rm -p 8787:8787 -v rill-data:/app/data \
 
 Use HTTPS, `NODE_ENV=production`, the exact public `APP_ORIGIN`, and a tested backup/restore procedure for a real deployment. A free service may have request, storage, or sleep limits. Remote hosting and any outstanding account actions are tracked in the deployment document.
 
+For a verified local SQLite snapshot, run `npm run backup -- backups/rill-2026-09-23.sqlite`. The command includes committed WAL data, checks the snapshot, and refuses to overwrite an existing file. Protect backups as private account data and rehearse your host’s restore procedure.
+
 ## Submission package
 
 - [Devpost-ready project description](docs/submission.md)
 - [Word-for-word video narration and shot list](docs/demo-script.md)
+- [Answers for the judging conversation](docs/judge-questions.md)
 - [Research, competitors, and commercial assumptions](docs/research/product-research.md)
 - [Decision methodology](docs/methodology.md)
 - [Architecture and API](docs/API-CONTRACT.md)
@@ -119,7 +124,7 @@ Use HTTPS, `NODE_ENV=production`, the exact public `APP_ORIGIN`, and a tested ba
 
 ## Honest scope
 
-This is a working, hardened pilot application, not a clinically validated or independently audited production service. Password recovery, verified email identity, MFA, full offline synchronisation, external notifications, formal OAH/FHIR profile conformance, laboratory integration, and real-world outcome validation are not claimed. Commercial pricing and impact are hypotheses. [Backend operations](server/README.md) describes exact quotas, account lifecycle, deployment differences, and retention.
+This is a working, hardened pilot application, not a clinically validated or independently audited production service. Recovery without a saved key, verified email identity, MFA, full offline synchronisation, external notifications, formal OAH/FHIR profile conformance, laboratory integration, and real-world outcome validation are not claimed. Commercial pricing and impact are hypotheses. [Backend operations](server/README.md) describes exact quotas, account lifecycle, deployment differences, and retention.
 
 ## Credits and licence
 

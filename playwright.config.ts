@@ -1,5 +1,9 @@
 import { defineConfig } from '@playwright/test';
 
+// Playwright's automatic failure DOM can include one-time recovery keys.
+// Keep source diagnostics, but omit its copy-prompt/page-snapshot attachment.
+process.env.PLAYWRIGHT_NO_COPY_PROMPT = '1';
+
 const externalTarget = process.env.RILL_E2E_URL;
 const baseURL = externalTarget || 'http://localhost:8790';
 // Each local run owns a fresh database; repeated QA must not consume the

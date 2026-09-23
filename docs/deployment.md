@@ -18,7 +18,7 @@ APP_ORIGIN=https://your-real-hostname.example \
 DATABASE_PATH=/persistent/rill.sqlite npm start
 ```
 
-The host must run Node 22.13+ and terminate HTTPS. The server listens on `PORT` (8787 by default). Preserve `/persistent` across deployments. `/api/health` is suitable for a host health check. Use an operator-managed reverse proxy and configure edge request limits before a large public rollout. The API's default socket-based rate limit does not trust arbitrary forwarded IP headers.
+The host must run Node 22.16+ and terminate HTTPS. The server listens on `PORT` (8787 by default). Preserve `/persistent` across deployments. `/api/health` is suitable for a host health check. Use an operator-managed reverse proxy and configure edge request limits before a large public rollout. The API's default socket-based rate limit does not trust arbitrary forwarded IP headers.
 
 The Dockerfile builds the actual client and serves it with the same API. Mount `/app/data` as a persistent volume. The example in the main README uses development cookies only for localhost; public deployments require production mode.
 
@@ -67,7 +67,19 @@ Cloudflare's native PBKDF2 cap means this target uses 100,000 iterations, while 
 
 ## Backups and recovery
 
-For SQLite, use its online backup facility or a consistent volume snapshot. Copying only a live `.sqlite` file can miss WAL data. For libSQL/D1, follow the chosen provider's backup and restore procedures and rehearse recovery using non-production records.
+For local SQLite, the supplied command uses Node’s online SQLite backup API, writes a private snapshot, refuses to overwrite existing files, and runs `quick_check` before declaring success. It includes committed WAL records while the source remains open. The recovery test opens that standalone snapshot and checks its records and integrity. [Node SQLite backup API](https://nodejs.org/download/release/v22.16.0/docs/api/sqlite.html)
+
+```sh
+npm run backup -- backups/rill-2026-09-23.sqlite
+# For a custom live database:
+DATABASE_PATH=/persistent/rill.sqlite npm run backup -- /private-backups/rill-2026-09-23.sqlite
+```
+
+A database snapshot contains private observations and authentication records. Keep it out of the repository, encrypt/protect external copies, and apply a retention schedule. The command does not configure offsite storage or claim disaster recovery has been rehearsed on your host.
+
+To rehearse a restore, start a separate instance against a copy of the snapshot on a different port and verify expected records. Never overwrite a running database or copy only its main file while WAL writes are in flight. For a real recovery, stop the old instance, preserve the original files, point `DATABASE_PATH` at the restored file, revoke restored sessions, review whether credential rotations/deletions occurred after the snapshot, and verify the service before reopening access. A rollback can restore old credentials or previously deleted records; an operator must reconcile them.
+
+For libSQL/D1, use the provider’s backup and restore procedures and rehearse recovery using non-production records. The local backup command deliberately refuses remote-database configuration.
 
 The account deletion endpoint permanently removes the active workspace database records. Operator/provider backups can outlive deletion; publish that retention policy. Demonstration workspaces expire after 48 hours. Real observations do not yet have automatic retention or archive jobs.
 

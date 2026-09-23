@@ -1,0 +1,23 @@
+{
+  "capturedAt": "2026-09-23T04:26:48.003Z",
+  "origin": "http://127.0.0.1:5182",
+  "synthetic": true,
+  "observationId": "48f411cd-4bbc-4794-8eb8-1656124e214a",
+  "status": "resolved",
+  "tasks": [
+    {
+      "id": "49bb0a79-d70b-4d10-b2b6-b0836953e957",
+      "kind": "recheck",
+      "status": "completed",
+      "result": "Demo recheck: visible litter is no longer present in this fictional scenario. Water quality and contact safety remain unknown."
+    },
+    {
+      "id": "7c69b99d-5751-4d56-b815-49f79a6d426e",
+      "kind": "verify",
+      "status": "completed",
+      "result": "Demo verification: visible litter confirmed from the public path. No entry to the water and no materials handled."
+    }
+  ],
+  "bundle": "demo-fhir-bundle.json",
+  "browserErrors": []
+}

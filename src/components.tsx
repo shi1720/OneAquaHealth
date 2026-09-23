@@ -95,16 +95,20 @@ export function Modal({
   children,
   onClose,
   wide = false,
+  closeDisabled = false,
 }: {
   title: string;
   subtitle?: string;
   children: ReactNode;
   onClose: () => void;
   wide?: boolean;
+  closeDisabled?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null),
     closeRef = useRef(onClose);
-  closeRef.current = onClose;
+  closeRef.current = () => {
+    if (!closeDisabled) onClose();
+  };
   useEffect(() => {
     const previous = document.activeElement as HTMLElement;
     const old = document.body.style.overflow;
@@ -142,7 +146,7 @@ export function Modal({
     <div
       className="modal-backdrop"
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget && !closeDisabled) onClose();
       }}
     >
       <div
@@ -159,7 +163,12 @@ export function Modal({
             <h2>{title}</h2>
             {subtitle && <p>{subtitle}</p>}
           </div>
-          <button className="icon-button" onClick={onClose} aria-label="Close dialog">
+          <button
+            className="icon-button"
+            onClick={onClose}
+            disabled={closeDisabled}
+            aria-label="Close dialog"
+          >
             <X size={21} />
           </button>
         </div>

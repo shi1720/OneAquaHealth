@@ -13,6 +13,7 @@ import type {
 } from '../shared/types';
 import {
   assessObservation,
+  assessWorkspace,
   buildFieldPlan,
   ENGINE_VERSION,
   unsafeForVolunteer,
@@ -22,7 +23,9 @@ import type { SQLStatement, Storage } from './storage';
 import {
   DUMMY_HASH,
   hashPassword,
+  newRecoveryKey,
   randomToken,
+  recoveryKeyHash,
   sha256,
   validPhoto,
   verifyPassword,
@@ -268,6 +271,28 @@ function auditStatement(
     params: [event.id, workspaceId, JSON.stringify(event), now],
   };
 }
+/** Security events have declared rolling retention; business audit quotas cannot lock accounts out. */
+function securityStatements(
+  userId: string,
+  workspaceId: string,
+  actorName: string,
+  action: string,
+  detail: string,
+  time: string,
+): SQLStatement[] {
+  const id = crypto.randomUUID();
+  const event: AuditEvent = { id, entityId: userId, actorName, action, detail, createdAt: time };
+  return [
+    {
+      sql: 'INSERT INTO security_events(id,user_id,workspace_id,payload,created_at) SELECT ?,?,?,?,? WHERE changes()=1',
+      params: [id, userId, workspaceId, JSON.stringify(event), time],
+    },
+    {
+      sql: 'DELETE FROM security_events WHERE user_id=? AND id NOT IN (SELECT id FROM security_events WHERE user_id=? ORDER BY created_at DESC,rowid DESC LIMIT 100) AND EXISTS(SELECT 1 FROM security_events WHERE id=?)',
+      params: [userId, userId, id],
+    },
+  ];
+}
 const USER_SELECT =
   'SELECT u.*, w.name AS workspace_name, w.is_demo, w.scenario_date FROM users u JOIN workspaces w ON w.id=u.workspace_id';
 export function createApp(storage: Storage, options: AppOptions = {}) {
@@ -306,7 +331,10 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   const workspace = async (
     user: User,
     scenarioDate: string | null,
-    fullAudit = false,
+    {
+      fullAudit = false,
+      includeAssessments = true,
+    }: { fullAudit?: boolean; includeAssessments?: boolean } = {},
   ): Promise<WorkspaceData> => {
     const [sites, observations, tasks, activity] = await Promise.all([
       readRecords<Site>('sites', user.workspaceId, MAX_SITES),
@@ -333,18 +361,13 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
             .then((rows) => rows.map((row) => JSON.parse(row.payload) as AuditEvent))
         : readRecords<AuditEvent>('audits', user.workspaceId, 100),
     ]);
-    const siteMap = new Map(sites.map((site) => [site.id, site]));
     return {
       user,
       sites,
       observations,
       tasks,
       activity,
-      assessments: observations
-        .filter((observation) => siteMap.has(observation.siteId))
-        .map((observation) =>
-          assessObservation(observation, siteMap.get(observation.siteId)!, observations, now()),
-        ),
+      assessments: includeAssessments ? assessWorkspace(sites, observations, now()) : [],
       engineVersion: ENGINE_VERSION,
       scenarioDate,
     };
@@ -360,16 +383,39 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
     ]);
     if ((row?.hits ?? 0) > maximum) fail(429, 'Too many requests. Please try again later.');
   };
-  const openSession = async (c: Context, userId: string, demo: boolean) => {
-    const token = randomToken();
+  const openSession = async (
+    c: Context,
+    userId: string,
+    demo: boolean,
+    verifiedPasswordHash?: string,
+  ) => {
+    const token = randomToken(),
+      tokenHash = await sha256(token);
     const expires = new Date(now().getTime() + (demo ? 24 * 3_600_000 : SESSION_MS));
     const prior = getCookie(c, SESSION_COOKIE);
-    if (prior) await storage.run('DELETE FROM sessions WHERE token_hash=?', [await sha256(prior)]);
-    await storage.run('INSERT INTO sessions(token_hash,user_id,expires_at) VALUES(?,?,?)', [
-      await sha256(token),
-      userId,
-      expires.toISOString(),
+    // Recheck the exact credential inside the session transaction: an in-flight
+    // login must not revive access after recovery or password rotation changed it.
+    const result = await storage.batch([
+      verifiedPasswordHash
+        ? {
+            sql: 'INSERT INTO sessions(token_hash,user_id,expires_at) SELECT ?,?,? WHERE EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=?)',
+            params: [tokenHash, userId, expires.toISOString(), userId, verifiedPasswordHash],
+          }
+        : {
+            sql: 'INSERT INTO sessions(token_hash,user_id,expires_at) VALUES(?,?,?)',
+            params: [tokenHash, userId, expires.toISOString()],
+          },
+      ...(prior
+        ? [
+            {
+              sql: 'DELETE FROM sessions WHERE token_hash=? AND EXISTS(SELECT 1 FROM sessions WHERE token_hash=?)',
+              params: [await sha256(prior), tokenHash],
+            },
+          ]
+        : []),
     ]);
+    if (!result[0].changes)
+      fail(401, 'Your account security changed. Sign in again with the current password.');
     setCookie(c, SESSION_COOKIE, token, {
       httpOnly: true,
       secure,
@@ -449,7 +495,10 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
       500,
     );
   });
-  app.get('/api/health', (c) => c.json({ status: 'ok', version: '1.0.0', storage: storage.kind }));
+  app.get('/api/health', async (c) => {
+    await storage.get('SELECT 1 AS ok');
+    return c.json({ status: 'ok', version: '1.0.0', storage: storage.kind });
+  });
   app.use('/api/auth/*', async (c, next) => {
     if (c.req.method === 'POST') {
       const ip = options.clientIP?.(c) ?? 'local';
@@ -519,6 +568,8 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
       isDemo: false,
     };
     const encoded = await hashPassword(input.password, passwordIterations);
+    const recoveryKey = newRecoveryKey();
+    const recoveryHash = await recoveryKeyHash(recoveryKey);
     try {
       await storage.batch([
         {
@@ -528,6 +579,10 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
         {
           sql: 'INSERT INTO users(id,workspace_id,email,name,role,password_hash,created_at) VALUES(?,?,?,?,?,?,?)',
           params: [userId, workspaceId, input.email, input.name, 'coordinator', encoded, time],
+        },
+        {
+          sql: 'INSERT INTO recovery_keys(user_id,key_hash,created_at) VALUES(?,?,?)',
+          params: [userId, recoveryHash, time],
         },
         auditStatement(
           workspaceId,
@@ -543,8 +598,73 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
         fail(409, 'An account already uses that email. Sign in instead.');
       throw error;
     }
-    await openSession(c, userId, false);
-    return c.json({ user }, 201);
+    await openSession(c, userId, false, encoded);
+    return c.json({ user, recoveryKey }, 201);
+  });
+  app.post('/api/auth/recover', async (c) => {
+    const input = await body(
+      c,
+      z.object({ email, recoveryKey: z.string().max(160), newPassword: password }).strict(),
+    );
+    await limit(`recover-ip:${await sha256(options.clientIP?.(c) ?? 'local')}`, 8, 15 * 60_000);
+    await limit(`recover-email:${await sha256(input.email)}`, 6, 15 * 60_000);
+    const oldHash = await recoveryKeyHash(input.recoveryKey);
+    const row = await storage.get<UserRow>(
+      `${USER_SELECT} JOIN recovery_keys r ON r.user_id=u.id WHERE u.email=? AND r.key_hash=? AND w.is_demo=0 AND u.password_hash IS NOT NULL`,
+      [input.email, oldHash],
+    );
+    const invalid = () =>
+      fail(
+        401,
+        'The email and recovery key could not be verified. The key may be incorrect, replaced, or already used.',
+      );
+    if (!row) return invalid();
+    const encoded = await hashPassword(input.newPassword, passwordIterations);
+    const recoveryKey = newRecoveryKey(),
+      replacementHash = await recoveryKeyHash(recoveryKey);
+    const token = randomToken(),
+      tokenHash = await sha256(token);
+    const expires = new Date(now().getTime() + SESSION_MS),
+      time = timestamp();
+    const guard = 'EXISTS(SELECT 1 FROM recovery_keys WHERE user_id=? AND key_hash=?)';
+    // The first compare-and-swap consumes the old key. Every subsequent write is
+    // guarded by this request's unique replacement digest, all in one transaction.
+    // Concurrent requests using the old secret therefore cannot both succeed.
+    const result = await storage.batch([
+      {
+        sql: 'UPDATE recovery_keys SET key_hash=?,created_at=? WHERE user_id=? AND key_hash=?',
+        params: [replacementHash, time, row.id, oldHash],
+      },
+      {
+        sql: `UPDATE users SET password_hash=? WHERE id=? AND ${guard}`,
+        params: [encoded, row.id, row.id, replacementHash],
+      },
+      ...securityStatements(
+        row.id,
+        row.workspace_id,
+        row.name,
+        'Account recovered',
+        'Offline recovery key consumed and replaced. Password replaced; all previous sessions revoked. No email ownership or identity verification is asserted.',
+        time,
+      ),
+      {
+        sql: `DELETE FROM sessions WHERE user_id=? AND ${guard}`,
+        params: [row.id, row.id, replacementHash],
+      },
+      {
+        sql: `INSERT INTO sessions(token_hash,user_id,expires_at) SELECT ?,?,? WHERE ${guard}`,
+        params: [tokenHash, row.id, expires.toISOString(), row.id, replacementHash],
+      },
+    ]);
+    if (!result[0].changes) return invalid();
+    setCookie(c, SESSION_COOKIE, token, {
+      httpOnly: true,
+      secure,
+      sameSite: 'Lax',
+      path: '/',
+      expires,
+    });
+    return c.json({ user: safeUser(row), recoveryKey });
   });
   app.post('/api/auth/login', async (c) => {
     const input = await body(c, loginSchema);
@@ -553,7 +673,7 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
     const dummy = DUMMY_HASH.replace('$600000$', `$${passwordIterations}$`);
     const valid = await verifyPassword(input.password, row?.password_hash ?? dummy);
     if (!row || !row.password_hash || !valid) fail(401, 'Email or password is incorrect.');
-    await openSession(c, row.id, Boolean(row.is_demo));
+    await openSession(c, row.id, Boolean(row.is_demo), row.password_hash);
     return c.json({ user: safeUser(row) });
   });
   app.post('/api/auth/logout', async (c) => {
@@ -581,6 +701,46 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   app.get('/api/workspace', async (c) =>
     c.json(await workspace(c.get('user'), c.get('userRow').scenario_date)),
   );
+  app.post('/api/auth/recovery-key', async (c) => {
+    const input = await body(c, z.object({ currentPassword: z.string().min(1).max(128) }).strict());
+    const user = c.get('user'),
+      row = c.get('userRow');
+    if (user.isDemo || !row.password_hash)
+      fail(
+        422,
+        'Demo accounts cannot use recovery keys. Create a real workspace for account security controls.',
+      );
+    await limit(`recovery-key:${user.id}`, 6, 15 * 60_000);
+    if (!(await verifyPassword(input.currentPassword, row.password_hash)))
+      fail(403, 'Your current password is incorrect.');
+    const prior = await storage.get<{ key_hash: string }>(
+      'SELECT key_hash FROM recovery_keys WHERE user_id=?',
+      [user.id],
+    );
+    const recoveryKey = newRecoveryKey(),
+      replacementHash = await recoveryKeyHash(recoveryKey),
+      time = timestamp();
+    const result = await storage.batch([
+      {
+        sql: 'INSERT INTO recovery_keys(user_id,key_hash,created_at) SELECT ?,?,? WHERE EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=?) ON CONFLICT(user_id) DO UPDATE SET key_hash=excluded.key_hash,created_at=excluded.created_at WHERE recovery_keys.key_hash=?',
+        params: [user.id, replacementHash, time, user.id, row.password_hash, prior?.key_hash ?? ''],
+      },
+      ...securityStatements(
+        user.id,
+        user.workspaceId,
+        user.name,
+        'Recovery key replaced',
+        'Previous recovery key invalidated after current-password confirmation. New secret shown once; only its hash is retained.',
+        time,
+      ),
+    ]);
+    if (!result[0].changes)
+      fail(
+        409,
+        'Your account security changed during this request. Try again after signing in with the current password.',
+      );
+    return c.json({ recoveryKey });
+  });
   app.post('/api/auth/password', async (c) => {
     const input = await body(
       c,
@@ -607,14 +767,13 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
         sql: 'UPDATE users SET password_hash=? WHERE id=? AND workspace_id=? AND password_hash=?',
         params: [encoded, user.id, user.workspaceId, row.password_hash],
       },
-      auditStatement(
+      ...securityStatements(
+        user.id,
         user.workspaceId,
         user.name,
-        user.id,
         'Password changed',
         'All previous sessions invalidated; the requesting browser receives a new session.',
         timestamp(),
-        true,
       ),
       {
         sql: 'DELETE FROM sessions WHERE user_id=? AND EXISTS(SELECT 1 FROM users WHERE id=? AND password_hash=?)',
@@ -626,7 +785,7 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
         409,
         'Your account changed while this request was processed. Sign in again before changing the password.',
       );
-    await openSession(c, user.id, false);
+    await openSession(c, user.id, false, encoded);
     return c.json({ ok: true });
   });
   app.get('/api/catalog/oneaquahealth', async (c) => {
@@ -1310,7 +1469,9 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
   });
   app.post('/api/plan', async (c) => {
     const input = await body(c, budgetSchema),
-      data = await workspace(c.get('user'), c.get('userRow').scenario_date);
+      data = await workspace(c.get('user'), c.get('userRow').scenario_date, {
+        includeAssessments: false,
+      });
     return c.json(
       buildFieldPlan(data.sites, data.observations, data.tasks, input.budgetMinutes, now()),
     );
@@ -1319,7 +1480,7 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
     coordinator(c);
     const input = await body(c, budgetSchema),
       user = c.get('user'),
-      data = await workspace(user, c.get('userRow').scenario_date);
+      data = await workspace(user, c.get('userRow').scenario_date, { includeAssessments: false });
     const plan = buildFieldPlan(
       data.sites,
       data.observations,
@@ -1406,7 +1567,9 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
     const format = c.req.query('format') ?? 'json';
     if (!['json', 'csv', 'geojson', 'fhir'].includes(format))
       fail(422, 'Choose json, csv, geojson, or fhir export.');
-    const data = await workspace(c.get('user'), c.get('userRow').scenario_date, true);
+    const data = await workspace(c.get('user'), c.get('userRow').scenario_date, {
+      fullAudit: true,
+    });
     c.header(
       'Content-Disposition',
       `attachment; filename="rill-${data.user.isDemo ? 'synthetic-demo' : 'workspace'}-${timestamp().slice(0, 10)}.${format === 'fhir' ? 'fhir.json' : format}"`,
@@ -1418,7 +1581,17 @@ export function createApp(storage: Storage, options: AppOptions = {}) {
         ? exportFHIR(data, now())
         : format === 'geojson'
           ? exportGeoJSON(data, now())
-          : exportJSON(data, now());
+          : {
+              ...exportJSON(data, now()),
+              securityEvents: (
+                await storage.all<{ payload: string }>(
+                  'SELECT payload FROM security_events WHERE workspace_id=? ORDER BY created_at DESC,rowid DESC',
+                  [data.user.workspaceId],
+                )
+              ).map((row) => JSON.parse(row.payload) as AuditEvent),
+              securityEventRetention:
+                'Latest 100 security events per current account; older security events expire on the next security action. Account deletion removes its security events. Ordinary decision audits are not pruned.',
+            };
     return c.body(JSON.stringify(result, null, 2), 200, {
       'Content-Type':
         format === 'fhir'

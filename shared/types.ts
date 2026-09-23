@@ -20,6 +20,11 @@ export interface User {
   workspaceName: string;
   isDemo: boolean;
 }
+/** Secret is returned only when newly issued, never by profile/workspace endpoints. */
+export interface RecoveryAuthResult {
+  user: User;
+  recoveryKey: string;
+}
 export interface Site {
   id: string;
   name: string;

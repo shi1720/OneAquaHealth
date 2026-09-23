@@ -1,0 +1,1317 @@
+{
+  "resourceType": "Bundle",
+  "id": "c563b587-546f-4564-b5fe-b9cde1009969",
+  "type": "collection",
+  "timestamp": "2026-09-23T04:26:16.632Z",
+  "meta": {
+    "tag": [
+      {
+        "system": "https://rill.example/CodeSystem/data-label",
+        "code": "synthetic-demo",
+        "display": "Synthetic demonstration data"
+      },
+      {
+        "system": "https://rill.example/CodeSystem/mapping-status",
+        "code": "experimental-base-r4",
+        "display": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+      }
+    ]
+  },
+  "entry": [
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "workspace",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "name": "Coimbra field team · demo",
+        "active": true
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-footbridge",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Willow footbridge",
+        "description": "Fictional urban stream reach beside a busy walking route.",
+        "position": {
+          "longitude": -8.4291,
+          "latitude": 40.2056
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-market",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-market",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Market culvert",
+        "description": "Fictional road-drain outlet viewed from a public pavement.",
+        "position": {
+          "longitude": -8.4295,
+          "latitude": 40.2101
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-meadow",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-meadow",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Meadow bend",
+        "description": "Fictional slower-water reach alongside a meadow trail.",
+        "position": {
+          "longitude": -8.4178,
+          "latitude": 40.1957
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-playground",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-playground",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Riverside playground",
+        "description": "Fictional small tributary near a family recreation area.",
+        "position": {
+          "longitude": -8.4235,
+          "latitude": 40.2007
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-school",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-school",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "School rain garden",
+        "description": "Fictional rain-garden overflow visible from a public path.",
+        "position": {
+          "longitude": -8.4222,
+          "latitude": 40.2181
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-upstream",
+      "resource": {
+        "resourceType": "Location",
+        "id": "site-upstream",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "active",
+        "mode": "instance",
+        "name": "Upstream gardens",
+        "description": "Fictional upstream comparison point along a garden path.",
+        "position": {
+          "longitude": -8.417,
+          "latitude": 40.2139
+        },
+        "managingOrganization": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "48f411cd-4bbc-4794-8eb8-1656124e214a",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "48f411cd-4bbc-4794-8eb8-1656124e214a"
+          }
+        ],
+        "status": "final",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-playground"
+        },
+        "effectiveDateTime": "2026-09-23T04:23:18.626Z",
+        "issued": "2026-09-23T04:23:51.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "litter",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "resolved"
+          }
+        ],
+        "note": [
+          {
+            "text": "Demo observation: bottles and wrappers beside the stream. Observed from the public path; nothing touched."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-48f411cd-4bbc-4794-8eb8-1656124e214a",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-48f411cd-4bbc-4794-8eb8-1656124e214a",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a"
+          }
+        ],
+        "recorded": "2026-09-23T04:23:51.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "b4a066c5-ef0b-4be9-9264-fea51cba23b6"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-3",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-foam-3",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-foam-3"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge"
+        },
+        "effectiveDateTime": "2026-09-23T03:53:05.653Z",
+        "issued": "2026-09-23T03:53:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "foam",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "fairly_sure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "Small foam patches remain in the sheltered pool. Reported from the public bridge; source unknown."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-foam-3",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-foam-3",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-3"
+          }
+        ],
+        "recorded": "2026-09-23T03:53:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-inês"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-2",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-foam-2",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-foam-2"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge"
+        },
+        "effectiveDateTime": "2026-09-23T03:23:05.653Z",
+        "issued": "2026-09-23T03:23:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "foam",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "fairly_sure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "Foam still visible at the same bend on my lunchtime walk. No approach to the water."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-foam-2",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-foam-2",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-2"
+          }
+        ],
+        "recorded": "2026-09-23T03:23:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-miguel"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-upstream",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-upstream",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-upstream"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-upstream"
+        },
+        "effectiveDateTime": "2026-09-23T02:53:05.653Z",
+        "issued": "2026-09-23T02:53:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "clear, wildlife",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "clear"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "fairly_sure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "No visible foam at the garden reach. A bird was feeding along the bank. A visual baseline only; water safety was not measured."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-upstream",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-upstream",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-upstream"
+          }
+        ],
+        "recorded": "2026-09-23T02:53:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-miguel"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-1",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-foam-1",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-foam-1"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-footbridge"
+        },
+        "effectiveDateTime": "2026-09-23T02:23:05.653Z",
+        "issued": "2026-09-23T02:23:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "foam",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "A line of white foam collected below the footbridge this morning. I watched from the path. I cannot tell whether it is natural."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-foam-1",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-foam-1",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-1"
+          }
+        ],
+        "recorded": "2026-09-23T02:23:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-ana"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-cloudy",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-cloudy",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-cloudy"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-market"
+        },
+        "effectiveDateTime": "2026-09-23T01:23:05.653Z",
+        "issued": "2026-09-23T01:23:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "discoloration",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "cloudy"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "Water looked brown after overnight rain. This could be sediment; I cannot establish a cause. Photo not available."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-cloudy",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-cloudy",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-cloudy"
+          }
+        ],
+        "recorded": "2026-09-23T01:23:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-joão"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-litter",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-litter",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-litter"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-playground"
+        },
+        "effectiveDateTime": "2026-09-23T00:23:05.653Z",
+        "issued": "2026-09-23T00:23:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "litter",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "fairly_sure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "Several bottles and wrappers collected along the bank after a busy weekend. I left them untouched and stayed on the path."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-litter",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-litter",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-litter"
+          }
+        ],
+        "recorded": "2026-09-23T00:23:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-leila"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-erosion",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-erosion",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-erosion"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-school"
+        },
+        "effectiveDateTime": "2026-09-22T06:23:05.653Z",
+        "issued": "2026-09-22T06:23:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "erosion",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "unsure"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "steady"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "fairly_sure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "A small bare patch on the outer bank appears larger than on my last walk. Observation from the public path only."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-erosion",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-erosion",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-erosion"
+          }
+        ],
+        "recorded": "2026-09-22T06:23:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-leila"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-meadow",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "obs-meadow",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "system": "https://rill.example/observation",
+            "value": "obs-meadow"
+          }
+        ],
+        "status": "preliminary",
+        "code": {
+          "text": "Citizen visual freshwater observation"
+        },
+        "subject": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Location/site-meadow"
+        },
+        "effectiveDateTime": "2026-09-22T02:23:05.653Z",
+        "issued": "2026-09-22T02:23:05.653Z",
+        "method": {
+          "text": "Unaided citizen observation from public access; not a laboratory assay"
+        },
+        "valueString": "wildlife",
+        "component": [
+          {
+            "code": {
+              "text": "Visual clarity"
+            },
+            "valueString": "clear"
+          },
+          {
+            "code": {
+              "text": "Observed flow"
+            },
+            "valueString": "slow"
+          },
+          {
+            "code": {
+              "text": "Self-reported observer confidence"
+            },
+            "valueString": "fairly_sure"
+          },
+          {
+            "code": {
+              "text": "Operational review state"
+            },
+            "valueString": "new"
+          }
+        ],
+        "note": [
+          {
+            "text": "Dragonflies seen from the meadow trail. No species identification attempted and no disturbance of the reeds."
+          },
+          {
+            "text": "Experimental environmental mapping using base FHIR R4 resources. Not validated against the draft OneAquaHealth implementation guide and no conformance is claimed. Visual citizen observations are not clinical diagnoses or water-safety determinations."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Provenance/prov-obs-meadow",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "prov-obs-meadow",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "target": [
+          {
+            "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-meadow"
+          }
+        ],
+        "recorded": "2026-09-22T02:23:05.653Z",
+        "activity": {
+          "text": "Citizen submission recorded by Rill"
+        },
+        "agent": [
+          {
+            "type": {
+              "text": "Author"
+            },
+            "who": {
+              "identifier": {
+                "system": "https://rill.example/observer-pseudonym",
+                "value": "scenario-ana"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/2d52a52a-efdf-40f2-be16-d44010a7bebc",
+      "resource": {
+        "resourceType": "Task",
+        "id": "2d52a52a-efdf-40f2-be16-d44010a7bebc",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "requested",
+        "intent": "order",
+        "code": {
+          "text": "verify"
+        },
+        "description": "Verify Market culvert from the public path",
+        "focus": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-cloudy"
+        },
+        "authoredOn": "2026-09-23T04:25:04.613Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T04:25:04.613Z"
+          }
+        }
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/49bb0a79-d70b-4d10-b2b6-b0836953e957",
+      "resource": {
+        "resourceType": "Task",
+        "id": "49bb0a79-d70b-4d10-b2b6-b0836953e957",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "completed",
+        "intent": "order",
+        "code": {
+          "text": "recheck"
+        },
+        "description": "Recheck Riverside playground",
+        "focus": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a"
+        },
+        "authoredOn": "2026-09-23T04:25:38.695Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T11:00:00.000Z"
+          }
+        },
+        "output": [
+          {
+            "type": {
+              "text": "Recorded field result"
+            },
+            "valueString": "Demo recheck: visible litter is no longer present in this fictional scenario. Water quality and contact safety remain unknown."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/7c69b99d-5751-4d56-b815-49f79a6d426e",
+      "resource": {
+        "resourceType": "Task",
+        "id": "7c69b99d-5751-4d56-b815-49f79a6d426e",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "completed",
+        "intent": "order",
+        "code": {
+          "text": "verify"
+        },
+        "description": "Verify Riverside playground from the public path",
+        "focus": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/48f411cd-4bbc-4794-8eb8-1656124e214a"
+        },
+        "authoredOn": "2026-09-23T04:25:04.613Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T04:25:04.613Z"
+          }
+        },
+        "output": [
+          {
+            "type": {
+              "text": "Recorded field result"
+            },
+            "valueString": "Demo verification: visible litter confirmed from the public path. No entry to the water and no materials handled."
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Task/b8f2f7ae-8afd-482c-91e2-c4c8a78ef57f",
+      "resource": {
+        "resourceType": "Task",
+        "id": "b8f2f7ae-8afd-482c-91e2-c4c8a78ef57f",
+        "meta": {
+          "tag": [
+            {
+              "system": "https://rill.example/CodeSystem/data-label",
+              "code": "synthetic-demo",
+              "display": "Synthetic demonstration data"
+            }
+          ]
+        },
+        "status": "requested",
+        "intent": "order",
+        "code": {
+          "text": "verify"
+        },
+        "description": "Verify Willow footbridge from the public path",
+        "focus": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Observation/obs-foam-3"
+        },
+        "authoredOn": "2026-09-23T04:25:04.613Z",
+        "requester": {
+          "reference": "https://rill.example/fhir/11b4c451-528e-477d-9940-87f706483bc6/Organization/workspace"
+        },
+        "restriction": {
+          "period": {
+            "end": "2026-09-24T04:25:04.613Z"
+          }
+        }
+      }
+    }
+  ]
+}

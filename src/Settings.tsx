@@ -18,9 +18,10 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import type { WorkspaceData, Site, User } from '../shared/types';
-import { api } from './api';
+import { api, client } from './api';
 import { Modal, Spinner, SectionTitle } from './components';
 import Import from './Import';
+import RecoveryKey from './RecoveryKey';
 import './settings-extra.css';
 
 type Dialog = 'site' | 'member' | 'delete' | 'password' | 'remove' | 'catalog' | null;
@@ -47,6 +48,8 @@ export default function Settings({
   onLogout: () => void;
 }) {
   const coordinator = data.user.role === 'coordinator';
+  const [recoveryOpen, setRecoveryOpen] = useState(false),
+    [recoveryKey, setRecoveryKey] = useState<string | null>(null);
   const [modal, setModal] = useState<Dialog>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(''),
@@ -96,6 +99,26 @@ export default function Settings({
     setError('');
     setConfirm('');
     setModal(value);
+  }
+  function closeRecovery() {
+    if (!busy && !recoveryKey) {
+      setRecoveryOpen(false);
+      setError('');
+    }
+  }
+  async function issueRecovery(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError('');
+    try {
+      const result = await client.rotateRecoveryKey(String(form.get('currentPassword')));
+      setRecoveryKey(result.recoveryKey);
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setBusy(false);
+    }
   }
   function siteForm(site?: Site) {
     setEditing(site || null);
@@ -238,6 +261,19 @@ export default function Settings({
               <button className="button secondary" onClick={() => open('password')}>
                 <KeyRound size={16} />
                 Change passphrase
+              </button>
+            )}
+            {!data.user.isDemo && (
+              <button
+                className="button secondary"
+                onClick={() => {
+                  setRecoveryOpen(true);
+                  setRecoveryKey(null);
+                  setError('');
+                }}
+              >
+                <KeyRound size={16} />
+                Recovery key
               </button>
             )}
           </div>
@@ -760,8 +796,9 @@ export default function Settings({
                     </label>
                     <div className="inline-note">
                       <Info size={18} />
-                      Use a unique passphrase agreed with the volunteer. Invitation emails and
-                      forgotten-password recovery are not connected.
+                      Use a unique passphrase agreed with the volunteer. Invitation emails and email
+                      recovery are not connected. Volunteers can generate their own offline recovery
+                      key in settings after signing in.
                     </div>
                   </>
                 ) : modal === 'password' ? (
@@ -896,6 +933,79 @@ export default function Settings({
             </form>
           </Modal>
         )
+      )}
+      {recoveryOpen && (
+        <Modal
+          title="Offline account recovery"
+          onClose={closeRecovery}
+          closeDisabled={busy || !!recoveryKey}
+        >
+          {recoveryKey ? (
+            <div className="recovery-settings-body">
+              <RecoveryKey
+                recoveryKey={recoveryKey}
+                email={data.user.email}
+                replacement
+                continueLabel="Done"
+                onContinue={() => {
+                  setRecoveryOpen(false);
+                  setRecoveryKey(null);
+                  setError('');
+                  void onChanged(
+                    'Recovery key replaced. Keep the new key safely; earlier keys are invalid.',
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <form onSubmit={issueRecovery}>
+              <div className="form-body">
+                <p className="muted">
+                  Create a recovery key or replace the one you previously saved. Confirm your
+                  current passphrase first. Any earlier recovery key becomes invalid immediately.
+                </p>
+                <label>
+                  Current passphrase
+                  <input
+                    name="currentPassword"
+                    type="password"
+                    required
+                    maxLength={128}
+                    autoComplete="current-password"
+                  />
+                </label>
+                <div className="inline-note">
+                  <KeyRound size={19} />
+                  <span>
+                    The new key is shown once. You can copy or download it. Rill stores only its
+                    hash and cannot retrieve the secret for you. No recovery email is sent. The
+                    latest 100 security events per account are retained separately and included in
+                    JSON exports; older security events expire. Ordinary decision history is
+                    retained.
+                  </span>
+                </div>
+                {error && (
+                  <p className="form-error" role="alert">
+                    {error}
+                  </p>
+                )}
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="button ghost"
+                  disabled={busy}
+                  onClick={closeRecovery}
+                >
+                  Cancel
+                </button>
+                <button className="button primary" disabled={busy}>
+                  {busy ? <Spinner /> : <KeyRound size={16} />}Generate new recovery key
+                </button>
+              </div>
+            </form>
+          )}
+        </Modal>
       )}
       {importOpen && (
         <Import data={data} onClose={() => setImportOpen(false)} onChanged={onChanged} />

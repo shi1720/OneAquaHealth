@@ -48,7 +48,7 @@ A real account starts empty. A coordinator can add verified sites, review coordi
 
 **What has actually been tested?**
 
-The repository contains 50 logic/API/parser checks, end-to-end browser scenarios, and a verification record. They cover the decision loop, identity and workspace isolation, safe dispatch, retries, concurrent writes, imports/exports, and administration. Checked desktop/mobile surfaces have no reported axe violations or horizontal overflow. This is bounded software evidence, not external security certification or a field trial. Use the final verification record for current CI and deployment results.
+The repository contains 75 logic/API/parser checks, ten end-to-end browser scenarios, and a verification record. They cover the decision loop, identity and workspace isolation, safe dispatch, retries, concurrent writes, imports/exports, and administration. Checked desktop/mobile surfaces have no reported axe violations or horizontal overflow. This is bounded software evidence, not external security certification or a field trial. Use the final verification record for current CI and deployment results.
 
 **What prevents an unsafe volunteer dispatch?**
 
@@ -56,7 +56,7 @@ Hazardous reports and restricted sites are excluded from ordinary volunteer plan
 
 **What are the biggest limits before a real programme adopts it?**
 
-The priority policy needs local expert review, the workflow needs field testing, and hosting needs verified backup and recovery. Account recovery, verified invitations, additional coordinators, and programme-scale operations remain rollout work. Sites without reports also need routine coverage outside the concern-driven planner. We describe this as a working, hardened pilot application, not a validated environmental service.
+The priority policy needs local expert review, the workflow needs field testing, and hosting needs verified backup and recovery. Offline recovery keys are implemented. Email verification, additional coordinators, and programme-scale operations remain rollout work. Losing both the password and recovery key leaves no email recovery path. Sites without reports also need routine coverage outside the concern-driven planner. We describe this as a working, hardened pilot application, not a validated environmental service.
 
 **What did Shivam build?**
 

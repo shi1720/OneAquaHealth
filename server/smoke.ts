@@ -11,7 +11,8 @@ async function call(path: string, method = 'GET', body?: unknown, cookie?: strin
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   const value = await response.json();
-  assert.equal(response.status, expected, `${method} ${path}: ${JSON.stringify(value)}`);
+  // Auth responses may issue a one-time secret. Never echo response bodies in CI.
+  assert.equal(response.status, expected, `${method} ${path}: unexpected HTTP status`);
   return { value, cookie: response.headers.get('set-cookie')?.split(';')[0] };
 }
 const health = await call('/api/health');

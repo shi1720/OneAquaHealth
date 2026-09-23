@@ -6,6 +6,8 @@ const demo = async (page: import('@playwright/test').Page) => {
   await page.getByRole('button', { name: 'Explore the live demo' }).click();
   await expect(page.getByRole('heading', { name: 'Your catchment, connected.' })).toBeVisible();
 };
+// Account setup renders a one-time secret. Explicit demo screenshots remain safe.
+test.use({ trace: 'off', screenshot: 'off' });
 test('demonstration workspace, plan, report, review, action and recheck', async ({ page }) => {
   const exceptions: string[] = [];
   page.on('pageerror', (e) => exceptions.push(e.message));
@@ -77,40 +79,48 @@ test('demonstration workspace, plan, report, review, action and recheck', async 
 });
 test('real registration starts empty, site setup and password login persist', async ({ page }) => {
   const email = `e2e-${Date.now()}@example.org`;
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Create a workspace', exact: true }).click();
-  await page.getByLabel('Your name').fill('Test Coordinator');
-  await page.getByLabel('Workspace name').fill('Test River Team');
-  await page.getByLabel('Email address').fill(email);
-  await page.getByLabel('Password', { exact: true }).fill('River-tested-passphrase-2026');
-  await page.getByRole('button', { name: 'Create workspace', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Your catchment, connected.' })).toBeVisible();
-  await page.getByRole('button', { name: 'Team & settings' }).click();
-  await page.getByRole('button', { name: 'Add a site', exact: true }).click();
-  await page.getByLabel('Site name').fill('Test public bridge');
-  await page.getByLabel('Catchment', { exact: true }).fill('Test Catchment');
-  await page.getByLabel('Site description').fill('A public bridge over the test stream.');
-  await page.getByLabel('Latitude').fill('51.5');
-  await page.getByLabel('Longitude').fill('-0.12');
-  await page.getByLabel('Habitat', { exact: true }).fill('Urban stream');
-  await page
-    .getByLabel('Safe access instructions')
-    .fill('Observe from the public bridge. Do not enter the water.');
-  await page.getByRole('button', { name: 'Add site', exact: true }).click();
-  await expect(page.getByText('Test public bridge', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Sign out', exact: true }).first().click();
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  await page.getByLabel('Email address').fill(email);
-  await page.getByLabel('Password', { exact: true }).fill('River-tested-passphrase-2026');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).first().click();
-  await expect(page.getByRole('heading', { name: 'Your catchment, connected.' })).toBeVisible();
-  await page.getByRole('button', { name: 'Team & settings' }).click();
-  await expect(page.getByText('Test public bridge', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Delete this workspace' }).click();
-  await page.getByLabel('Your password').fill('River-tested-passphrase-2026');
-  await page.getByLabel('Type DELETE to confirm').fill('DELETE');
-  await page.getByRole('button', { name: 'Delete permanently' }).click();
-  await expect(page.getByRole('button', { name: 'Explore the live demo' })).toBeVisible();
+  try {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Create a workspace', exact: true }).click();
+    await page.getByLabel('Your name').fill('Test Coordinator');
+    await page.getByLabel('Workspace name').fill('Test River Team');
+    await page.getByLabel('Email address').fill(email);
+    await page.getByLabel('Password', { exact: true }).fill('River-tested-passphrase-2026');
+    await page.getByRole('button', { name: 'Create workspace', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Save your recovery key.' })).toBeVisible();
+    await page.getByLabel('I have saved this recovery key safely.').check();
+    await page.getByRole('button', { name: 'Continue to workspace' }).click();
+    await expect(page.getByRole('heading', { name: 'Your catchment, connected.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Team & settings' }).click();
+    await page.getByRole('button', { name: 'Add a site', exact: true }).click();
+    await page.getByLabel('Site name').fill('Test public bridge');
+    await page.getByLabel('Catchment', { exact: true }).fill('Test Catchment');
+    await page.getByLabel('Site description').fill('A public bridge over the test stream.');
+    await page.getByLabel('Latitude').fill('51.5');
+    await page.getByLabel('Longitude').fill('-0.12');
+    await page.getByLabel('Habitat', { exact: true }).fill('Urban stream');
+    await page
+      .getByLabel('Safe access instructions')
+      .fill('Observe from the public bridge. Do not enter the water.');
+    await page.getByRole('button', { name: 'Add site', exact: true }).click();
+    await expect(page.getByText('Test public bridge', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Sign out', exact: true }).first().click();
+    await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+    await page.getByLabel('Email address').fill(email);
+    await page.getByLabel('Password', { exact: true }).fill('River-tested-passphrase-2026');
+    await page.getByRole('button', { name: 'Sign in', exact: true }).first().click();
+    await expect(page.getByRole('heading', { name: 'Your catchment, connected.' })).toBeVisible();
+    await page.getByRole('button', { name: 'Team & settings' }).click();
+    await expect(page.getByText('Test public bridge', { exact: true })).toBeVisible();
+    await page.getByRole('button', { name: 'Delete this workspace' }).click();
+    await page.getByLabel('Your password').fill('River-tested-passphrase-2026');
+    await page.getByLabel('Type DELETE to confirm').fill('DELETE');
+    await page.getByRole('button', { name: 'Delete permanently' }).click();
+    await expect(page.getByRole('button', { name: 'Explore the live demo' })).toBeVisible();
+  } finally {
+    page.on('dialog', (dialog) => dialog.accept());
+    await page.goto('/');
+  }
 });
 test('mobile navigation and form fit, draft survives closing', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });

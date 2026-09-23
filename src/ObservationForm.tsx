@@ -39,36 +39,57 @@ export default function ObservationForm({
   const [step, setStep] = useState(0);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [restored, setRestored] = useState(false);
+  const [draftSaved, setDraftSaved] = useState(true);
   const photoRef = useRef<HTMLInputElement>(null);
-  const [form, setForm] = useState<ObservationInput>(() => {
+  const [initialDraft] = useState<ObservationInput | null>(() => {
     try {
       const old = localStorage.getItem(key);
       if (old) {
         const parsed = JSON.parse(old);
-        if (Date.now() - parsed.savedAt < 86400000) return parsed.form;
+        const age = Date.now() - parsed.savedAt;
+        const candidate = parsed.form;
+        if (
+          age >= 0 &&
+          age < 86400000 &&
+          candidate &&
+          data.sites.some((s) => s.id === candidate.siteId) &&
+          Array.isArray(candidate.concerns) &&
+          candidate.concerns.every((c: unknown) => choices.includes(c as Concern)) &&
+          typeof candidate.notes === 'string' &&
+          typeof candidate.observedAt === 'string' &&
+          typeof candidate.clientId === 'string'
+        )
+          return candidate;
         localStorage.removeItem(key);
       }
     } catch {}
-    return {
-      siteId: initialSite || data.sites[0]?.id || '',
-      observedAt: new Date().toISOString(),
-      concerns: [],
-      clarity: 'unsure',
-      flow: 'unsure',
-      confidence: 'unsure',
-      notes: '',
-      photo: null,
-      clientId: crypto.randomUUID(),
-    };
+    return null;
   });
-  useEffect(() => {
-    setRestored(!!localStorage.getItem(key));
-  }, [key]);
+  // Capture the pre-existing draft during initialization. StrictMode replays
+  // effects in development; reading storage after autosave would label a new
+  // form as restored on the second effect pass.
+  const [restored] = useState(Boolean(initialDraft));
+  const [form, setForm] = useState<ObservationInput>(
+    () =>
+      initialDraft ?? {
+        siteId: initialSite || data.sites[0]?.id || '',
+        observedAt: new Date().toISOString(),
+        concerns: [],
+        clarity: 'unsure',
+        flow: 'unsure',
+        confidence: 'unsure',
+        notes: '',
+        photo: null,
+        clientId: crypto.randomUUID(),
+      },
+  );
   useEffect(() => {
     try {
       localStorage.setItem(key, JSON.stringify({ form, savedAt: Date.now() }));
-    } catch {}
+      setDraftSaved(true);
+    } catch {
+      setDraftSaved(false);
+    }
   }, [form, key]);
   function set<K extends keyof ObservationInput>(k: K, v: ObservationInput[K]) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -113,10 +134,17 @@ export default function ObservationForm({
     setError('');
     try {
       await client.observe(form);
-      localStorage.removeItem(key);
+      try {
+        localStorage.removeItem(key);
+      } catch {}
       onSaved('Observation recorded. Your report now has a next step.');
     } catch (e) {
-      setError((e as Error).message + ' Your draft is saved on this device.');
+      setError(
+        (e as Error).message +
+          (draftSaved
+            ? ' Your draft is saved on this device.'
+            : ' Keep this form open to retain your entry.'),
+      );
     } finally {
       setBusy(false);
     }
@@ -146,6 +174,11 @@ export default function ObservationForm({
     >
       <StepLabel items={['Place', 'Observe', 'Details', 'Review']} current={step} />
       <div className="form-body">
+        {!draftSaved && (
+          <div className="inline-note warning">
+            Your browser could not save a draft. Keep this form open until submission.
+          </div>
+        )}
         {restored && (
           <div className="inline-note">
             <CloudOff size={16} /> Your last draft was restored. Drafts stay on this device for 24
@@ -385,7 +418,7 @@ export default function ObservationForm({
       <div className="modal-footer">
         <button className="button ghost" onClick={() => (step > 0 ? setStep(step - 1) : onClose())}>
           <ArrowLeft size={16} />
-          {step > 0 ? 'Back' : 'Save draft & close'}
+          {step > 0 ? 'Back' : draftSaved ? 'Save draft & close' : 'Close form'}
         </button>
         {step < 3 ? (
           <button className="button primary" onClick={next} disabled={!data.sites.length}>

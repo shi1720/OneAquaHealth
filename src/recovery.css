@@ -1,0 +1,89 @@
+.recovery-key-card {
+  max-width: 100%;
+  color: var(--ink);
+}
+.recovery-key-icon {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #e9efdc;
+  color: #395935;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.recovery-key-card h2 {
+  font-size: 28px;
+  line-height: 1.25;
+  margin-bottom: 14px;
+}
+.recovery-key-card > p {
+  font-size: 13px;
+  color: #56634e;
+  line-height: 1.7;
+}
+.recovery-key-card textarea {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  line-height: 1.75;
+  background: #f4f7ed;
+  word-break: break-all;
+  resize: none;
+  color: #294b31;
+}
+.recovery-key-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+.recovery-key-card .recovery-key-boundary {
+  font-size: 12px;
+  border-left: 3px solid #a7ba80;
+  padding-left: 12px;
+  margin: 20px 0;
+}
+.recovery-key-card .recovery-replaced {
+  font-weight: 600;
+  color: #805327;
+}
+.recovery-key-confirm {
+  font-size: 13px !important;
+  line-height: 1.55;
+}
+.auth-recovery-link {
+  margin: 0 0 19px;
+  text-align: right;
+}
+.auth-recovery-link > button {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--forest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.recovery-settings-body {
+  padding: 27px 31px;
+}
+.recovery-settings-body .recovery-key-card h2 {
+  font-size: 24px;
+}
+.auth-recovery-hint {
+  margin-bottom: 18px !important;
+}
+@media (max-width: 700px) {
+  .recovery-key-card h2 {
+    font-size: 25px;
+  }
+  .recovery-key-card textarea {
+    font-size: 12px;
+  }
+  .recovery-settings-body {
+    padding: 22px 20px;
+  }
+  .recovery-key-actions .button {
+    font-size: 12px;
+  }
+}

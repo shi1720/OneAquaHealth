@@ -13,7 +13,7 @@ Errors return `{ "error": "A user-readable explanation" }`. Expected codes inclu
 | Method and route      | Body / result                                                                                        | Access             |
 | --------------------- | ---------------------------------------------------------------------------------------------------- | ------------------ |
 | `POST /auth/demo`     | `{}` → `{user}`; creates a private six-site/eight-report synthetic workspace                         | Public, throttled  |
-| `POST /auth/register` | `{name,email,password,workspaceName}` → `{user}`; creates an **empty** real workspace                | Public, throttled  |
+| `POST /auth/register` | `{name,email,password,workspaceName}` → `{user,recoveryKey}`; creates an **empty** real workspace    | Public, throttled  |
 | `POST /auth/login`    | `{email,password}` → `{user}`                                                                        | Public, throttled  |
 | `POST /auth/logout`   | `{}` → `{ok:true}`; revokes the requesting session                                                   | Session if present |
 | `GET /auth/me`        | `{user}`                                                                                             | Member             |
@@ -22,7 +22,13 @@ Errors return `{ "error": "A user-readable explanation" }`. Expected codes inclu
 | `DELETE /account`     | `{password}` → `{ok:true}`; deletes the entire workspace and its database records; demo may use `{}` | Coordinator        |
 | `GET /health`         | `{status:'ok',version,storage}`                                                                      | Public             |
 
-Passwords must contain 12–128 characters. No email verification or password recovery is simulated. A real session lasts seven days; a demo session lasts one day. Demo workspaces are removed after 48 hours. Records are scoped by the authenticated workspace, never by a user-supplied workspace identifier.
+Passwords must contain 12–128 characters. Real registration returns a 256-bit random recovery key once; only its domain-separated hash is stored. The interface requires a save acknowledgement. No email verification or email recovery is simulated. A real session lasts seven days; a demo session lasts one day. Demo workspaces are removed after 48 hours. Records are scoped by the authenticated workspace, never by a user-supplied workspace identifier.
+
+`POST /auth/recover` accepts `{email,recoveryKey,newPassword}` and returns `{user,recoveryKey}` with a replacement key. A valid saved key atomically replaces the password, consumes the old key, revokes prior sessions, and creates the requesting session. Concurrent use permits only one success. Invalid, consumed, unknown-account and demo keys return the same 401 message. Attempts are rate limited by hashed IP/email. The public route still requires same-origin JSON.
+
+`POST /auth/recovery-key` accepts `{currentPassword}` and returns `{recoveryKey}` for a signed-in real account. It invalidates any prior key after password confirmation. Existing accounts and directly-created volunteers can use this route to obtain a key. Secrets are absent from profile responses, logs and exports, and responses are `no-store`. Possessing a key and email enables reset; losing both the password and key leaves no self-service email recovery path.
+
+Security events for recovery, password changes and key replacement have a separate rolling latest-100-per-current-account history. Its explicit policy is included in JSON exports. This permits recovery at the ordinary audit quota without deleting decision history. Account deletion removes that account’s security events.
 
 ## Team and sites
 
@@ -71,7 +77,7 @@ Planning accepts 20–480 minutes and uses an exact 0/1 allocation over eligible
 
 `GET /export?format=json|csv|geojson|fhir` returns a downloadable file. Import and export are coordinator-only.
 
-- JSON: complete retained workspace evidence, including all retained audit events and decision snapshots, with names in the operational audit; excludes authentication data and photo blobs.
+- JSON: complete retained business evidence, including all ordinary audit events and decision snapshots, plus `securityEvents` and `securityEventRetention` metadata for the separate rolling security history. Includes names in the operational audit; excludes authentication secrets and photo blobs.
 - CSV: a formula-safe observation projection, with data labels and provenance fields.
 - GeoJSON: sites and observation properties; coordinate accuracy is not independently verified.
 - FHIR: experimental R4 collection with Organization, Location, Observation, Task, and Provenance. Environmental observations reference locations, never patients. No implementation-guide certification is claimed.

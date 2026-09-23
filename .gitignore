@@ -5,9 +5,13 @@ dist/
 !.env.example
 .wrangler/
 data/
+backups/
 *.db
 *.db-shm
 *.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
 playwright-report/
 test-results/
 tmp/
@@ -15,3 +19,9 @@ tmp/
 
 artifacts/qa/
 output/video/*.webm
+output/video/raw/
+output/video/frames/
+output/video/caption-assets/
+output/video/*.mp4
+output/video/rehearsal-proof.json
+output/*.zip

@@ -1,0 +1,255 @@
+{
+  "measuredAt": "2026-09-23T04:33:50.744Z",
+  "runtime": "v22.16.0",
+  "platform": "darwin arm64",
+  "cpu": "Apple M4 Pro",
+  "fixedScenarioTime": "2026-09-23T10:00:00.000Z",
+  "seed": 1720,
+  "rounds": 7,
+  "notes": "Synthetic local in-process CPU timing. Excludes network, database, serialization and concurrency. Not production throughput or environmental validation.",
+  "cases": [
+    {
+      "siteCount": 100,
+      "distribution": "mixed signals, times and repeated accounts",
+      "observationCount": 2000,
+      "measurements": {
+        "before": {
+          "workspaceAssessment": {
+            "medianMs": 52.776,
+            "minMs": 52.334,
+            "maxMs": 53.212,
+            "samples": [52.334, 52.515, 52.577, 52.776, 52.84, 52.906, 53.212]
+          },
+          "plan120": {
+            "medianMs": 49.927,
+            "minMs": 49.14,
+            "maxMs": 50.264,
+            "samples": [49.14, 49.447, 49.816, 49.927, 49.987, 50.024, 50.264]
+          },
+          "plan480": {
+            "medianMs": 50.12,
+            "minMs": 49.732,
+            "maxMs": 51.918,
+            "samples": [49.732, 49.898, 49.958, 50.12, 50.252, 50.685, 51.918]
+          }
+        },
+        "current": {
+          "workspaceAssessment": {
+            "medianMs": 1.373,
+            "minMs": 1.304,
+            "maxMs": 3.296,
+            "samples": [1.304, 1.337, 1.347, 1.373, 1.427, 1.862, 3.296]
+          },
+          "plan120": {
+            "medianMs": 1.38,
+            "minMs": 1.245,
+            "maxMs": 1.481,
+            "samples": [1.245, 1.277, 1.327, 1.38, 1.426, 1.468, 1.481]
+          },
+          "plan480": {
+            "medianMs": 2.5,
+            "minMs": 2.342,
+            "maxMs": 2.709,
+            "samples": [2.342, 2.392, 2.451, 2.5, 2.502, 2.628, 2.709]
+          }
+        }
+      },
+      "outputSha256": "77f841dd7f01ac6d60464a485c8875ad1e1eccbbbfbaf80fb875df028578f008",
+      "exactBaselineMatch": true,
+      "budgetChecks": [
+        {
+          "budget": 20,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 64
+        },
+        {
+          "budget": 60,
+          "used": 60,
+          "selected": 3,
+          "prioritySum": 183
+        },
+        {
+          "budget": 120,
+          "used": 120,
+          "selected": 6,
+          "prioritySum": 352
+        },
+        {
+          "budget": 240,
+          "used": 240,
+          "selected": 11,
+          "prioritySum": 636
+        },
+        {
+          "budget": 480,
+          "used": 480,
+          "selected": 20,
+          "prioritySum": 1114
+        }
+      ]
+    },
+    {
+      "siteCount": 1,
+      "distribution": "mixed signals, times and repeated accounts",
+      "observationCount": 2000,
+      "measurements": {
+        "before": {
+          "workspaceAssessment": {
+            "medianMs": 484.366,
+            "minMs": 481,
+            "maxMs": 486.902,
+            "samples": [481, 483.856, 483.943, 484.366, 485.087, 485.463, 486.902]
+          },
+          "plan120": {
+            "medianMs": 450.15,
+            "minMs": 446.69,
+            "maxMs": 456.086,
+            "samples": [446.69, 448.921, 449.903, 450.15, 450.265, 451.65, 456.086]
+          },
+          "plan480": {
+            "medianMs": 445.383,
+            "minMs": 443.733,
+            "maxMs": 448.79,
+            "samples": [443.733, 444.522, 444.975, 445.383, 445.483, 447.289, 448.79]
+          }
+        },
+        "current": {
+          "workspaceAssessment": {
+            "medianMs": 38.18,
+            "minMs": 37.746,
+            "maxMs": 39.924,
+            "samples": [37.746, 37.857, 38.175, 38.18, 38.35, 38.553, 39.924]
+          },
+          "plan120": {
+            "medianMs": 35.697,
+            "minMs": 35.189,
+            "maxMs": 36.438,
+            "samples": [35.189, 35.283, 35.555, 35.697, 35.82, 35.966, 36.438]
+          },
+          "plan480": {
+            "medianMs": 35.417,
+            "minMs": 34.982,
+            "maxMs": 36.4,
+            "samples": [34.982, 35.137, 35.238, 35.417, 35.597, 35.618, 36.4]
+          }
+        }
+      },
+      "outputSha256": "a142c7b40516b1cd78c720d07e4c14aaf36af6e513e2bd9b06f37b7734e3adb3",
+      "exactBaselineMatch": true,
+      "budgetChecks": [
+        {
+          "budget": 20,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 53
+        },
+        {
+          "budget": 60,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 53
+        },
+        {
+          "budget": 120,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 53
+        },
+        {
+          "budget": 240,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 53
+        },
+        {
+          "budget": 480,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 53
+        }
+      ]
+    },
+    {
+      "siteCount": 1,
+      "distribution": "dense matching signals and distinct accounts",
+      "observationCount": 2000,
+      "measurements": {
+        "before": {
+          "workspaceAssessment": {
+            "medianMs": 564.816,
+            "minMs": 563.182,
+            "maxMs": 571.886,
+            "samples": [563.182, 563.743, 564.363, 564.816, 565.896, 566.951, 571.886]
+          },
+          "plan120": {
+            "medianMs": 561.687,
+            "minMs": 551.547,
+            "maxMs": 565.462,
+            "samples": [551.547, 558.356, 559.243, 561.687, 562.632, 563.481, 565.462]
+          },
+          "plan480": {
+            "medianMs": 567.358,
+            "minMs": 556.436,
+            "maxMs": 573.597,
+            "samples": [556.436, 560.517, 561.576, 567.358, 568.657, 569.299, 573.597]
+          }
+        },
+        "current": {
+          "workspaceAssessment": {
+            "medianMs": 110.447,
+            "minMs": 110.217,
+            "maxMs": 110.929,
+            "samples": [110.217, 110.3, 110.391, 110.447, 110.528, 110.67, 110.929]
+          },
+          "plan120": {
+            "medianMs": 111.358,
+            "minMs": 110.415,
+            "maxMs": 114.797,
+            "samples": [110.415, 110.476, 110.845, 111.358, 112.334, 113.28, 114.797]
+          },
+          "plan480": {
+            "medianMs": 110.299,
+            "minMs": 109.354,
+            "maxMs": 111.186,
+            "samples": [109.354, 110.094, 110.213, 110.299, 110.398, 111.09, 111.186]
+          }
+        }
+      },
+      "outputSha256": "fb5b7c2a6e00fe0f99ec060f7b09f436c3f423c4095b21922c153ec49225845f",
+      "exactBaselineMatch": true,
+      "budgetChecks": [
+        {
+          "budget": 20,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 49
+        },
+        {
+          "budget": 60,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 49
+        },
+        {
+          "budget": 120,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 49
+        },
+        {
+          "budget": 240,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 49
+        },
+        {
+          "budget": 480,
+          "used": 20,
+          "selected": 1,
+          "prioritySum": 49
+        }
+      ]
+    }
+  ]
+}

@@ -1,5 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+// Registration responses contain one-time secrets: never retain network traces.
+test.use({ trace: 'off' });
 
 const initialPassword = 'Rill-settings-test-passphrase-2026';
 const siteInput = {

@@ -5,6 +5,7 @@ import type {
   FieldPlan,
   FieldTask,
   ObservationStatus,
+  RecoveryAuthResult,
 } from '../shared/types';
 export class ApiError extends Error {
   constructor(
@@ -38,7 +39,11 @@ export const client = {
   login: (email: string, password: string) =>
     api<{ user: User }>('/auth/login', { email, password }),
   register: (name: string, email: string, password: string, workspaceName: string) =>
-    api<{ user: User }>('/auth/register', { name, email, password, workspaceName }),
+    api<RecoveryAuthResult>('/auth/register', { name, email, password, workspaceName }),
+  recover: (email: string, recoveryKey: string, newPassword: string) =>
+    api<RecoveryAuthResult>('/auth/recover', { email, recoveryKey, newPassword }),
+  rotateRecoveryKey: (currentPassword: string) =>
+    api<{ recoveryKey: string }>('/auth/recovery-key', { currentPassword }),
   logout: () => api('/auth/logout', {}),
   workspace: () => api<WorkspaceData>('/workspace'),
   observe: (input: ObservationInput) =>

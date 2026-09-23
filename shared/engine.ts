@@ -35,6 +35,80 @@ const SEVERITY: Record<Concern, number> = {
 };
 const HOUR = 3_600_000;
 const isConcern = (concern: Concern) => SEVERITY[concern] > 0;
+const CONCERN_BITS: Record<Concern, number> = {
+  foam: 1,
+  discoloration: 2,
+  litter: 4,
+  odour: 8,
+  dead_fish: 16,
+  algae: 32,
+  erosion: 64,
+  wildlife: 0,
+  clear: 0,
+};
+interface IndexedObservation {
+  observation: Observation;
+  observedMs: number;
+  signalMask: number;
+}
+function indexObservations(observations: Observation[]) {
+  const bySite = new Map<string, IndexedObservation[]>();
+  const entries = observations.map((observation) => {
+    const entry = {
+      observation,
+      observedMs: new Date(observation.observedAt).getTime(),
+      signalMask: observation.concerns.reduce((mask, concern) => mask | CONCERN_BITS[concern], 0),
+    };
+    const group = bySite.get(observation.siteId);
+    if (group) group.push(entry);
+    else bySite.set(observation.siteId, [entry]);
+    return entry;
+  });
+  return { bySite, entries };
+}
+
+/** Batch-scoped index only: never retain or cache mutable workspace data across calls. */
+function assessIndexed(
+  entry: IndexedObservation,
+  site: Site,
+  peers: IndexedObservation[],
+  nowMs: number,
+): Assessment {
+  const authors = new Set<string>();
+  if (entry.signalMask) {
+    for (const peer of peers) {
+      if (
+        peer.observation.id !== entry.observation.id &&
+        peer.observation.authorId !== entry.observation.authorId &&
+        (entry.signalMask & peer.signalMask) !== 0 &&
+        Math.abs(peer.observedMs - entry.observedMs) <= 48 * HOUR
+      )
+        authors.add(peer.observation.authorId);
+    }
+  }
+  return assessFromFacts(entry.observation, site, nowMs, entry.observedMs, authors.size);
+}
+
+/** Assess a complete workspace with timestamps and site groups prepared once. Input order is retained. */
+export function assessWorkspace(
+  sites: Site[],
+  observations: Observation[],
+  now: Date | string = new Date(),
+): Assessment[] {
+  const nowMs = new Date(now).getTime();
+  const siteMap = new Map(sites.map((site) => [site.id, site]));
+  const index = indexObservations(observations);
+  return index.entries
+    .filter((entry) => siteMap.has(entry.observation.siteId))
+    .map((entry) =>
+      assessIndexed(
+        entry,
+        siteMap.get(entry.observation.siteId)!,
+        index.bySite.get(entry.observation.siteId)!,
+        nowMs,
+      ),
+    );
+}
 export function unsafeForVolunteer(observation: Observation): string | null {
   if (observation.concerns.includes('dead_fish'))
     return 'Dead or distressed fish: notify the local environmental authority now. Do not wait for a field plan, enter the water, handle fish, or send volunteers.';
@@ -52,9 +126,7 @@ export function assessObservation(
 ): Assessment {
   const nowMs = new Date(now).getTime();
   const observedMs = new Date(observation.observedAt).getTime();
-  const ageHours = Math.max(0, (nowMs - observedMs) / HOUR);
   const concerns = observation.concerns.filter(isConcern);
-  const base = Math.max(0, ...concerns.map((concern) => SEVERITY[concern]));
   // Count distinct accounts, not posts. Account independence is not verified identity.
   const otherAuthors = new Set(
     observations
@@ -68,7 +140,19 @@ export function assessObservation(
       )
       .map((other) => other.authorId),
   );
-  const corroboratingCount = otherAuthors.size;
+  return assessFromFacts(observation, site, nowMs, observedMs, otherAuthors.size);
+}
+
+function assessFromFacts(
+  observation: Observation,
+  site: Site,
+  nowMs: number,
+  observedMs: number,
+  corroboratingCount: number,
+): Assessment {
+  const ageHours = Math.max(0, (nowMs - observedMs) / HOUR);
+  const concerns = observation.concerns.filter(isConcern);
+  const base = Math.max(0, ...concerns.map((concern) => SEVERITY[concern]));
   const evidence: Assessment['evidence'] =
     corroboratingCount >= 2
       ? 'corroborated'
@@ -206,13 +290,17 @@ export function buildFieldPlan(
     throw new Error('Budget must be an integer from 20 to 480 minutes.');
   const deferred: FieldPlan['deferred'] = [];
   const candidates: Omit<PlanItem, 'rank'>[] = [];
+  const index = indexObservations(observations);
+  const nowMs = new Date(now).getTime();
+  const sitesWithOpenTasks = new Set(
+    tasks.filter((task) => task.status !== 'completed').map((task) => task.siteId),
+  );
   for (const site of [...sites].sort((a, b) => a.id.localeCompare(b.id))) {
-    const unresolved = observations.filter(
-      (observation) => observation.siteId === site.id && observation.status !== 'resolved',
-    );
-    const hazard = unresolved.find((observation) => unsafeForVolunteer(observation));
+    const peers = index.bySite.get(site.id) ?? [];
+    const unresolved = peers.filter((entry) => entry.observation.status !== 'resolved');
+    const hazard = unresolved.find((entry) => unsafeForVolunteer(entry.observation));
     if (hazard) {
-      deferred.push({ siteId: site.id, reason: unsafeForVolunteer(hazard)! });
+      deferred.push({ siteId: site.id, reason: unsafeForVolunteer(hazard.observation)! });
       continue;
     }
     if (site.sensitive) {
@@ -223,7 +311,7 @@ export function buildFieldPlan(
       });
       continue;
     }
-    if (tasks.some((task) => task.siteId === site.id && task.status !== 'completed')) {
+    if (sitesWithOpenTasks.has(site.id)) {
       deferred.push({
         siteId: site.id,
         reason:
@@ -232,9 +320,9 @@ export function buildFieldPlan(
       continue;
     }
     const ranked = unresolved
-      .map((observation) => ({
-        observation,
-        assessment: assessObservation(observation, site, observations, now),
+      .map((entry) => ({
+        observation: entry.observation,
+        assessment: assessIndexed(entry, site, peers, nowMs),
       }))
       .filter(({ assessment }) => assessment.score > 0)
       .sort(

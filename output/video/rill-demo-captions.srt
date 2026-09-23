@@ -1,0 +1,137 @@
+1
+00:00:00,000 --> 00:00:15,000
+THE COORDINATION GAP
+A useful stream report deserves a clear next step.
+What should a team check when it has just two hours?
+
+2
+00:00:15,000 --> 00:00:28,000
+AN ISOLATED DEMONSTRATION
+Six fictional monitoring sites. Synthetic observations.
+A private workspace for trying the complete workflow.
+
+3
+00:00:28,000 --> 00:00:36,000
+1 · RECORD THE PLACE
+Choose a monitored site and record the observation time.
+The guidance keeps volunteers on safe public paths.
+
+4
+00:00:36,000 --> 00:00:45,000
+2 · DESCRIBE WHAT YOU NOTICED
+Report visible litter, clarity, and movement.
+No one needs to guess the cause.
+
+5
+00:00:45,000 --> 00:00:57,000
+3 · KEEP THE UNCERTAINTY
+A short field note and an honest confidence choice.
+Photos are optional support for human review.
+
+6
+00:00:57,000 --> 00:01:04,000
+4 · SUBMIT A USEFUL REPORT
+Review the details, then submit.
+Every report in this workspace remains labelled as demonstration data.
+
+7
+00:01:04,000 --> 00:01:18,000
+PRIORITY IS NOT A DIAGNOSIS
+Verification priority and evidence strength are separate.
+This is a rule-based attention score, not a water-safety assessment.
+
+8
+00:01:18,000 --> 00:01:30,000
+SHOW THE REASONS
+The score exposes its factors and the next question to answer.
+Independent-looking accounts are not verified independent identities.
+
+9
+00:01:30,000 --> 00:01:40,000
+ONE STREAM · CONNECTED LIVES
+Habitat, animals, and people remain part of the same decision.
+Visual reports cannot identify pathogens or certify safe water.
+
+10
+00:01:40,000 --> 00:01:50,000
+THE NEXT TWO HOURS
+Build a field plan from the time the team actually has.
+Each visit includes an access allowance and observation time.
+
+11
+00:01:50,000 --> 00:01:58,000
+LESS TIME · A DIFFERENT CHOICE
+Reducing the budget changes the selected work.
+The planner chooses across distinct eligible sites.
+
+12
+00:01:58,000 --> 00:02:06,000
+A REAL TRADEOFF
+At 120 minutes, three visits fit. Another concern must wait.
+The selection maximizes the stated priority policy, not ecological outcomes.
+
+13
+00:02:06,000 --> 00:02:14,000
+DEFERRALS ARE EXPLAINED
+Restricted sites and serious signs do not become volunteer visits.
+The coordinator still confirms permissions and safe access.
+
+14
+00:02:14,000 --> 00:02:20,000
+TURN A PLAN INTO RESPONSIBILITY
+Commit the reviewed plan.
+Each selected visit becomes a task with an owner and a due date.
+
+15
+00:02:20,000 --> 00:02:30,000
+HUMAN REVIEW
+The coordinator records a judgment before advancing the case.
+The original evidence and the decision stay connected.
+
+16
+00:02:30,000 --> 00:02:40,000
+RECORD WHAT HAPPENED
+A task is completed with a written result.
+This fictional verification is explicitly labelled as a demo.
+
+17
+00:02:40,000 --> 00:02:48,000
+ACTION IS NOT PROOF OF IMPROVEMENT
+A response can be recorded, but resolution remains blocked.
+A completed recheck must provide the next piece of evidence.
+
+18
+00:02:48,000 --> 00:03:00,000
+FOLLOW THROUGH WITH A RECHECK
+Assign the follow-up and record its findings.
+A recheck does not certify water quality or contact safety.
+
+19
+00:03:00,000 --> 00:03:10,000
+A DOCUMENTED LOOP, CLOSED
+A coordinator can now resolve the observation.
+Report, review, action, and recheck form an accountable record.
+
+20
+00:03:10,000 --> 00:03:19,000
+THE DECISIONS BEHIND THE CASE
+Authorship, time, and historical decision snapshots remain visible.
+The complete retained audit trail can be exported.
+
+21
+00:03:19,000 --> 00:03:33,000
+EVIDENCE THAT CAN TRAVEL
+JSON, CSV, GeoJSON, and an experimental FHIR R4 mapping.
+Environmental Locations, Observations, Tasks, and Provenance — no Patients.
+
+22
+00:03:33,000 --> 00:03:42,000
+MEASURE FOLLOW-THROUGH
+Count documented reviews, completed work, rechecks, and closed loops.
+These workflow measures are not claims of improved water quality.
+
+23
+00:03:42,000 --> 00:03:58,000
+A PRACTICAL PATH TO A PILOT
+Proposed customer: the monitoring coordinator. Volunteers contribute free.
+Validate time saved and documented follow-through before making impact claims.

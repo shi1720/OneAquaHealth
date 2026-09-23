@@ -11,6 +11,15 @@ export async function sha256(value: string) {
   return toHex(await crypto.subtle.digest('SHA-256', encoder.encode(value)));
 }
 export const randomToken = () => toHex(crypto.getRandomValues(new Uint8Array(32)));
+/** 256 random bits. Grouping is for transcription only; the database receives only its digest. */
+export const newRecoveryKey = () => `RILL-${randomToken().toUpperCase().match(/.{8}/g)!.join('-')}`;
+export async function recoveryKeyHash(key: string) {
+  const normalized = key.toUpperCase().replace(/[\s-]/g, '');
+  // Malformed input follows the same missing-match path as a wrong or consumed key.
+  return sha256(
+    `rill-recovery-v1:${/^RILL[0-9A-F]{64}$/.test(normalized) ? normalized : 'invalid'}`,
+  );
+}
 const ITERATIONS = 600_000;
 export async function hashPassword(password: string, iterations = ITERATIONS) {
   const salt = crypto.getRandomValues(new Uint8Array(16));
